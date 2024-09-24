@@ -37,9 +37,21 @@ namespace SmartMeter
             }
         }
 
-        //WRITE SAVE TO FILE METHOD USE 
-        //
+        public void DeleteData(UserData userData)
+        {
+            // Check If User is Admin
+            // Reject if they are not
 
+            var existingMessage = GetById(userData.UserID);
+            if (existingMessage != null)
+            {
+                userDatabase.Remove(existingMessage);
+                userDatabase.Add(userData);
+            }
+        }
+        
+        //WRITE SAVE TO FILE METHOD USE 
+        
     }
 
 }

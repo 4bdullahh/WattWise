@@ -9,8 +9,6 @@ public class UserData : SmartDevice
     public string Passcode { get; set; }
 
     public SmartDevice smartDevice {get;set;}
-
-
 }
 
 

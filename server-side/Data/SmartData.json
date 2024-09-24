@@ -1,0 +1,14 @@
+[
+    {
+        "SmartMeterID": 101,
+        "SmartMeterData": "Energy consumption: 250 kWh"
+    },
+    {
+        "SmartMeterID": 102,
+        "SmartMeterData": "Energy consumption: 300 kWh"
+    },
+    {
+        "SmartMeterID": 103,
+        "SmartMeterData": "Energy consumption: 180 kWh"
+    }
+]

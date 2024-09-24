@@ -1,5 +1,3 @@
-
-
 public class SmartDevice
 {
     public int SmartMeterID { get; set; }

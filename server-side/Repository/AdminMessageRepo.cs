@@ -30,18 +30,6 @@ namespace SmartMeter
                 userDatabase.Add(userData);
             }
         }
-
-
-        public void DeleteData(UserData userData)
-        {
-
-            var existingMessage = GetById(userData.UserID);
-            if (existingMessage != null)
-            {
-                userDatabase.Remove(existingMessage);
-                userDatabase.Add(userData);
-            }
-        }
     }
 
 }
