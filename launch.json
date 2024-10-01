@@ -1,0 +1,50 @@
+{
+    "folders": [
+        {
+            "path": "./server-side/server-side.csproj"
+        },
+        {
+            "path": "./client-side/client-side.csproj"
+        }
+    ],
+    "settings": {
+    
+    },
+    "launch": {
+        "configurations": [
+            {
+                "name": "server-side Debug",
+                "type": "coreclr",
+                "request": "launch",
+                "program": "${workspaceFolder:server-side}/bin/Debug/net6.0/server-side.dll",
+                "args": [],
+                "cwd": "${workspaceFolder:server-side}",
+                "stopAtEntry": false,
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+            },
+            {
+                "name": "client-side Debug",
+                "type": "coreclr",
+                "request": "launch",
+                "program": "${workspaceFolder:client-side}/bin/Debug/net6.0/client-side.dll",
+                "args": [],
+                "cwd": "${workspaceFolder:client-side}",
+                "stopAtEntry": false,
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+            }
+        ],
+        "compounds": [
+            {
+                "name": "Start Both Projects",
+                "configurations": [
+                    "server-side Debug",
+                    "client-side Debug"
+                ]
+            }
+        ]
+    }
+}

@@ -1,8 +1,8 @@
+using server_side.Repository.Interface;
 
-
-namespace SmartMeter
+namespace server_side.Repository
 {
-    public class UserMessageRepo
+    public class UserMessageRepo : IUserMessageRepo
     {
         private readonly List<UserData> userDatabase;
         public UserMessageRepo()
@@ -11,22 +11,20 @@ namespace SmartMeter
         }
 
         //check file vailidty
-
         public UserData GetById(int UserID)
         {
-            return userDatabase.FirstOrDefault(c => c.UserID == UserID);
+            var user = userDatabase.FirstOrDefault(c => c.UserID == UserID);
+            return user;
         }
 
 
-        //get electric amount
-
-        public void AddUserData(UserData userData)
+        public UserData AddUserData(UserData userData)
         {
             userDatabase.Add(userData);
-
+            return userData;
         }
 
-        public void UpdateData(UserData userData)
+        public UserData UpdateData(UserData userData)
         {
 
             var existingMessage = GetById(userData.UserID);
@@ -34,24 +32,16 @@ namespace SmartMeter
             {
                 userDatabase.Remove(existingMessage);
                 userDatabase.Add(userData);
+                return userData;
             }
-        }
-
-        public void DeleteData(UserData userData)
-        {
-            // Check If User is Admin
-            // Reject if they are not
-
-            var existingMessage = GetById(userData.UserID);
-            if (existingMessage != null)
+            else
             {
-                userDatabase.Remove(existingMessage);
-                userDatabase.Add(userData);
+                return userData;
             }
         }
-        
+
         //WRITE SAVE TO FILE METHOD USE 
-        
+
     }
 
 }
