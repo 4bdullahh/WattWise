@@ -1,0 +1,10 @@
+# Build results
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+
+##NODE
+node_modules/
