@@ -1,0 +1,14 @@
+[
+  {
+    "SmartMeterID": 501,
+    "SmartMeterData": "23.5 kWh"
+  },
+  {
+    "SmartMeterID": 502,
+    "SmartMeterData": "18.2 kWh"
+  },
+  {
+    "SmartMeterID": 503,
+    "SmartMeterData": "27.8 kWh"
+  }
+]

@@ -1,4 +1,4 @@
-namespace server_side.Services.Interface
+namespace server_side.Service.Interface
 {
 
     public interface IUserServices

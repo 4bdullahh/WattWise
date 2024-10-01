@@ -6,6 +6,7 @@ namespace server_side.Repository.Interface
         public UserData GetById(int UserID);
         public UserData AddUserData(UserData userData);
         public UserData UpdateData(UserData userData);
+        public bool TestListToJson();
 
 
     }

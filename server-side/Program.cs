@@ -1,9 +1,9 @@
+using NetMQ;
 using Microsoft.Extensions.DependencyInjection;
-using server_side.Services.Interface;
-using server_side.Services;
+using server_side.Service.Interface;
 using server_side.Repository.Interface;
+using server_side.Service;
 using server_side.Repository;
-using server_side.Controller;
 
 namespace server_side
 {
@@ -18,6 +18,7 @@ namespace server_side
 
             var serviceProvider = services.BuildServiceProvider();
 
+
             var messageController = serviceProvider.GetService<MessageController>();
             messageController.ReceiveMessage();
 
@@ -27,4 +28,3 @@ namespace server_side
     }
 
 }
-

@@ -1,5 +1,5 @@
 
-namespace SmartMeter
+namespace server_side.Repository
 {
     public class AdminMessageRepo
     {
