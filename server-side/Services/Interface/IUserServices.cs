@@ -1,4 +1,4 @@
-namespace SmartMeter
+namespace server_side.Service.Interface
 {
 
     public interface IUserServices

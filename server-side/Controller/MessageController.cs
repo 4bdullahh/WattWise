@@ -1,5 +1,7 @@
 
-namespace SmartMeter
+using server_side.Service.Interface;
+
+namespace server_side
 {
     public class MessageController
     {
@@ -13,8 +15,8 @@ namespace SmartMeter
         public void ReceiveMessage()
         {
             _userServices.ReceiveMessageServices();
-        }
 
+        }
     }
 
 }

@@ -1,7 +1,11 @@
 ﻿using NetMQ;
 using Microsoft.Extensions.DependencyInjection;
+using server_side.Service.Interface;
+using server_side.Repository.Interface;
+using server_side.Service;
+using server_side.Repository;
 
-namespace SmartMeter
+namespace server_side
 {
     class Program
     {
@@ -14,6 +18,7 @@ namespace SmartMeter
 
             var serviceProvider = services.BuildServiceProvider();
 
+
             var messageController = serviceProvider.GetService<MessageController>();
             messageController.ReceiveMessage();
 
@@ -23,4 +28,3 @@ namespace SmartMeter
     }
 
 }
-

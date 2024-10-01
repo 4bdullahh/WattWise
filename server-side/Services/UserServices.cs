@@ -2,8 +2,9 @@
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
-
-namespace SmartMeter
+using server_side.Service.Interface;
+using server_side.Repository.Interface;
+namespace server_side.Service
 {
     public class UserService : IUserServices
     {
@@ -39,7 +40,10 @@ namespace SmartMeter
         {
 
             int userId = userJson.UserID;
-            var userData = _userRepo.GetById(userId);
+            
+            var id = 101;
+
+            var userData = _userRepo.GetById(101);
 
             if (userData == null)
             {
