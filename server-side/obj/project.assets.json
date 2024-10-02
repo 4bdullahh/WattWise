@@ -1314,11 +1314,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vincent.Boardman\\Documents\\client-server\\server-side\\server-side.csproj",
+      "projectUniqueName": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\server-side.csproj",
       "projectName": "server-side",
-      "projectPath": "C:\\Users\\Vincent.Boardman\\Documents\\client-server\\server-side\\server-side.csproj",
+      "projectPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\server-side.csproj",
       "packagesPath": "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vincent.Boardman\\Documents\\client-server\\server-side\\obj\\",
+      "outputPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

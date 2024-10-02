@@ -1,19 +1,17 @@
 using server_side.Repository.Interface;
-
 using Newtonsoft.Json;
+
 
 namespace server_side.Repository
 {
     public class UserMessageRepo : IUserMessageRepo
     {
-        private readonly List<UserData> userDatabase;
         private List<UserData> _users;
         public UserMessageRepo()
         {
-            userDatabase = new List<UserData>();
             LoadUserData();
         }
-        
+
         private void LoadUserData()
         {
             // Path to your JSON file
@@ -38,8 +36,7 @@ namespace server_side.Repository
 
         public UserData AddUserData(UserData userData)
         {
-            var store = ListToJson(userData);
-            // userDatabase.Add(userData);
+            ListToJson(userData);
             return userData;
         }
 
@@ -49,8 +46,9 @@ namespace server_side.Repository
             var existingMessage = GetById(userData.UserID);
             if (existingMessage != null)
             {
-                userDatabase.Remove(existingMessage);
-                userDatabase.Add(userData);
+
+                _users.Remove(existingMessage);
+                _users.Add(userData);
                 return userData;
             }
             else
@@ -58,6 +56,8 @@ namespace server_side.Repository
                 return userData;
             }
         }
+
+
 
 
         //WRITE SAVE TO FILE METHOD USE 
