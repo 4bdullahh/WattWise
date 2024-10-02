@@ -1,8 +1,7 @@
-using NetMQ;
-using Microsoft.Extensions.DependencyInjection;
-using server_side.Service.Interface;
+﻿using Microsoft.Extensions.DependencyInjection;
+using server_side.Services.Interface;
 using server_side.Repository.Interface;
-using server_side.Service;
+using server_side.Services;
 using server_side.Repository;
 
 namespace server_side
