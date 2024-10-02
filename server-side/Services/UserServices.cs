@@ -17,36 +17,54 @@ namespace server_side.Services
 
         public void ReceiveMessageServices()
         {
-            using (var server = new ResponseSocket("@tcp://*:5555"))
+            using (var server = new SubscriberSocket())
             {
-
+                server.Options.ReceiveHighWatermark = 10;
+                server.Connect("tcp://localhost:5555");
+                server.Subscribe("");
                 while (true)
                 {
-                    var message = server.ReceiveFrameString();
-                    // Acknowledge Recieved Message
-                    Console.WriteLine($"Send Recieve {message}");
+                    var topic = server.ReceiveFrameString();
 
-                    UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
 
-                    var response = HandleMessage(userJson);
+                    switch (topic)
+                    {
+                        case "getId":
+                            {
+                                UserData userJson = JsonConvert.DeserializeObject<UserData>(topic);
+                                var response = getUserId(userJson.UserID);
+                                Console.WriteLine($"Recieved: {topic}");
+
+                            }
+                            break;
+
+                        case "addUser":
+                            {
+                                UserData userJson = JsonConvert.DeserializeObject<UserData>(topic);
+                                var response = addUserServices(userJson);
+                                Console.WriteLine($"Recieved: {topic}");
+
+                            }
+                            break;
+                    }
+
 
                     var jsonResponse = JsonConvert.SerializeObject(response);
-
                     server.SendFrame(jsonResponse);
+                    Console.WriteLine($"Sending: {jsonResponse}");
+
                 }
             }
-
         }
 
-        private UserResponse HandleMessage(UserData userJson)
+        private UserResponse getUserId(int userId)
         {
 
-            int userId = userJson.UserID;
             var userData = _userRepo.GetById(userId);
 
             if (userData == null)
             {
-                return new UserResponse { UserID = 0, UserEmail = "User not found" };
+                return new UserResponse { UserID = 0, Message = "User could not be found" };
             }
 
             return new UserResponse
@@ -57,5 +75,21 @@ namespace server_side.Services
             };
         }
 
+        private UserResponse addUserServices(UserData userData)
+        {
+            var addUser = _userRepo.AddUserData(userData);
+            if (addUser == null)
+            {
+                return new UserResponse { Message = "User Could not be added" };
+            }
+
+            return new UserResponse
+            {
+                UserEmail = addUser.UserEmail,
+                firstName = addUser.firstName,
+                lastName = addUser.lastName,
+                Message = "User Found"
+            };
+        }
     }
 }
