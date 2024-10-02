@@ -9,11 +9,11 @@ namespace server_side.Repository
     public class UserMessageRepo : IUserMessageRepo
     {
         private readonly List<UserData> userDatabase;
-        private List<UserData> _users;
+        private List<UserData> usersList;
         public UserMessageRepo()
         {
             userDatabase = new List<UserData>();
-            // LoadUserData();
+            LoadUserData();
         }
         
         private void LoadUserData()
@@ -25,25 +25,24 @@ namespace server_side.Repository
             {
                 string jsonData = File.ReadAllText(jsonFilePath);
                 JArray _users = JArray.Parse(jsonData);
-                List<UserData> usersList = JsonConvert.DeserializeObject<List<UserData>>(_users.ToString());
+                usersList = JsonConvert.DeserializeObject<List<UserData>>(_users.ToString());
             }
             else
             {
-                _users = new List<UserData>();
+                usersList = new List<UserData>();
             }
         }
 
         public UserData GetById(int UserID)
         {
-            return _users.FirstOrDefault(user => user.UserID == UserID);
+            return usersList.FirstOrDefault(user => user.UserID == UserID);
         }
 
 
-        public UserData AddUserData(UserData userData)
+        public bool AddUserData(UserData userData)
         {
-            var store = ListToJson(userData);
-            // userDatabase.Add(userData);
-            return userData;
+            var result = ListToJson(userData);
+            return result;
         }
 
         public UserData UpdateData(UserData userData)
@@ -66,24 +65,30 @@ namespace server_side.Repository
         //WRITE SAVE TO FILE METHOD USE 
         public bool ListToJson(UserData users)
         {
-            string filePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
-            string existingJson = File.ReadAllText(filePath);
-            JArray jsonArray = JArray.Parse(existingJson);
-            JObject newJsonObject = new JObject
-            {
-                { "Address", "5678 Oak Street, Metropolis" },
-                { "UserID", 102 },
-                { "firstName", "Jane" },
-                { "lastName", "Smith" },
-                { "UserEmail", "jane.smith@example.com" },
-                { "Passcode", "password456" },
-                { "SmartDevice", new JObject { { "SmartMeterID", 502 }, { "SmartMeterData", "27.3 kWh" } } }
-            };
+            try{
+                string filePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
+                string existingJson = File.ReadAllText(filePath);
+                JArray jsonArray = JArray.Parse(existingJson);
+                JObject newJsonObject = new JObject
+                {
+                    { "Address", "5678 Oak Street, Metropolis" },
+                    { "UserID", 102 },
+                    { "firstName", "Jane" },
+                    { "lastName", "Smith" },
+                    { "UserEmail", "jane.smith@example.com" },
+                    { "Passcode", "password456" },
+                    { "SmartDevice", new JObject { { "SmartMeterID", 502 }, { "SmartMeterData", "27.3 kWh" } } }
+                };
 
-            jsonArray.Add(newJsonObject);
-            string updatedJson = JsonConvert.SerializeObject(jsonArray, Formatting.Indented);
-            File.WriteAllText(filePath, updatedJson);
-            return true;
+                jsonArray.Add(newJsonObject);
+                string updatedJson = JsonConvert.SerializeObject(jsonArray, Formatting.Indented);
+                File.WriteAllText(filePath, updatedJson);
+                return true;
+            }
+            catch (Exception e){
+                Console.WriteLine("Error Writing to File: " + e.ToString());
+                return false;
+            } 
         }
 
         public bool TestListToJson()

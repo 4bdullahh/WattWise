@@ -44,7 +44,7 @@ namespace server_side.Services
         {
 
             int userId = userJson.UserID;
-            var userData = _userRepo.GetById(userId);
+            var userData = _userRepo.GetById(103);
 
             if (userData == null)
             {
@@ -57,6 +57,12 @@ namespace server_side.Services
                 lastName = userData.lastName,
                 UserEmail = userData.UserEmail
             };
+        }
+
+        public bool AddUser(UserData userData)
+        {
+            var result = _userRepo.AddUserData(userData);
+            return result;
         }
 
     }

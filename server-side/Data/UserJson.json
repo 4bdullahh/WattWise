@@ -27,6 +27,390 @@
   },
   {
     "Address": "5678 Oak Street, Metropolis",
+    "UserID": 103,
+    "firstName": "SAMMEEELELLELELE",
+    "lastName": "GGGGGRRRRRRRRRR",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
     "UserID": 102,
     "firstName": "Jane",
     "lastName": "Smith",
