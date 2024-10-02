@@ -35,6 +35,10 @@ namespace server_side.Services
                                 var response = getUserId(userJson.UserID);
                                 Console.WriteLine($"Recieved: {topic}");
 
+                                var jsonResponse = JsonConvert.SerializeObject(response);
+                                server.SendFrame(jsonResponse);
+                                Console.WriteLine($"Sending: {jsonResponse}");
+
                             }
                             break;
 
@@ -44,18 +48,20 @@ namespace server_side.Services
                                 var response = addUserServices(userJson);
                                 Console.WriteLine($"Recieved: {topic}");
 
+                                var jsonResponse = JsonConvert.SerializeObject(response);
+                                server.SendFrame(jsonResponse);
+                                Console.WriteLine($"Sending: {jsonResponse}");
+
                             }
                             break;
                     }
 
-
-                    var jsonResponse = JsonConvert.SerializeObject(response);
-                    server.SendFrame(jsonResponse);
-                    Console.WriteLine($"Sending: {jsonResponse}");
-
                 }
+
             }
         }
+
+
 
         private UserResponse getUserId(int userId)
         {
