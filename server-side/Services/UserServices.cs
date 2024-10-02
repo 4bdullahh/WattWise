@@ -27,6 +27,8 @@ namespace server_side.Services
                     Console.WriteLine($"Send Recieve {message}");
 
                     UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
+                    
+                    _userRepo.TestListToJson();
 
                     var response = HandleMessage(userJson);
 
