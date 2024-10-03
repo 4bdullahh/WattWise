@@ -41,61 +41,61 @@ namespace server_side.Services
         private UserResponse HandleMessage(UserData userJson)
         {
             var topic = userJson.Topic;
+
             switch (topic)
             {
                 case "getId":
-                {
-                    int userId = userJson.UserID;
-                    var userData = _userRepo.GetById(userId);
-
-                    if (userData == null)
                     {
-                        return new UserResponse { Successs = false };
+                        int userId = userJson.UserID;
+                        var userData = _userRepo.GetById(userId);
+
+                        if (userData == null)
+                        {
+                            return new UserResponse { Successs = false };
+                        }
+
+                        return new UserResponse
+                        {
+                            Successs = true,
+                            UserID = userData.UserID,
+                            firstName = userData.firstName,
+                            lastName = userData.lastName,
+                            UserEmail = userData.UserEmail,
+                            Address = userData.Address,
+                            Topic = userData.Topic,
+                        };
                     }
 
-                    return new UserResponse
-                    {
-                        Successs = true,
-                        UserID = userData.UserID,
-                        firstName = userData.firstName,
-                        lastName = userData.lastName,
-                        UserEmail = userData.UserEmail,
-                        Address = userData.Address,
-                        Topic = userData.Topic,
-                    };
-                }
-                break;
                 case "addUser":
-                {
-                    var result = _userRepo.AddUserData(userJson);
-                    if (result){
+                    {
+                        var userData = _userRepo.AddUserData(userJson);
+                        if (userData)
+                        {
+                            return new UserResponse
+                            {
+                                Successs = true,
+                                Message = "User Added"
+                            };
+                        }
+                        else
+                        {
+                            return new UserResponse
+                            {
+                                Successs = false,
+                                Message = "User could not be added"
+                            };
+                        }
+
+                    }
+                default:{
                         return new UserResponse
                         {
-                            Successs = true
+                            Successs = false,
+                            Message = ""
                         };
                     }
-                    else{
-                        return new UserResponse
-                        {
-                            Successs = false
-                        };
-                    }
-                    
-                }
-                break;
-            }
+            }   
             
-            return new UserResponse
-            {
-                UserID = userJson.UserID,
-                firstName = userJson.firstName,
-                lastName = userJson.lastName,
-                UserEmail = userJson.UserEmail,
-                Address = userJson.Address,
-                Topic = userJson.Topic,
-                Successs = false
-                
-            };
         }
 
         public bool AddUser(UserData userData)

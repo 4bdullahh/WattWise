@@ -1,25 +1,20 @@
 using server_side.Repository.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace server_side.Repository
 {
     public class UserMessageRepo : IUserMessageRepo
     {
-        private readonly List<UserData> userDatabase;
         private List<UserData> usersList;
         public UserMessageRepo()
         {
-            userDatabase = new List<UserData>();
             LoadUserData();
         }
-        
+
         private void LoadUserData()
         {
-            // Path to your JSON file
-            var jsonFilePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
+            var jsonFilePath = "../Data/UserJson.json";
 
             if (File.Exists(jsonFilePath))
             {
@@ -29,7 +24,8 @@ namespace server_side.Repository
             }
             else
             {
-                usersList = new List<UserData>();
+                File.Create(jsonFilePath);
+                LoadUserData();
             }
         }
 
@@ -41,75 +37,76 @@ namespace server_side.Repository
 
         public bool AddUserData(UserData userData)
         {
-            var result = ListToJson(userData);
+            var users = new UserData
+            {
+                UserID = userData.UserID,
+                firstName = userData.firstName,
+                lastName = userData.lastName,
+                Address = userData.Address,
+                UserEmail = userData.UserEmail,
+                Passcode = userData.Passcode,
+                SmartDevice = new SmartDevice
+                {
+                    SmartMeterID = userData.SmartMeterID,
+                    SmartMeterData = userData.SmartMeterData
+                }
+            };
+            var result = ListToJson(users);
             return result;
         }
 
-        public UserData UpdateData(UserData userData)
-        {
+        // public bool UpdateData(UserData userData)
+        // {
 
-            var existingMessage = GetById(userData.UserID);
-            if (existingMessage != null)
-            {
-                userDatabase.Remove(existingMessage);
-                userDatabase.Add(userData);
-                return userData;
-            }
-            else
-            {
-                return userData;
-            }
-        }
+        //     var existingMessage = GetById(userData.UserID);
+        //     if (existingMessage != null)
+        //     {
+
+        //         ListToJson(userData);
+        //         return true;
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+        // }
 
 
-        //WRITE SAVE TO FILE METHOD USE 
         public bool ListToJson(UserData users)
         {
-            try{
+            try
+            {
+
                 string filePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
                 string existingJson = File.ReadAllText(filePath);
-                JArray jsonArray = JArray.Parse(existingJson);
-                JObject newJsonObject = new JObject
+                JArray userInfo = JArray.Parse(existingJson);
+
+                JObject userDataObject = new JObject
                 {
-                    { "Address", "5678 Oak Street, Metropolis" },
-                    { "UserID", 102 },
-                    { "firstName", "Jane" },
-                    { "lastName", "Smith" },
-                    { "UserEmail", "jane.smith@example.com" },
-                    { "Passcode", "password456" },
-                    { "SmartDevice", new JObject { { "SmartMeterID", 502 }, { "SmartMeterData", "27.3 kWh" } } }
+                    { "Address", users.Address},
+                    { "UserID", users.UserID},
+                    { "firstName", users.firstName},
+                    { "lastName", users.lastName},
+                    { "UserEmail", users.UserEmail},
+                    { "Passcode", users.Passcode},
+                    { "SmartDevice", new JObject {
+                            { "SmartMeterID", users.SmartMeterID},
+                            { "SmartMeterData", users.SmartMeterData }
+                         }
+                    }
                 };
 
-                jsonArray.Add(newJsonObject);
-                string updatedJson = JsonConvert.SerializeObject(jsonArray, Formatting.Indented);
+                userInfo.Add(userDataObject);
+                string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
                 File.WriteAllText(filePath, updatedJson);
                 return true;
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 Console.WriteLine("Error Writing to File: " + e.ToString());
                 return false;
-            } 
+            }
         }
 
-        public bool TestListToJson()
-        {
-            // Step 3: Create test data
-            UserData testUsers = new UserData
-            {
-                UserID = 101,
-                firstName = "John",
-                lastName = "Doe",
-                Address = "1234 Elm Street, Springfield",
-                UserEmail = "john.doe@example.com",
-                Passcode = "password123",
-                SmartDevice = new SmartDevice
-                {
-                    SmartMeterID = 501,
-                    SmartMeterData = "23.5 kWh"
-                }
-            };
-            ListToJson(testUsers);
-            return true;
-        }
     }
 }
