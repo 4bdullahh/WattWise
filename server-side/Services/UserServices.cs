@@ -27,8 +27,6 @@ namespace server_side.Services
                     Console.WriteLine($"Send Recieve {message}");
 
                     UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
-                    
-                    _userRepo.TestListToJson();
 
                     var response = HandleMessage(userJson);
 
@@ -42,20 +40,61 @@ namespace server_side.Services
 
         private UserResponse HandleMessage(UserData userJson)
         {
-
-            int userId = userJson.UserID;
-            var userData = _userRepo.GetById(103);
-
-            if (userData == null)
+            var topic = userJson.Topic;
+            switch (topic)
             {
-                return new UserResponse { UserID = 0, UserEmail = "User not found" };
-            }
+                case "getId":
+                {
+                    int userId = userJson.UserID;
+                    var userData = _userRepo.GetById(userId);
 
+                    if (userData == null)
+                    {
+                        return new UserResponse { Successs = false };
+                    }
+
+                    return new UserResponse
+                    {
+                        Successs = true,
+                        UserID = userData.UserID,
+                        firstName = userData.firstName,
+                        lastName = userData.lastName,
+                        UserEmail = userData.UserEmail,
+                        Address = userData.Address,
+                        Topic = userData.Topic,
+                    };
+                }
+                break;
+                case "addUser":
+                {
+                    var result = _userRepo.AddUserData(userJson);
+                    if (result){
+                        return new UserResponse
+                        {
+                            Successs = true
+                        };
+                    }
+                    else{
+                        return new UserResponse
+                        {
+                            Successs = false
+                        };
+                    }
+                    
+                }
+                break;
+            }
+            
             return new UserResponse
             {
-                firstName = userData.firstName,
-                lastName = userData.lastName,
-                UserEmail = userData.UserEmail
+                UserID = userJson.UserID,
+                firstName = userJson.firstName,
+                lastName = userJson.lastName,
+                UserEmail = userJson.UserEmail,
+                Address = userJson.Address,
+                Topic = userJson.Topic,
+                Successs = false
+                
             };
         }
 

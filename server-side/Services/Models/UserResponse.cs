@@ -4,5 +4,8 @@ public class UserResponse{
     public string lastName { get; set; }
     public string Address;
     public string UserEmail { get; set; }
+    public string? Topic { get; set; }
+
+    public bool Successs {get; set;} = false;
 
 }
