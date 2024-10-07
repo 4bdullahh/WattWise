@@ -14,17 +14,20 @@ namespace client_side
                 client.Connect("tcp://localhost:5555");
                 for (int i = 0; i < 10; i++)
                 {
-                    var userData = new UserModel { UserID = 1, UserEmail = "fred@hotmail.com", Topic = "getId" };
+                    var userData = new UserModel { UserID = 101, Topic = "getId" };
                     var jsonRequest = JsonConvert.SerializeObject(userData);
-                    var topic = userData.Topic;
+                    
+                    // We might use this later for Electron
+                    //var topic = userData.Topic;
                     
                     client.SendFrame(jsonRequest);
-                    Console.WriteLine("Sending UserData: ", jsonRequest);
+                    Console.WriteLine($"Sending UserData: {jsonRequest}");
                     Thread.Sleep(500);
 
                     var message = client.ReceiveFrameString();
-                    var jsonResponse = JsonConvert.DeserializeObject<UserModel>(message);
-                    Console.WriteLine("Received: ", jsonResponse);
+                    // We might need this for Electron
+                    // var jsonResponse = JsonConvert.DeserializeObject<UserModel>(message);
+                    Console.WriteLine($"Received: {message}");
                 }
             }
         }

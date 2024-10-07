@@ -14,9 +14,22 @@ namespace server_side.Repository
 
         private void LoadUserData()
         {
-            var getDirectory = Environment.CurrentDirectory;
-            var jsonFilePath = getDirectory + "\\server-side\\Data\\UserJson.json";
+            string solutionFolderName = "WattWise";
+            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+            
+            while (currentDirectory != null && currentDirectory.Name != solutionFolderName)
+            {
+                currentDirectory = currentDirectory.Parent;
+            }
 
+            if (currentDirectory == null)
+            {
+                throw new DirectoryNotFoundException("Could not find the current directory");
+            }
+            
+            string jsonFilePath = Path.Combine(currentDirectory.FullName, "server-side", "Data", "UserJson.json");
+
+            
             if (File.Exists(jsonFilePath))
             {
                 string jsonData = File.ReadAllText(jsonFilePath);
@@ -25,7 +38,7 @@ namespace server_side.Repository
             }
             else
             {
-                File.Create(jsonFilePath);
+                File.Create(jsonFilePath).Close();
                 LoadUserData();
             }
         }
