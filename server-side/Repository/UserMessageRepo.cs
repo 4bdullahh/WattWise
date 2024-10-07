@@ -14,7 +14,8 @@ namespace server_side.Repository
 
         private void LoadUserData()
         {
-            var jsonFilePath = "../Data/UserJson.json";
+            var getDirectory = Environment.CurrentDirectory;
+            var jsonFilePath = getDirectory + "\\server-side\\Data\\UserJson.json";
 
             if (File.Exists(jsonFilePath))
             {
@@ -76,8 +77,8 @@ namespace server_side.Repository
         {
             try
             {
-
-                string filePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
+                var getDirectory = Environment.CurrentDirectory;
+                var filePath = getDirectory + "\\server-side\\Data\\UserJson.json";
                 string existingJson = File.ReadAllText(filePath);
                 JArray userInfo = JArray.Parse(existingJson);
 
