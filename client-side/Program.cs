@@ -2,6 +2,7 @@ using System;
 using Newtonsoft.Json;
 using NetMQ;
 using NetMQ.Sockets;
+using System.Text;
 
 namespace client_side
 {
@@ -9,26 +10,54 @@ namespace client_side
     {
         static void Main(string[] args)
         {
-            using (var client = new RequestSocket())
+            var clientSocketPerThread = new ThreadLocal<DealerSocket>();
+            using (var poller = new NetMQPoller())
             {
-                client.Connect("tcp://localhost:5555");
-                for (int i = 0; i < 10; i++)
-                {
-                    var userData = new UserModel { UserID = 101, Topic = "getId" };
-                    var jsonRequest = JsonConvert.SerializeObject(userData);
-                    
-                    // We might use this later for Electron
-                    //var topic = userData.Topic;
-                    
-                    client.SendFrame(jsonRequest);
-                    Console.WriteLine($"Sending UserData: {jsonRequest}");
-                    Thread.Sleep(500);
 
-                    var message = client.ReceiveFrameString();
-                    // We might need this for Electron
-                    // var jsonResponse = JsonConvert.DeserializeObject<UserModel>(message);
-                    Console.WriteLine($"Received: {message}");
+                for (int i = 0; i < 3; i++)
+                {
+                    Task.Factory.StartNew(state =>
+                    {
+                        DealerSocket client = null;
+                        if (!clientSocketPerThread.IsValueCreated)
+                        {
+                            client = new DealerSocket();
+                            client.Options.Identity =
+                                Encoding.Unicode.GetBytes(state.ToString());
+                            client.Connect("tcp://localhost:5555");
+
+                            client.ReceiveReady += (s, e) =>
+                            {
+                                var response = e.Socket.ReceiveFrameStringAsync(); 
+                                Console.WriteLine($"Response from server: {response}");
+
+                            };
+
+                            clientSocketPerThread.Value = client;
+                            poller.Add(client);
+                            
+                        }
+                        else
+                        {
+                            client = clientSocketPerThread.Value;
+                        }
+                        while (true)
+                        {
+                            var messageToServer = new NetMQMessage();
+                            
+                            messageToServer.Append(state.ToString());
+                            messageToServer.AppendEmptyFrame();
+
+                            var userData = new UserModel { UserID = 101, Topic = "getId" };
+                            var jsonRequest = JsonConvert.SerializeObject(userData);
+
+                            messageToServer.Append(jsonRequest);
+                            client.SendMultipartMessage(messageToServer);
+                            Thread.Sleep(500);
+                        }
+                    }, TaskCreationOptions.LongRunning);
                 }
+                poller.RunAsync();
             }
         }
     }
