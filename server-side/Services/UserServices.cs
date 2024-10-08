@@ -4,6 +4,7 @@ using NetMQ.Sockets;
 using Newtonsoft.Json;
 using server_side.Services.Interface;
 using server_side.Repository.Interface;
+using System.ServiceModel.Channels;
 
 namespace server_side.Services
 {
@@ -17,22 +18,33 @@ namespace server_side.Services
 
         public void ReceiveMessageServices()
         {
-            using (var server = new ResponseSocket("@tcp://*:5555"))
+            using (var server = new RouterSocket("@tcp://*:5555"))
+            using (var poller = new NetMQPoller())
             {
-
+                poller.RunAsync();
+                
                 while (true)
                 {
-                    var message = server.ReceiveFrameString();
-                    // Acknowledge Recieved Message
-                    Console.WriteLine($"Send Recieve {message}");
+                    var recievedMessage = server.ReceiveFrameString();
 
-                    UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
+                    Console.WriteLine($"Send Recieve {recievedMessage}");
+  
+                    var clientAddress = recievedMessage[0];
+                    var clientMessage = recievedMessage[2].ToString();
+
+                    var messageToClient = new NetMQMessage();
+                    messageToClient.Append(clientAddress);
+                    messageToClient.AppendEmptyFrame();
+
+                    UserData userJson = JsonConvert.DeserializeObject<UserData>(clientMessage);
 
                     var response = HandleMessage(userJson);
 
-                    var jsonResponse = JsonConvert.SerializeObject(response);
+                    var jsonResponse = JsonConvert.SerializeObject(response);     
 
-                    server.SendFrame(jsonResponse);
+                    messageToClient.Append(jsonResponse);
+                    server.SendMultipartMessage(messageToClient);
+                    
                 }
             }
 
