@@ -1,9 +1,6 @@
-
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using server_side.Repository;
 using server_side.Services.Interface;
 using server_side.Repository.Interface;
 
@@ -19,50 +16,34 @@ namespace server_side.Services
 
         public void ReceiveMessageServices()
         {
+           
             using (var server = new ResponseSocket("@tcp://*:5555"))
             {
                 while (true)
                 {
-                    var message = server.ReceiveFrameString();
-                    Console.WriteLine($"Received message: {message}");
+                    var getMessage = server.ReceiveFrameString();
+                    Console.WriteLine($"Received message: {getMessage}");
+                    
+                    var message = getMessage.Split(':');
+                    byte[] key = Convert.FromBase64String(message[0]);
+                    byte[] iv = Convert.FromBase64String(message[1]);
+                    string receivedHash = message[2];
+                    string receivedUser = message[3];
+                    
+                    byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
+                    string decryptedMessage = Cryptography.Cryptography.Decrypt(encryptedMessage , key, iv);
+                    
+                    string userHash = Cryptography.Cryptography.GenerateHash(decryptedMessage);
 
-                    JObject receivedData = JObject.Parse(message);
-
-                    string receivedTopic = receivedData["Topic"].ToString();
-                    int receivedUserID = (int)receivedData["UserID"];
-                    string receivedHash = receivedData["Hash"].ToString();
-
-                    if (receivedTopic != "getId")
+                    if (userHash != receivedHash)
                     {
-                        var userJson = JsonConvert.DeserializeObject<UserData>(message);
-                        var response = HandleMessage(userJson);
-                        server.SendFrame(JsonConvert.SerializeObject(response));
+                        Console.WriteLine("Hash doesn't match");
                     }
                     else
                     {
-                        var storedUser = _userRepo.GetById(receivedUserID);
-
-                        if (storedUser == null)
-                        {
-                            server.SendFrame(JsonConvert.SerializeObject(new UserResponse
-                                { Successs = false, Message = "User not found" }));
-                            continue;
-                        }
-
-                        string storedHash = "NothingHere";
-
-                        if (storedHash == receivedHash)
-                        {
-                            var userJson = JsonConvert.DeserializeObject<UserData>(message);
-                            var response = HandleMessage(userJson);
-                            server.SendFrame(JsonConvert.SerializeObject(response));
-                        }
-                        else
-                        {
-                            Console.WriteLine("Hash mismatch!");
-                            server.SendFrame(JsonConvert.SerializeObject(new UserResponse
-                                { Successs = false, Message = "Hash mismatch, data might be tampered" }));
-                        }
+                        var userJson = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
+                        var response = HandleMessage(userJson);
+                        server.SendFrame(JsonConvert.SerializeObject(response));
                     }
                 }
             }
