@@ -4,7 +4,7 @@ using NetMQ.Sockets;
 using Newtonsoft.Json;
 using server_side.Services.Interface;
 using server_side.Repository.Interface;
-using System.ServiceModel.Channels;
+using System.Text;
 
 namespace server_side.Services
 {
@@ -21,30 +21,28 @@ namespace server_side.Services
             using (var server = new RouterSocket("@tcp://*:5555"))
             using (var poller = new NetMQPoller())
             {
-                poller.RunAsync();
-                
+
                 while (true)
                 {
-                    var recievedMessage = server.ReceiveFrameString();
+                    var recievedMessage = server.ReceiveMultipartMessage();
 
-                    Console.WriteLine($"Send Recieve {recievedMessage}");
-  
+                    //Console.WriteLine($"Send Recieve {recievedMessage}");
                     var clientAddress = recievedMessage[0];
-                    var clientMessage = recievedMessage[2].ToString();
+                    var clientMessage = Encoding.UTF8.GetString(recievedMessage[3].Buffer);
 
                     var messageToClient = new NetMQMessage();
-                    messageToClient.Append(clientAddress);
+                    messageToClient.Append(clientAddress.ToString());
                     messageToClient.AppendEmptyFrame();
 
                     UserData userJson = JsonConvert.DeserializeObject<UserData>(clientMessage);
 
                     var response = HandleMessage(userJson);
 
-                    var jsonResponse = JsonConvert.SerializeObject(response);     
+                    var jsonResponse = JsonConvert.SerializeObject(response);
 
                     messageToClient.Append(jsonResponse);
                     server.SendMultipartMessage(messageToClient);
-                    
+
                 }
             }
 
@@ -99,15 +97,16 @@ namespace server_side.Services
                         }
 
                     }
-                default:{
+                default:
+                    {
                         return new UserResponse
                         {
                             Successs = false,
                             Message = ""
                         };
                     }
-            }   
-            
+            }
+
         }
 
         public bool AddUser(UserData userData)

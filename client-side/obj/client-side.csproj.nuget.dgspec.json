@@ -1,28 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vinny\\Documents\\WattWise\\client-side\\client-side.csproj": {}
+    "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vinny\\Documents\\WattWise\\client-side\\client-side.csproj": {
+    "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vinny\\Documents\\WattWise\\client-side\\client-side.csproj",
+        "projectUniqueName": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj",
         "projectName": "client-side",
-        "projectPath": "C:\\Users\\vinny\\Documents\\WattWise\\client-side\\client-side.csproj",
-        "packagesPath": "C:\\Users\\vinny\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vinny\\Documents\\WattWise\\client-side\\obj\\",
+        "projectPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj",
+        "packagesPath": "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\vinny\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Vincent.Boardman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -71,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

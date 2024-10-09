@@ -50,6 +50,15 @@ C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\obj\De
 C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\obj\Debug\net8.0\server-side.pdb
 C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\obj\Debug\net8.0\server-side.genruntimeconfig.cache
 C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\obj\Debug\net8.0\ref\server-side.dll
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.csproj.AssemblyReference.cache
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.AssemblyInfoInputs.cache
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.AssemblyInfo.cs
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.csproj.CoreCompileInputs.cache
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.sourcelink.json
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.dll
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\refint\server-side.dll
+C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.pdb
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\server-side.exe
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\server-side.deps.json
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\server-side.runtimeconfig.json
@@ -102,12 +111,3 @@ C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\refint
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.pdb
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.genruntimeconfig.cache
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\ref\server-side.dll
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.csproj.AssemblyReference.cache
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.AssemblyInfoInputs.cache
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.AssemblyInfo.cs
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.csproj.CoreCompileInputs.cache
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.sourcelink.json
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.dll
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\refint\server-side.dll
-C:\Users\vinny\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.pdb
