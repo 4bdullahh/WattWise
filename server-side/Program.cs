@@ -13,6 +13,8 @@ namespace server_side
             var services = new ServiceCollection();
             services.AddScoped<IUserServices, UserService>();
             services.AddScoped<IUserMessageRepo, UserMessageRepo>();
+            services.AddScoped<IHashHandle, HashHandle>();
+
             services.AddSingleton<MessageController>();
 
             var serviceProvider = services.BuildServiceProvider();

@@ -2,6 +2,8 @@
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using server_side.Repository;
 using server_side.Services.Interface;
 using server_side.Repository.Interface;
 
@@ -19,23 +21,51 @@ namespace server_side.Services
         {
             using (var server = new ResponseSocket("@tcp://*:5555"))
             {
-
                 while (true)
                 {
                     var message = server.ReceiveFrameString();
-                    // Acknowledge Recieved Message
-                    Console.WriteLine($"Send Recieve {message}");
+                    Console.WriteLine($"Received message: {message}");
 
-                    UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
+                    JObject receivedData = JObject.Parse(message);
 
-                    var response = HandleMessage(userJson);
+                    string receivedTopic = receivedData["Topic"].ToString();
+                    int receivedUserID = (int)receivedData["UserID"];
+                    string receivedHash = receivedData["Hash"].ToString();
 
-                    var jsonResponse = JsonConvert.SerializeObject(response);
+                    if (receivedTopic != "getId")
+                    {
+                        var userJson = JsonConvert.DeserializeObject<UserData>(message);
+                        var response = HandleMessage(userJson);
+                        server.SendFrame(JsonConvert.SerializeObject(response));
+                    }
+                    else
+                    {
+                        var storedUser = _userRepo.GetById(receivedUserID);
 
-                    server.SendFrame(jsonResponse);
+                        if (storedUser == null)
+                        {
+                            server.SendFrame(JsonConvert.SerializeObject(new UserResponse
+                                { Successs = false, Message = "User not found" }));
+                            continue;
+                        }
+
+                        string storedHash = "NothingHere";
+
+                        if (storedHash == receivedHash)
+                        {
+                            var userJson = JsonConvert.DeserializeObject<UserData>(message);
+                            var response = HandleMessage(userJson);
+                            server.SendFrame(JsonConvert.SerializeObject(response));
+                        }
+                        else
+                        {
+                            Console.WriteLine("Hash mismatch!");
+                            server.SendFrame(JsonConvert.SerializeObject(new UserResponse
+                                { Successs = false, Message = "Hash mismatch, data might be tampered" }));
+                        }
+                    }
                 }
             }
-
         }
 
         private UserResponse HandleMessage(UserData userJson)
@@ -63,6 +93,7 @@ namespace server_side.Services
                             UserEmail = userData.UserEmail,
                             Address = userData.Address,
                             Topic = userData.Topic,
+                            Hash = userData.Hash,
                         };
                     }
 
@@ -103,6 +134,5 @@ namespace server_side.Services
             var result = _userRepo.AddUserData(userData);
             return result;
         }
-
     }
 }
