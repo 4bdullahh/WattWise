@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "PBEwAiQNTxKSZS7auW9agUN/LMKayp7EOUOTqDcwEniIcLSunJdoBwTAH1NvaWSNJhhKuDGD5/amuU5JI/JplQ==",
+  "dgSpecHash": "xiuPbmp6ejs/ejJ7WDDXrMTIKeSutrwMTGMjKST8rrFI8xK7W9fCeUNxqIGoOAi+/n3Z56zBPCyfWP77CRXyHQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\asyncio\\0.1.69\\asyncio.0.1.69.nupkg.sha512",
     "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\5.0.0\\microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
+    "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.extensions.objectpool\\5.0.10\\microsoft.extensions.objectpool.5.0.10.nupkg.sha512",
     "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
