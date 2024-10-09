@@ -1,4 +1,3 @@
-
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
@@ -11,9 +10,16 @@ namespace server_side.Services
     public class UserService : IUserServices
     {
         private readonly IUserMessageRepo _userRepo;
+
         public UserService(IUserMessageRepo userRepo)
         {
             _userRepo = userRepo;
+        }
+
+        public bool AddUser(UserData userData)
+        {
+            var result = _userRepo.AddUserData(userData);
+            return result;
         }
 
         public void ReceiveMessageServices()
@@ -21,7 +27,6 @@ namespace server_side.Services
             using (var server = new RouterSocket("@tcp://*:5555"))
             using (var poller = new NetMQPoller())
             {
-
                 while (true)
                 {
                     var recievedMessage = server.ReceiveMultipartMessage();
@@ -42,10 +47,8 @@ namespace server_side.Services
 
                     messageToClient.Append(jsonResponse);
                     server.SendMultipartMessage(messageToClient);
-
                 }
             }
-
         }
 
         private UserResponse HandleMessage(UserData userJson)
@@ -95,7 +98,6 @@ namespace server_side.Services
                                 Message = "User could not be added"
                             };
                         }
-
                     }
                 default:
                     {
@@ -106,14 +108,6 @@ namespace server_side.Services
                         };
                     }
             }
-
         }
-
-        public bool AddUser(UserData userData)
-        {
-            var result = _userRepo.AddUserData(userData);
-            return result;
-        }
-
     }
 }

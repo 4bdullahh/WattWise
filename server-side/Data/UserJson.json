@@ -24,5 +24,65 @@
       "SmartMeterID": 502,
       "SmartMeterData": "27.3 kWh"
     }
+  },
+  {
+    "Address": null,
+    "UserID": 200,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "SmartMeterData": null
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 200,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "SmartMeterData": null
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 200,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "SmartMeterData": null
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 200,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "SmartMeterData": null
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 200,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "SmartMeterData": null
+    }
   }
 ]

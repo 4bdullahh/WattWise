@@ -1,19 +1,17 @@
-﻿using Newtonsoft.Json;
-using NetMQ;
+﻿using NetMQ;
 using NetMQ.Sockets;
+using Newtonsoft.Json;
 using System.Text;
-
 
 namespace client_side
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var clientSocketPerThread = new ThreadLocal<DealerSocket>();
             using (var poller = new NetMQPoller())
             {
-
                 Task.Factory.StartNew(state =>
                 {
                     DealerSocket client = null;
@@ -23,17 +21,14 @@ namespace client_side
                         client.Connect("tcp://localhost:5555");
                         client.Options.Identity = Encoding.Unicode.GetBytes(state.ToString());
 
-
                         client.ReceiveReady += (s, e) =>
                         {
                             var response = e.Socket.ReceiveFrameStringAsync();
                             Console.WriteLine($"Response from server: {response}");
-
                         };
 
                         clientSocketPerThread.Value = client;
                         poller.Add(client);
-
                     }
                     else
                     {
@@ -46,16 +41,18 @@ namespace client_side
                         messageToServer.Append(state.ToString());
                         messageToServer.AppendEmptyFrame();
 
-                        var userData = new UserModel { UserID = 200, UserEmail = "fedhf@hotmail", Topic = "getId" };
+                        var userData = new UserModel { UserID = 200, UserEmail = "fedhf@hotmail", Topic = "addUser" };
 
                         switch (userData.Topic)
                         {
                             case "getId":
                                 {
                                     var jsonRequest = JsonConvert.SerializeObject(userData);
+
                                     messageToServer.Append(jsonRequest);
                                 }
                                 break;
+
                             case "addUser":
                                 {
                                     var jsonRequest = JsonConvert.SerializeObject(userData);
@@ -63,7 +60,6 @@ namespace client_side
                                 }
                                 break;
                         }
-
 
                         client.SendMultipartMessage(messageToServer);
 
