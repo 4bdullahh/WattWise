@@ -1,4 +1,3 @@
-
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
@@ -17,25 +16,37 @@ namespace server_side.Services
 
         public void ReceiveMessageServices()
         {
+           
             using (var server = new ResponseSocket("@tcp://*:5555"))
             {
-
                 while (true)
                 {
-                    var message = server.ReceiveFrameString();
-                    // Acknowledge Recieved Message
-                    Console.WriteLine($"Send Recieve {message}");
+                    var getMessage = server.ReceiveFrameString();
+                    Console.WriteLine($"Received message: {getMessage}");
+                    
+                    var message = getMessage.Split(':');
+                    byte[] key = Convert.FromBase64String(message[0]);
+                    byte[] iv = Convert.FromBase64String(message[1]);
+                    string receivedHash = message[2];
+                    string receivedUser = message[3];
+                    
+                    byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
+                    string decryptedMessage = Cryptography.Cryptography.Decrypt(encryptedMessage , key, iv);
+                    
+                    string userHash = Cryptography.Cryptography.GenerateHash(decryptedMessage);
 
-                    UserData userJson = JsonConvert.DeserializeObject<UserData>(message);
-
-                    var response = HandleMessage(userJson);
-
-                    var jsonResponse = JsonConvert.SerializeObject(response);
-
-                    server.SendFrame(jsonResponse);
+                    if (userHash != receivedHash)
+                    {
+                        Console.WriteLine("Hash doesn't match");
+                    }
+                    else
+                    {
+                        var userJson = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
+                        var response = HandleMessage(userJson);
+                        server.SendFrame(JsonConvert.SerializeObject(response));
+                    }
                 }
             }
-
         }
 
         private UserResponse HandleMessage(UserData userJson)
@@ -63,6 +74,7 @@ namespace server_side.Services
                             UserEmail = userData.UserEmail,
                             Address = userData.Address,
                             Topic = userData.Topic,
+                            Hash = userData.Hash,
                         };
                     }
 
@@ -103,6 +115,5 @@ namespace server_side.Services
             var result = _userRepo.AddUserData(userData);
             return result;
         }
-
     }
 }

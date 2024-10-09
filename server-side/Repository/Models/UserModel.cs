@@ -8,6 +8,8 @@ public class UserData : SmartDevice
     public string? Passcode { get; set; }
     public SmartDevice? SmartDevice { get; set; }
     public string? Topic { get; set; }
+    
+    public string? Hash { get; set; }
 
 }
 

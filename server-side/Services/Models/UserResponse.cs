@@ -8,6 +8,7 @@ public class UserResponse
     public string? Topic { get; set; }
 
     public bool Successs { get; set; } = false;
+    public string Hash { get; set; } 
     public string? Message { get; set; }
 
 }
