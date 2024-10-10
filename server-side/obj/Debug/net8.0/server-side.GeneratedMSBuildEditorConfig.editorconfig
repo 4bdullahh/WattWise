@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = server_side
-build_property.ProjectDir = C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\
+build_property.ProjectDir = d:\WattWise\server-side\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

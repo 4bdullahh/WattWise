@@ -1207,19 +1207,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Muhammad.Mamoon\\.nuget\\packages\\": {}
+    "C:\\Users\\premk\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\client-side.csproj",
+      "projectUniqueName": "D:\\WattWise\\client-side\\client-side.csproj",
       "projectName": "client-side",
-      "projectPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\client-side.csproj",
-      "packagesPath": "C:\\Users\\Muhammad.Mamoon\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\obj\\",
+      "projectPath": "D:\\WattWise\\client-side\\client-side.csproj",
+      "packagesPath": "C:\\Users\\premk\\.nuget\\packages\\",
+      "outputPath": "D:\\WattWise\\client-side\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Muhammad.Mamoon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\premk\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1276,7 +1276,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
