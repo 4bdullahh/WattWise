@@ -31,6 +31,6 @@
       "Utilities/*": ["./src/Utilities/"],
     }
   },
-  "include": ["src", "electron"],
+  "include": ["src", "electron", "tailwind.config.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
