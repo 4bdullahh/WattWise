@@ -98,3 +98,10 @@ C:\Users\Vincent.Boardman\Documents\WattWise\client-side\obj\Debug\net8.0\refint
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\obj\Debug\net8.0\client-side.pdb
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\obj\Debug\net8.0\client-side.genruntimeconfig.cache
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\obj\Debug\net8.0\ref\client-side.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.deps.json
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.runtimeconfig.json
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.exe
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.pdb
