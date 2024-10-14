@@ -47,8 +47,37 @@ namespace server_side.Repository
 
         public UserData GetById(int UserID)
         {
+            var user = usersList.FirstOrDefault(user => user.UserID == UserID);
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool UpdateUserData(UserData user)
+        {
+            var existingUser = user;
             
-            return usersList.FirstOrDefault(user => user.UserID == UserID);
+            existingUser.UserID = user.UserID;
+            existingUser.firstName = user.firstName;
+            existingUser.lastName = user.lastName;
+            existingUser.Address = user.Address;
+            existingUser.UserEmail = user.UserEmail;
+            existingUser.Passcode = user.Passcode;
+            existingUser.SmartDevice.SmartMeterID = user.SmartDevice.SmartMeterID;
+            existingUser.SmartDevice.EnergyPerKwH = user.SmartDevice.EnergyPerKwH;
+            existingUser.SmartDevice.CurrentMonthCost = user.SmartDevice.CurrentMonthCost;
+            
+            string serializedUserData = JsonConvert.SerializeObject(existingUser);
+            var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
+            existingUser.Hash = hashedUserdData;
+            var result = ListToJson(existingUser);
+            return result;
         }
         
         public bool AddUserData(UserData userData)
@@ -64,7 +93,8 @@ namespace server_side.Repository
                 SmartDevice = new SmartDevice
                 {
                     SmartMeterID = userData.SmartMeterID,
-                    SmartMeterData = userData.SmartMeterData
+                    EnergyPerKwH = userData.EnergyPerKwH,
+                    CurrentMonthCost = userData.CurrentMonthCost
                 }
             };
             string serializedUserData = JsonConvert.SerializeObject(users);
@@ -74,7 +104,7 @@ namespace server_side.Repository
             return result;
         }
 
-        public bool ListToJson(UserData users)
+        public bool ListToJson(UserData usersData)
         {
             try
             {
@@ -97,23 +127,29 @@ namespace server_side.Repository
               //  var filePath = getDirectory + "\\server-side\\Data\\UserJson.json";
                 string existingJson = File.ReadAllText(jsonFilePath);
                 JArray userInfo = JArray.Parse(existingJson);
-
+                
+                var userToUpdate = userInfo.FirstOrDefault(u => (int)u["UserID"] == usersData.UserID);
+                if (userToUpdate != null)
+                {
+                    userInfo.Remove(userToUpdate);
+                }
                 JObject userDataObject = new JObject
                 {
-                    { "Address", users.Address},
-                    { "UserID", users.UserID},
-                    { "firstName", users.firstName},
-                    { "lastName", users.lastName},
-                    { "UserEmail", users.UserEmail},
-                    { "Passcode", users.Passcode},
-                    {"Hash" , users.Hash},
+                    { "Address", usersData.Address},
+                    { "UserID", usersData.UserID},
+                    { "firstName", usersData.firstName},
+                    { "lastName", usersData.lastName},
+                    { "UserEmail", usersData.UserEmail},
+                    { "Passcode", usersData.Passcode},
+                    {"Hash" , usersData.Hash},
                     { "SmartDevice", new JObject {
-                            { "SmartMeterID", users.SmartMeterID},
-                            { "SmartMeterData", users.SmartMeterData }
+                            { "SmartMeterID", usersData.SmartMeterID},
+                            { "EnergyPerKwH", usersData.EnergyPerKwH },
+                            {"CurrentMonthCost", usersData.CurrentMonthCost}
                          }
                     }
                 };
-                
+
                 userInfo.Add(userDataObject);
                 
                 string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);

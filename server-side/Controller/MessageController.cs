@@ -1,7 +1,7 @@
 
 using server_side.Services.Interface;
 
-namespace server_side
+namespace server_side.Controller
 {
     public class MessageController
     {
