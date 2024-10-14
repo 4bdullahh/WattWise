@@ -25,11 +25,10 @@ namespace client_side
             using (var poller = new NetMQPoller())
             {
                 var maxClients = 20;
-                var minInterval = TimeSpan.FromMilliseconds(15000);
-                var maxInterval = TimeSpan.FromMilliseconds(60000);
+                var minInterval = TimeSpan.FromMilliseconds(3000);
+               // var maxInterval = TimeSpan.FromMilliseconds(60000);
                 
-                // for (int i = 0; i < maxClients; i++)
-                // { 
+          
                     Task.Factory.StartNew(state =>
                     {
                         DealerSocket client = null;
@@ -51,16 +50,19 @@ namespace client_side
                         {
                             client = clientSocketPerThread.Value;
                         }
-                        while (true)
+                        var timer = new NetMQTimer(minInterval);
+                        poller.Add(timer);
+                        
+                  
+                        timer.Elapsed += (sender, e) =>
                         {
-
                             var messageToServer = new NetMQMessage();
                             messageToServer.Append(state.ToString()); //0
                             messageToServer.AppendEmptyFrame(); //1
 
                             var userData = new UserModel
                             {
-                                UserID = 106, 
+                                UserID = 204, 
                                 UserEmail = "fedhf@hotmail", 
                                 Topic = "addUser"
                                 // SmartMeterId = 202,
@@ -68,11 +70,8 @@ namespace client_side
                                 // CurrentMonthCost = 20.5
                             };
                             
-                           // var currentInterval = new Random();
-                            
-                            
-                            var timer = new NetMQTimer(minInterval);
-                            
+                            // var currentInterval = new Random();
+                                
                             var jsonRequest = JsonConvert.SerializeObject(userData);
                             string hashJson = Cryptography.GenerateHash(jsonRequest);
                             byte[] encryptedData = Cryptography.Encrypt(jsonRequest, key, iv);
@@ -86,33 +85,19 @@ namespace client_side
                             messageToServer.Append(base64Iv); //3
                             messageToServer.Append(hashJson);  //4
                             messageToServer.Append(base64EncryptedData); //5
-                            timer.Elapsed += (sender, e) =>
-                            {
-                                    client.SendMultipartMessage(messageToServer);
-                            };
-                            
-                            poller.Add(timer);
-                            
-                            PrintFrames("Client Sending", messageToServer);
-                            
-                        }
+                            Console.WriteLine("Waiting for message...");
+                            client.SendMultipartMessage(messageToServer);
+                        };
+                      
                     }, TaskCreationOptions.LongRunning); 
-                //}
+                
                 
                 poller.RunAsync();
-
                 Console.Read();
                 poller.Stop();
             }
         }
 
-        private static void PrintFrames(string operationType, NetMQMessage message)
-        {
-            for (int i = 0; i < message.FrameCount; i++)
-            {
-                Console.WriteLine("{0} Socket : Frame[{1}] = {2}", operationType, i,
-                    message[i].ConvertToString());
-            }
-        }
+ 
     }
 }

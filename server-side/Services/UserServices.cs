@@ -20,7 +20,7 @@ namespace server_side.Services
             using (var server = new RouterSocket("@tcp://*:5555"))
             using (var poller = new NetMQPoller())
             {
-                while (true)
+                server.ReceiveReady += (s, e) =>
                 {
                     var recievedMessage = server.ReceiveMultipartMessage();
                     Console.WriteLine($"Received message: {recievedMessage}");
@@ -51,16 +51,20 @@ namespace server_side.Services
                         messageToClient.Append(clientAddress);
                         messageToClient.AppendEmptyFrame();
                         UserData userJson = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
-                        
+
                         var response = HandleMessage(userJson);
-                        
-                        
+
+
                         var jsonResponse = JsonConvert.SerializeObject(response);
                         messageToClient.Append(jsonResponse);
                         server.SendMultipartMessage(messageToClient);
-                        Console.WriteLine($"Sending to Client: {jsonResponse}");
+                        Console.WriteLine($"Sending to Client: {messageToClient}");
                     }
-                }
+                };
+                poller.Add(server);
+                poller.RunAsync();
+                Console.Read();
+                poller.Stop();
             }
         }
 
