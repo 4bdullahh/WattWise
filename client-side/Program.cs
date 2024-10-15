@@ -25,10 +25,10 @@ namespace client_side
             using (var poller = new NetMQPoller())
             {
                 var maxClients = 20;
-                var minInterval = TimeSpan.FromMilliseconds(3000);
-               // var maxInterval = TimeSpan.FromMilliseconds(60000);
-                
-          
+                int minInterval = 5000;
+                int maxInterval = 20000;
+                var currentInterval = new Random();
+
                     Task.Factory.StartNew(state =>
                     {
                         DealerSocket client = null;
@@ -50,10 +50,10 @@ namespace client_side
                         {
                             client = clientSocketPerThread.Value;
                         }
-                        var timer = new NetMQTimer(minInterval);
+                        int sendTime = currentInterval.Next(minInterval, maxInterval);
+                        var timer = new NetMQTimer(sendTime);
                         poller.Add(timer);
-                        
-                  
+
                         timer.Elapsed += (sender, e) =>
                         {
                             var messageToServer = new NetMQMessage();
@@ -64,13 +64,9 @@ namespace client_side
                             {
                                 UserID = 204, 
                                 UserEmail = "fedhf@hotmail", 
-                                Topic = "addUser"
-                                // SmartMeterId = 202,
-                                // EnergyPerKwH = 24.5,
-                                // CurrentMonthCost = 20.5
+                                Topic = ""
                             };
                             
-                            // var currentInterval = new Random();
                                 
                             var jsonRequest = JsonConvert.SerializeObject(userData);
                             string hashJson = Cryptography.GenerateHash(jsonRequest);
@@ -86,7 +82,13 @@ namespace client_side
                             messageToServer.Append(hashJson);  //4
                             messageToServer.Append(base64EncryptedData); //5
                             Console.WriteLine("Waiting for message...");
+                            Console.WriteLine($"Old time {sendTime}");
                             client.SendMultipartMessage(messageToServer);
+                            
+                            timer.EnableAndReset();
+                            int newTime = currentInterval.Next(minInterval, maxInterval);
+                            timer.Interval = newTime;
+                            Console.WriteLine($"New time {newTime}");
                         };
                       
                     }, TaskCreationOptions.LongRunning); 
