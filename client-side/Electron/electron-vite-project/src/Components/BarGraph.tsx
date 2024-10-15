@@ -1,16 +1,24 @@
+import React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
-export default function BarGraph() {
+interface BarGraphProps {
+  readings: { date: string; reading: number }[];
+}
+
+export default function BarGraph({ readings }: BarGraphProps) {
+  // Extract the dates and readings from the readings array
+  const dates = readings.map((reading) => reading.date);
+  const values = readings.map((reading) => reading.reading);
+
   return (
     <BarChart
       series={[
-        { data: [35, 44, 24, 34] },
-        { data: [51, 6, 49, 30] },
-        { data: [15, 25, 30, 50] },
-        { data: [60, 50, 15, 25] },
+        {
+          data: values,  // Use the readings as data points
+        },
       ]}
       height={290}
-      xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
+      xAxis={[{ data: dates, scaleType: 'band' }]}  // Use the dates as the x-axis labels
       margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
     />
   );
