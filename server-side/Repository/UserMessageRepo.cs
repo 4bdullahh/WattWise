@@ -61,17 +61,17 @@ namespace server_side.Repository
 
         public bool UpdateUserData(UserData user)
         {
-            var existingUser = user;
+            var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
             
-            existingUser.UserID = user.UserID;
+            existingUser.UserID =  user.UserID;
             existingUser.firstName = user.firstName;
             existingUser.lastName = user.lastName;
             existingUser.Address = user.Address;
             existingUser.UserEmail = user.UserEmail;
             existingUser.Passcode = user.Passcode;
-            existingUser.SmartDevice.SmartMeterID = user.SmartDevice.SmartMeterID;
-            existingUser.SmartDevice.EnergyPerKwH = user.SmartDevice.EnergyPerKwH;
-            existingUser.SmartDevice.CurrentMonthCost = user.SmartDevice.CurrentMonthCost;
+            existingUser.SmartMeterID = user.SmartMeterID;
+            existingUser.EnergyPerKwH = user.EnergyPerKwH;
+            existingUser.CurrentMonthCost = user.CurrentMonthCost;
             
             string serializedUserData = JsonConvert.SerializeObject(existingUser);
             var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
@@ -133,6 +133,8 @@ namespace server_side.Repository
                 {
                     userInfo.Remove(userToUpdate);
                 }
+                
+                
                 JObject userDataObject = new JObject
                 {
                     { "Address", usersData.Address},
@@ -149,7 +151,7 @@ namespace server_side.Repository
                          }
                     }
                 };
-
+                
                 userInfo.Add(userDataObject);
                 
                 string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);

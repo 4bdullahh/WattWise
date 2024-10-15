@@ -127,7 +127,7 @@ namespace server_side.Services
 
                     if (existingUserData != null)
                     {
-                        var updateUser = _userRepo.UpdateUserData(existingUserData);
+                        var updateUser = _userRepo.UpdateUserData(userJson);
 
                         if (updateUser)
                         {

@@ -1,11 +1,11 @@
 using System.Reflection;
 using NetMQ;
 using NetMQ.Sockets;
-using Newtonsoft.Json;
 using server_side.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
 using client_side.Models;
+using client_side.Services;
 
 namespace client_side
 {
@@ -24,13 +24,20 @@ namespace client_side
 
             using (var poller = new NetMQPoller())
             {
-                var maxClients = 20;
+                var maxClients = 3;
+                int firstSend = 300;
                 int minInterval = 5000;
                 int maxInterval = 20000;
                 var currentInterval = new Random();
 
-                    Task.Factory.StartNew(state =>
+                for (int i = 0; i < maxClients; i++)
+                {
+                    
+                    int clientId = i;
+                    
+                     Task.Factory.StartNew(state =>
                     {
+                        Console.WriteLine($"Client: {clientId} started");
                         DealerSocket client = null;
                         if (!clientSocketPerThread.IsValueCreated)
                         {
@@ -41,7 +48,7 @@ namespace client_side
                             {
                                 var message = e.Socket.ReceiveMultipartMessage();
                                 var response = message[1].ConvertToString();
-                                Console.WriteLine($"Server Recieved: {response}");
+                                Console.WriteLine($"Server Recieved: {response}, ClientId: {clientId}");
                             };
                             clientSocketPerThread.Value = client;
                             poller.Add(client);
@@ -50,49 +57,39 @@ namespace client_side
                         {
                             client = clientSocketPerThread.Value;
                         }
-                        int sendTime = currentInterval.Next(minInterval, maxInterval);
-                        var timer = new NetMQTimer(sendTime);
+                        
+                        var timer = new NetMQTimer(firstSend);
                         poller.Add(timer);
-
+                        
                         timer.Elapsed += (sender, e) =>
                         {
-                            var messageToServer = new NetMQMessage();
-                            messageToServer.Append(state.ToString()); //0
-                            messageToServer.AppendEmptyFrame(); //1
-
+                            string clientAddress = state.ToString();
+                            
                             var userData = new UserModel
                             {
                                 UserID = 204, 
-                                UserEmail = "fedhf@hotmail", 
-                                Topic = ""
+                                UserEmail = "manchester@hotmail", 
+                                Topic = "UpdateUser"
                             };
                             
-                                
-                            var jsonRequest = JsonConvert.SerializeObject(userData);
-                            string hashJson = Cryptography.GenerateHash(jsonRequest);
-                            byte[] encryptedData = Cryptography.Encrypt(jsonRequest, key, iv);
-                            string base64EncryptedData = Convert.ToBase64String(encryptedData);
-                            // We might use this later for Electron
-                            //var topic = userData.Topic;
-                            string base64Key = Convert.ToBase64String(key);
-                            string base64Iv = Convert.ToBase64String(iv);
+                            MessageServices messageServices = new MessageServices();
+                             var messageToServer = messageServices.SendReading(
+                                    clientAddress,
+                                    userData,
+                                    key,
+                                    iv
+                                );
                             
-                            messageToServer.Append(base64Key); //2
-                            messageToServer.Append(base64Iv); //3
-                            messageToServer.Append(hashJson);  //4
-                            messageToServer.Append(base64EncryptedData); //5
-                            Console.WriteLine("Waiting for message...");
-                            Console.WriteLine($"Old time {sendTime}");
+                            Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
                             client.SendMultipartMessage(messageToServer);
                             
-                            timer.EnableAndReset();
                             int newTime = currentInterval.Next(minInterval, maxInterval);
                             timer.Interval = newTime;
                             Console.WriteLine($"New time {newTime}");
                         };
                       
-                    }, TaskCreationOptions.LongRunning); 
-                
+                    },i , TaskCreationOptions.LongRunning); 
+                }
                 
                 poller.RunAsync();
                 Console.Read();

@@ -58,9 +58,9 @@
     "UserID": 204,
     "firstName": null,
     "lastName": null,
-    "UserEmail": "fedhf@hotmail",
+    "UserEmail": "manchester@hotmail",
     "Passcode": null,
-    "Hash": "2e4ec0cb5a1e52caed03213679eaa6ad87dbbf38492e8318dae5420d442d2d7d",
+    "Hash": "dbda7df427c487cc192b142a93bec08a3527362d56240edb6462dff0f42f688a",
     "SmartDevice": {
       "SmartMeterID": 0,
       "EnergyPerKwH": 0.0,
