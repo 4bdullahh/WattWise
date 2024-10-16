@@ -10,7 +10,9 @@ namespace client_side.Services
 {
     public class MessagesServices : IMessagesServices
     {
-        public MessagesServices(){}
+        public MessagesServices()
+        {
+        }
 
         public NetMQMessage SendReading
         (
@@ -23,7 +25,7 @@ namespace client_side.Services
             var messageToServer = new NetMQMessage();
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
-        
+
             var jsonRequest = JsonConvert.SerializeObject(userData);
             string hashJson = Cryptography.GenerateHash(jsonRequest);
             byte[] encryptedData = Cryptography.Encrypt(jsonRequest, key, iv);
@@ -32,10 +34,10 @@ namespace client_side.Services
             //var topic = userData.Topic;
             string base64Key = Convert.ToBase64String(key);
             string base64Iv = Convert.ToBase64String(iv);
-                            
+
             messageToServer.Append(base64Key); //2
             messageToServer.Append(base64Iv); //3
-            messageToServer.Append(hashJson);  //4
+            messageToServer.Append(hashJson); //4
             messageToServer.Append(base64EncryptedData); //5
             return messageToServer;
         }

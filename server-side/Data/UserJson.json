@@ -60,7 +60,7 @@
     "lastName": null,
     "UserEmail": "manchester@hotmail",
     "Passcode": null,
-    "Hash": "a8b6c466302edbcf853c9664f1d5638e9d3992c94a7fa52ef795ef0f3a8e8185",
+    "Hash": "02a69c6d355170ace9f8f8cdd8c93f61216a64813a5d1991e4d951651f2602a9",
     "SmartDevice": {
       "SmartMeterID": 0,
       "EnergyPerKwH": 0.0,

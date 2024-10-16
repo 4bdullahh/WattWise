@@ -68,6 +68,7 @@ namespace client_side.Services
                         poller.Add(timer);
                         
                         
+                        
                         timer.Elapsed += (sender, e) =>
                         {
                             string clientAddress = state.ToString();
