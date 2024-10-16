@@ -1,6 +1,16 @@
-﻿namespace client_side.Services.Interfaces;
+﻿using client_side.Models;
+using NetMQ;
 
-public interface IMessagesServices
+namespace client_side.Services.Interfaces
 {
-    
+    public interface IMessagesServices
+    {
+        public NetMQMessage SendReading
+        (
+            string clientAddress,
+            UserModel userData,
+            byte[] key,
+            byte[] iv
+        );
+    }
 }
