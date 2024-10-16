@@ -4,6 +4,11 @@ using System.Security.Cryptography;
 using System.Text;
 using client_side.Models;
 using client_side.Services.Interfaces;
+using System.Reflection;
+using Newtonsoft.Json;
+using server_side.Cryptography;
+using System.Security.Cryptography;
+using DotNetEnv;
 
 namespace client_side.Services
 {
@@ -19,6 +24,8 @@ namespace client_side.Services
 
         public void StartClient()
         {
+            
+           
             byte[] key = new byte[32];
             byte[] iv = new byte[16];
             using (var rng = new RNGCryptoServiceProvider())
@@ -104,6 +111,8 @@ namespace client_side.Services
             }
             
         }
+        
+    
         
     }
     
