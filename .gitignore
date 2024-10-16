@@ -219,6 +219,9 @@ ScaffoldingReadMe.txt
 # StyleCop
 StyleCopReport.xml
 
+# Ignore environment variables file
+.env
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
