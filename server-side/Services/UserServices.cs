@@ -5,6 +5,7 @@ using server_side.Repository.Interface;
 using server_side.Services.Interface;
 using System.Text;
 using DotNetEnv;
+using server_side.Cryptography;
 
 namespace server_side.Services
 {
@@ -16,6 +17,8 @@ namespace server_side.Services
         {
             _userRepo = userRepo;
             string serverSideFolderPath = GetServerSideFolderPath();
+            var envGenerator = new GenerateEnvFile();
+            envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
         }
