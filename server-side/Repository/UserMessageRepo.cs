@@ -16,21 +16,7 @@ namespace server_side.Repository
 
         private void LoadUserData()
         {
-            string solutionFolderName = "WattWise";
-            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-            
-            while (currentDirectory != null && currentDirectory.Name != solutionFolderName)
-            {
-                currentDirectory = currentDirectory.Parent;
-            }
-
-            if (currentDirectory == null)
-            {
-                throw new DirectoryNotFoundException("Could not find the current directory");
-            }
-            
-            string jsonFilePath = Path.Combine(currentDirectory.FullName, "server-side", "Data", "UserJson.json");
-
+            string jsonFilePath = Path.Combine(GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
             
             if (File.Exists(jsonFilePath))
             {
@@ -108,20 +94,7 @@ namespace server_side.Repository
         {
             try
             {
-                string solutionFolderName = "WattWise";
-                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-            
-                while (currentDirectory != null && currentDirectory.Name != solutionFolderName)
-                {
-                    currentDirectory = currentDirectory.Parent;
-                }
-
-                if (currentDirectory == null)
-                {
-                    throw new DirectoryNotFoundException("Could not find the current directory");
-                }
-            
-                string jsonFilePath = Path.Combine(currentDirectory.FullName, "server-side", "Data", "UserJson.json");
+                string jsonFilePath = Path.Combine(GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
 
                // var getDirectory = Environment.CurrentDirectory;
               //  var filePath = getDirectory + "\\server-side\\Data\\UserJson.json";
@@ -163,5 +136,24 @@ namespace server_side.Repository
                 return false;
             }
         }
+        private string GetWattWiseFolderPath()
+        {
+            string folderName = "WattWise";  // Set to find the 'WattWise' folder
+            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+
+            // Traverse up the directory structure to find the WattWise folder
+            while (currentDirectory != null && currentDirectory.Name != folderName)
+            {
+                currentDirectory = currentDirectory.Parent;
+            }
+
+            if (currentDirectory == null)
+            {
+                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+            }
+
+            return currentDirectory.FullName; // Return the full path to the WattWise folder
+        }
     }
 }
+
