@@ -15,7 +15,7 @@ namespace client_side
             serviceCollection.AddScoped<IClientServices, ClientServices>();
             
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            var clientService = serviceProvider.GetService<ClientServices>();
+            var clientService = serviceProvider.GetService<IClientServices>();
             clientService.StartClient();
 
         }

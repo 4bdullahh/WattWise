@@ -32,8 +32,8 @@ namespace client_side.Services
             {
                 var maxClients = 1;
                 int firstSend = 300;
-                int minInterval = 5000;
-                int maxInterval = 20000;
+                int minInterval = 1000;
+                int maxInterval = 3000;
                 var currentInterval = new Random();
 
                 for (int i = 0; i < maxClients; i++)
