@@ -1,6 +1,16 @@
-﻿namespace server_side.Repository;
+﻿using server_side.Repository.Interface;
+using server_side.Services.Models;
 
-public class SmartMeterRepo
+namespace server_side.Repository;
+
+public class SmartMeterRepo : ISmartMeterRepo
 {
+    public SmartMeterRepo(){}
     
+    public SmartMeterResponse UpdateMeterRepo(SmartDevice smartDevice)
+    {
+       
+        
+        return null;
+    }
 }
