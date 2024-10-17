@@ -102,3 +102,8 @@ C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\refint
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.pdb
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\server-side.genruntimeconfig.cache
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\obj\Debug\net8.0\ref\server-side.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\Sprache.dll

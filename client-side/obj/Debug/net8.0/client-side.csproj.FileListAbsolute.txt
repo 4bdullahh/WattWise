@@ -105,3 +105,8 @@ C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Micros
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.dll
 C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\server-side.pdb
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Vincent.Boardman\Documents\WattWise\client-side\bin\Debug\net8.0\Sprache.dll

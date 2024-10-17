@@ -12,8 +12,12 @@ namespace server_side
         static void Main(string[] args)
         {
             var services = new ServiceCollection();
-            services.AddScoped<IUserServices, UserService>();
+            services.AddScoped<IMessageServices, MessageService>();
+            services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IUserMessageRepo, UserMessageRepo>();
+            services.AddScoped<ISmartMeterServices, SmartMeterServices>();
+            //services.AddScoped<ISmartMeterRepo, SmartMeterRepo>()
+            services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IHashHandle, HashHandle>();
 
             services.AddSingleton<MessageController>();
