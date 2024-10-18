@@ -12,6 +12,7 @@ public class SaveData : ISaveData
         _wattWiseFolderPath = wattWiseFolderPath;
     }
 
+    
        public bool ListToJson(UserData usersData)
         {
             try
@@ -60,4 +61,5 @@ public class SaveData : ISaveData
                 return false;
             }
         }
+    
 }
