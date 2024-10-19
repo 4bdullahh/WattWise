@@ -1,11 +1,11 @@
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
-using server_side.Repository.Interface;
 using server_side.Services.Interface;
 using System.Text;
 using DotNetEnv;
 using server_side.Cryptography;
+using server_side.Services.Models;
 
 namespace server_side.Services
 {
@@ -14,10 +14,12 @@ namespace server_side.Services
         private readonly IUserServices _userServices;
         private readonly string _rsaPrivateKey;
         private readonly IFolderPathServices _folderPathServices;
-        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices)
+        private readonly ISmartMeterServices _smartMeterServices;
+        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
         {
             _folderPathServices = folderPathServices;
             _userServices = userServices;
+            _smartMeterServices = smartMeterServices;
             string serverSideFolderPath = _folderPathServices.GetServerSideFolderPath();
             var envGenerator = new GenerateEnvFile();
             envGenerator.EnvFileGenerator();
@@ -61,9 +63,18 @@ namespace server_side.Services
                         var messageToClient = new NetMQMessage();
                         messageToClient.Append(clientAddress);
                         messageToClient.AppendEmptyFrame();
+
+                        object response;
                         
-                       var response = _userServices.UserOperations(decryptedMessage);
-                       
+                        if (decryptedMessage.Contains("UserID"))
+                        {
+                            response = _userServices.UserOperations(decryptedMessage);
+                        }
+                        else
+                        {
+                            response = _smartMeterServices.UpdateMeterServices(decryptedMessage);
+                        }
+                        
                         var jsonResponse = JsonConvert.SerializeObject(response);
                         messageToClient.Append(jsonResponse);
                         server.SendMultipartMessage(messageToClient);
