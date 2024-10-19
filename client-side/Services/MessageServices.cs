@@ -1,11 +1,10 @@
-﻿
+﻿﻿
 using client_side.Models;
 using NetMQ;
 using server_side.Cryptography;
 using Newtonsoft.Json;
 using client_side.Services.Interfaces;
 using DotNetEnv;
-using server_side.Services;
 
 
 namespace client_side.Services
@@ -13,28 +12,30 @@ namespace client_side.Services
     public class MessagesServices : IMessagesServices
     {
         private readonly string _rsa_public_key;
-        private FolderPathServices folderpath;
-
         
         public MessagesServices()
         {
-            folderpath= new FolderPathServices();
-            Env.Load(folderpath.GetWattWiseFolderPath() + "\\server-side\\.env");
+            string serverSideFolderPath = GetClientSideFolderPath();
+            Env.Load(serverSideFolderPath + "\\.env");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
+
         }
-        public NetMQMessage SendReading
+
+        
+        public NetMQMessage SendReading<T>
         (
             string clientAddress,
-            UserModel userData,
+            T modelData,
             byte[] key,
             byte[] iv
         )
         {
+            
             var messageToServer = new NetMQMessage();
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
 
-            var jsonRequest = JsonConvert.SerializeObject(userData);
+            var jsonRequest = JsonConvert.SerializeObject(modelData);
             string hashJson = Cryptography.GenerateHash(jsonRequest);
             byte[] encryptedData = Cryptography.AESEncrypt(jsonRequest, key, iv);
             string base64EncryptedData = Convert.ToBase64String(encryptedData);
@@ -48,6 +49,21 @@ namespace client_side.Services
             messageToServer.Append(hashJson); //4
             messageToServer.Append(base64EncryptedData); //5
             return messageToServer;
+        }
+        
+        private static string GetClientSideFolderPath()
+        {
+            string folderName = "client-side";
+            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+            while (currentDirectory != null && currentDirectory.Name != folderName)
+            {
+                currentDirectory = currentDirectory.Parent;
+            }
+            if (currentDirectory == null)
+            {
+                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+            }
+            return currentDirectory.FullName;
         }
     }
 }
