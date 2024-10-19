@@ -22,10 +22,10 @@ namespace client_side.Services
         }
 
         
-        public NetMQMessage SendReading
+        public NetMQMessage SendReading<T>
         (
             string clientAddress,
-            UserModel userData,
+            T modelData,
             byte[] key,
             byte[] iv
         )
@@ -35,7 +35,7 @@ namespace client_side.Services
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
 
-            var jsonRequest = JsonConvert.SerializeObject(userData);
+            var jsonRequest = JsonConvert.SerializeObject(modelData);
             string hashJson = Cryptography.GenerateHash(jsonRequest);
             byte[] encryptedData = Cryptography.AESEncrypt(jsonRequest, key, iv);
             string base64EncryptedData = Convert.ToBase64String(encryptedData);

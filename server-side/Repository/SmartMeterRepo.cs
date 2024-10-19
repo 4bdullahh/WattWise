@@ -67,14 +67,16 @@ public class SmartMeterRepo : ISmartMeterRepo
        }
        else
        {
-           AddMeterData(existingDevice);
-           return new SmartDevice
+           
+           var device = new SmartDevice
            {
                SmartMeterID = smartDevice.SmartMeterID,
                EnergyPerKwH = smartDevice.EnergyPerKwH,
                CurrentMonthCost = smartDevice.CurrentMonthCost,
                Message = "Smart Device Does Not Exist. New User Added"
            };
+           AddMeterData(device);
+           return device;
        }
        
     }
