@@ -2,5 +2,5 @@
 
 public interface ISaveData
 {
-    bool ListToJson(UserData usersData);
+    T ListToJson<T>(T data);
 }

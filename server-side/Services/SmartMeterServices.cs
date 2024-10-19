@@ -26,7 +26,25 @@ namespace server_side.Services
             SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
             
             var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
-            return meterReadings;
+
+            if (meterReadings != null)
+            {
+                return new SmartMeterResponse
+                {
+                    SmartMeterID = meterReadings.SmartMeterID,
+                    EnergyPerKwH = meterReadings.EnergyPerKwH,
+                    CurrentMonthCost = meterReadings.CurrentMonthCost,
+                    Message = ""
+                };
+            }
+            else
+            {
+                return new SmartMeterResponse
+                {
+                    Message = "SmartMeter not found"
+                };
+            }
+            
         }
          
     

@@ -49,7 +49,7 @@ namespace server_side.Repository
             }
         }
 
-        public bool UpdateUserData(UserData user)
+        public UserData UpdateUserData(UserData user)
         {
             var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
             
@@ -70,7 +70,7 @@ namespace server_side.Repository
             return result;
         }
         
-        public bool AddUserData(UserData userData)
+        public UserData AddUserData(UserData userData)
         {
             var users = new UserData
             {

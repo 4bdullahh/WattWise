@@ -11,54 +11,78 @@ public class SaveData : ISaveData
     {
         _wattWiseFolderPath = wattWiseFolderPath;
     }
-
     
-       public bool ListToJson(UserData usersData)
+       public T ListToJson<T>(T data)
         {
             try
             {
-                string jsonFilePath = Path.Combine(_wattWiseFolderPath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
 
-               // var getDirectory = Environment.CurrentDirectory;
-              //  var filePath = getDirectory + "\\server-side\\Data\\UserJson.json";
+                string filePath = ""; 
+                filePath = data is UserData ? "UserJson" : "MeterJson";
+                
+                string jsonFilePath = Path.Combine(_wattWiseFolderPath.GetWattWiseFolderPath(), "server-side", "Data", $"{filePath}.json");
+                
                 string existingJson = File.ReadAllText(jsonFilePath);
                 JArray userInfo = JArray.Parse(existingJson);
-                
-                var userToUpdate = userInfo.FirstOrDefault(u => (int)u["UserID"] == usersData.UserID);
-                if (userToUpdate != null)
+
+
+                if (data is UserData userData)
                 {
-                    userInfo.Remove(userToUpdate);
-                }
-                
-                
-                JObject userDataObject = new JObject
-                {
-                    { "Address", usersData.Address},
-                    { "UserID", usersData.UserID},
-                    { "firstName", usersData.firstName},
-                    { "lastName", usersData.lastName},
-                    { "UserEmail", usersData.UserEmail},
-                    { "Passcode", usersData.Passcode},
-                    {"Hash" , usersData.Hash},
-                    { "SmartDevice", new JObject {
-                            { "SmartMeterID", usersData.SmartMeterID},
-                            { "EnergyPerKwH", usersData.EnergyPerKwH },
-                            {"CurrentMonthCost", usersData.CurrentMonthCost}
-                         }
+                    var userToUpdate = userInfo.FirstOrDefault(u => (int)u["UserID"] == userData.UserID);
+                    if (userToUpdate != null)
+                    {
+                        userInfo.Remove(userToUpdate);
                     }
-                };
-                
-                userInfo.Add(userDataObject);
+                    
+                    JObject userDataObject = new JObject
+                    {
+                        { "Address", userData.Address},
+                        { "UserID", userData.UserID},
+                        { "firstName", userData.firstName},
+                        { "lastName", userData.lastName},
+                        { "UserEmail", userData.UserEmail},
+                        { "Passcode", userData.Passcode},
+                        {"Hash" , userData.Hash},
+                        { "SmartDevice", new JObject {
+                                { "SmartMeterID", userData.SmartMeterID},
+                                { "EnergyPerKwH", userData.EnergyPerKwH },
+                                {"CurrentMonthCost", userData.CurrentMonthCost}
+                            }
+                        }
+                    };
+                    
+                    userInfo.Add(userDataObject);
+                }
+                else if (data is SmartDevice smartDevice)
+                {
+                    var deviceToUpdate = userInfo.FirstOrDefault(u => (int)u["SmartMeterID"] == smartDevice.SmartMeterID);
+                    if (deviceToUpdate != null)
+                    {
+                        userInfo.Remove(deviceToUpdate);
+                    }
+
+                    JObject smartDataObject = new JObject
+                    {
+                        { "SmartMeterID", smartDevice.SmartMeterID },
+                        { "EnergyPerKwH", smartDevice.EnergyPerKwH },
+                        { "CurrentMonthCost", smartDevice.CurrentMonthCost }
+                    };
+                    userInfo.Add(smartDataObject);
+                }
+                else
+                {
+                    throw new ArgumentException("Unsupported data type");
+                }
                 
                 string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
                 File.WriteAllText(jsonFilePath, updatedJson);
 
-                return true;
+                return data;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error Writing to File: " + e.ToString());
-                return false;
+                return data;
             }
         }
     

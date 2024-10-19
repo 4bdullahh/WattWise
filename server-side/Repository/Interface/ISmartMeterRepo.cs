@@ -5,5 +5,5 @@ namespace server_side.Repository.Interface;
 
 public interface ISmartMeterRepo
 {
-    SmartMeterResponse UpdateMeterRepo(SmartDevice smartDevice);
+    SmartDevice UpdateMeterRepo(SmartDevice smartDevice);
 }

@@ -54,7 +54,7 @@ namespace server_side.Services
                         }
 
                         var userData = _userRepo.AddUserData(userJson);
-                        if (userData)
+                        if (userData != null)
                         {
                             return new UserResponse
                             {
@@ -76,7 +76,7 @@ namespace server_side.Services
                     {
                         var updateUser = _userRepo.UpdateUserData(userJson);
 
-                        if (updateUser)
+                        if (updateUser != null)
                         {
                             return new UserResponse
                             {

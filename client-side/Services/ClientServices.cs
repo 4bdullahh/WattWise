@@ -76,9 +76,9 @@ namespace client_side.Services
                             
                             var userData = new UserModel
                             {
-                                UserID = 204, 
-                                UserEmail = "manchester@hotmail", 
-                                Topic = "UpdateUser"
+                                UserID = 205, 
+                                UserEmail = "liverpool@hotmail", 
+                                Topic = "addUser"
                             };
                             
                              var messageToServer = _messagesServices.SendReading(

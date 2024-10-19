@@ -25,8 +25,8 @@ public class SmartMeterRepo : ISmartMeterRepo
         if (File.Exists(jsonFilePath))
         {
             string jsonData = File.ReadAllText(jsonFilePath);
-            JArray _users = JArray.Parse(jsonData);
-            meterList = JsonConvert.DeserializeObject<List<SmartDevice>>(_users.ToString());
+            JArray _smartMeters = JArray.Parse(jsonData);
+            meterList = JsonConvert.DeserializeObject<List<SmartDevice>>(_smartMeters.ToString());
         }
         else
         {
@@ -56,6 +56,8 @@ public class SmartMeterRepo : ISmartMeterRepo
 
        if (existingDevice != null)
        {
+           //calculate energy bill here
+           
            existingDevice.SmartMeterID = smartDevice.SmartMeterID;
            existingDevice.EnergyPerKwH = smartDevice.EnergyPerKwH;
            existingDevice.CurrentMonthCost = smartDevice.CurrentMonthCost;
@@ -77,8 +79,9 @@ public class SmartMeterRepo : ISmartMeterRepo
        
     }
     
-    public bool AddMeterData(SmartDevice smartDevice)
+    public void AddMeterData(SmartDevice smartDevice)
     {
+        
         var smartMeters = new SmartDevice
         {
             SmartMeterID = smartDevice.SmartMeterID,
@@ -86,8 +89,7 @@ public class SmartMeterRepo : ISmartMeterRepo
             CurrentMonthCost = smartDevice.CurrentMonthCost
         };
         
-        var result = _saveData.ListToJson(smartMeters);
-        return result;
+         _saveData.ListToJson(smartMeters);
     }
 
 }
