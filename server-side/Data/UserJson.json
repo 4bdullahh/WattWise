@@ -80,5 +80,19 @@
       "EnergyPerKwH": 0.0,
       "CurrentMonthCost": 0.0
     }
+  },
+  {
+    "Address": null,
+    "UserID": 607,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "addyfive@gmail.com",
+    "Passcode": null,
+    "Hash": "1e398692a5a6c3f49881108b5fd6d135cf1037fe9f5c5207e4293301b1deee90",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
   }
 ]

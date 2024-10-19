@@ -74,11 +74,18 @@ namespace client_side.Services
                         {
                             string clientAddress = state.ToString();
                             
-                            var modelData = new SmartDevice
+                            // var modelData = new SmartDevice
+                            // {
+                            //     SmartMeterID = 205, 
+                            //     EnergyPerKwH = 20.5, 
+                            //     CurrentMonthCost = 200
+                            // };
+                            
+                            var modelData = new UserData
                             {
-                                SmartMeterID = 205, 
-                                EnergyPerKwH = 20.5, 
-                                CurrentMonthCost = 200
+                                UserID = 607,
+                                UserEmail = "addyfive@gmail.com",
+                                Topic = "addUser"
                             };
                             
                              var messageToServer = _messagesServices.SendReading(
