@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 using client_side.Models;
 using NetMQ;
 using server_side.Cryptography;
@@ -18,23 +18,29 @@ namespace client_side.Services
         
         public MessagesServices()
         {
-            folderpath= new FolderPathServices();
+            folderpath = new FolderPathServices();
+            var envGenerator = new GenerateEnvFile();
+            envGenerator.EnvFileGenerator();
             Env.Load(folderpath.GetWattWiseFolderPath() + "\\server-side\\.env");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
+
         }
-        public NetMQMessage SendReading
+
+        
+        public NetMQMessage SendReading<T>
         (
             string clientAddress,
-            UserModel userData,
+            T modelData,
             byte[] key,
             byte[] iv
         )
         {
+            
             var messageToServer = new NetMQMessage();
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
 
-            var jsonRequest = JsonConvert.SerializeObject(userData);
+            var jsonRequest = JsonConvert.SerializeObject(modelData);
             string hashJson = Cryptography.GenerateHash(jsonRequest);
             byte[] encryptedData = Cryptography.AESEncrypt(jsonRequest, key, iv);
             string base64EncryptedData = Convert.ToBase64String(encryptedData);

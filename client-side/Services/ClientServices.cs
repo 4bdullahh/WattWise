@@ -104,16 +104,23 @@ namespace client_side.Services
                         {
                             string clientAddress = state.ToString();
                             
-                            var userData = new UserModel
+                            // var modelData = new SmartDevice
+                            // {
+                            //     SmartMeterID = 205, 
+                            //     EnergyPerKwH = 20.5, 
+                            //     CurrentMonthCost = 200
+                            // };
+                            
+                            var modelData = new UserData
                             {
-                                UserID = 204, 
-                                UserEmail = "manchester@hotmail", 
-                                Topic = "UpdateUser"
+                                UserID = 607,
+                                UserEmail = "addyfive@gmail.com",
+                                Topic = "addUser"
                             };
                             
                              var messageToServer = _messagesServices.SendReading(
                                     clientAddress,
-                                    userData,
+                                    modelData,
                                     key,
                                     iv
                                 );

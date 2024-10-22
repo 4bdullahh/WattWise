@@ -58,9 +58,37 @@
     "UserID": 204,
     "firstName": null,
     "lastName": null,
-    "UserEmail": "manchester@hotmail",
+    "UserEmail": "liverpool@hotmail",
     "Passcode": null,
-    "Hash": "0bd69b1ca68dc001dcae7a3adf313158af8709176a8e5a25b3a0aa4cf7c40099",
+    "Hash": "eb1c7abc032a4a9bb9e7c903f101c3410bdca08b8406675f6d46e963aa0b192e",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 205,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "liverpool@hotmail",
+    "Passcode": null,
+    "Hash": "7451546d321be9ceebc79bb44dcb95a66124deb67af629d18334395eeb5f840e",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 607,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "addyfive@gmail.com",
+    "Passcode": null,
+    "Hash": "1e398692a5a6c3f49881108b5fd6d135cf1037fe9f5c5207e4293301b1deee90",
     "SmartDevice": {
       "SmartMeterID": 0,
       "EnergyPerKwH": 0.0,

@@ -5,11 +5,11 @@ using System.Security.Cryptography.X509Certificates;
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
-using server_side.Repository.Interface;
 using server_side.Services.Interface;
 using System.Text;
 using DotNetEnv;
 using server_side.Cryptography;
+using server_side.Services.Models;
 
 namespace server_side.Services
 {
@@ -20,10 +20,17 @@ namespace server_side.Services
         private X509Certificate2 _serverCertificate;
 
 
-        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices)
+
+
+        private readonly IFolderPathServices _folderPathServices;
+        private readonly ISmartMeterServices _smartMeterServices;
+        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
+
         {
             _userServices = userServices;
+
             string serverSideFolderPath = folderPathServices.GetServerSideFolderPath();
+            _smartMeterServices = smartMeterServices;
             var envGenerator = new GenerateEnvFile();
             envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");

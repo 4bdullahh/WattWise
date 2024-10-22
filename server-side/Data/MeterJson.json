@@ -10,5 +10,10 @@
   {
     "SmartMeterID": 503,
     "SmartMeterData": "27.8 kWh"
+  },
+  {
+    "SmartMeterID": 205,
+    "EnergyPerKwH": 20.5,
+    "CurrentMonthCost": 200.0
   }
 ]

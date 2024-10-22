@@ -5,10 +5,10 @@ namespace client_side.Services.Interfaces
 {
     public interface IMessagesServices
     {
-        public NetMQMessage SendReading
+        public NetMQMessage SendReading <T>
         (
             string clientAddress,
-            UserModel userData,
+            T modelData,
             byte[] key,
             byte[] iv
         );
