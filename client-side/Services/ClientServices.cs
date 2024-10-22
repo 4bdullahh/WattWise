@@ -1,5 +1,6 @@
 ﻿using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using NetMQ;
 using NetMQ.Sockets;
 using System.Security.Cryptography;
@@ -60,8 +61,15 @@ namespace client_side.Services
 
                         using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
                         {
-                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, false);
-                            Console.WriteLine("Client: TLS complete!!");
+                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
+                            if (sslStream.IsAuthenticated)
+                            {
+                                Console.WriteLine("Client: TLS authentication successful!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Client: TLS authentication failed!");
+                            }
                         }
                         
                         DealerSocket client = null;

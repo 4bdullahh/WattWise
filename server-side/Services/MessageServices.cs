@@ -1,5 +1,6 @@
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using NetMQ;
 using NetMQ.Sockets;
@@ -27,8 +28,7 @@ namespace server_side.Services
             envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
-            _serverCertificate =
-                new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "John@Muhammad@Vinny");
+            _serverCertificate = new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "John@Muhammad@Vinny");
         }
 
         public void ReceiveMessageServices()
@@ -38,31 +38,42 @@ namespace server_side.Services
             TcpListener tcpListener = new TcpListener(System.Net.IPAddress.Any, 5556);
             tcpListener.Start();
 
-            using (var server = new RouterSocket())
-            using (var poller = new NetMQPoller())
-            {
+            RouterSocket server = new RouterSocket();
+            NetMQPoller poller = new NetMQPoller();
+            server.Bind("tcp://*:5555");
 
-                // Now I am binding the NetMQ RouterSocket to the previous port 5555
-                server.Bind("tcp://*:5555");
-
-                // Now I am accepting the incoming TLS connection
+           // Now I am accepting the incoming TLS connection
                 Task.Factory.StartNew(() =>
                 {
+                    Console.WriteLine($"Server: Using certificate: {_serverCertificate.Subject}");
                     while (true)
                     {
                         try
                         {
-                            // Here is the incoming client connections
                             var tcpClient = tcpListener.AcceptTcpClient();
                             Task.Factory.StartNew(() =>
                             {
-                                // This is the authentication
                                 using (var sslStream = new SslStream(tcpClient.GetStream(), false))
                                 {
-                                    sslStream.AuthenticateAsServer(_serverCertificate, false,
-                                        System.Security.Authentication.SslProtocols.Tls12, false);
-                                    Console.WriteLine("Server: TLS complete!");
+                                    try
+                                    {
+                                        Console.WriteLine("Server: Starting TLS handshake...");
+                                        sslStream.AuthenticateAsServer(_serverCertificate, false, SslProtocols.Tls12, false);
+                                        Console.WriteLine("Server: TLS handshake completed!");
 
+                                        if (sslStream.IsAuthenticated)
+                                        {
+                                            Console.WriteLine("Server: TLS authentication successful!");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Server: TLS authentication failed!");
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error during TLS handshake: {ex.Message}");
+                                    }
                                     server.ReceiveReady += (s, e) =>
                                     {
                                         try
@@ -71,21 +82,14 @@ namespace server_side.Services
                                             Console.WriteLine($"Received message: {recievedMessage}");
 
                                             var clientAddress = recievedMessage[0];
-                                            byte[] encryptedKey =
-                                                Convert.FromBase64String(
-                                                    Encoding.UTF8.GetString(recievedMessage[3].ToByteArray()));
-                                            byte[] encryptedIv =
-                                                Convert.FromBase64String(
-                                                    Encoding.UTF8.GetString(recievedMessage[4].ToByteArray()));
-                                            byte[] key =
-                                                Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey, encryptedKey);
-                                            byte[] iv = Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey,
-                                                encryptedIv);
+                                            byte[] encryptedKey = Convert.FromBase64String(Encoding.UTF8.GetString(recievedMessage[3].ToByteArray()));
+                                            byte[] encryptedIv = Convert.FromBase64String(Encoding.UTF8.GetString(recievedMessage[4].ToByteArray()));
+                                            byte[] key = Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey, encryptedKey);
+                                            byte[] iv = Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey, encryptedIv);
                                             string receivedHash = Encoding.UTF8.GetString(recievedMessage[5].Buffer);
                                             string receivedUser = Encoding.UTF8.GetString(recievedMessage[6].Buffer);
                                             byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
-                                            string decryptedMessage =
-                                                Cryptography.Cryptography.AESDecrypt(encryptedMessage, key, iv);
+                                            string decryptedMessage = Cryptography.Cryptography.AESDecrypt(encryptedMessage, key, iv);
                                             string userHash = Cryptography.Cryptography.GenerateHash(decryptedMessage);
 
                                             //This is for test when the data is temperaded
@@ -117,21 +121,23 @@ namespace server_side.Services
                                             Console.WriteLine($"Error handling message: {ex.Message}");
                                         }
                                     };
-                                    poller.Add(server);
-                                    poller.RunAsync();
-                                    Console.Read();
-                                    poller.Stop();
+                                    if (!poller.IsRunning)
+                                    {
+                                        poller.Add(server);
+                                        poller.RunAsync();
+                                    }
                                 }
-                            });
+                            }, TaskCreationOptions.LongRunning);
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error accepting TCP client: {ex.Message}");
                         }
                     }
-                });
-                poller.RunAsync();
-            }
+                }, TaskCreationOptions.LongRunning); 
+                
+                Console.ReadLine();
+                poller.Stop(); 
         }
     }
 }
