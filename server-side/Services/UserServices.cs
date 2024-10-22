@@ -58,8 +58,8 @@ namespace server_side.Services
                         {
                             return new UserResponse
                             {
-                                UserID = userJson.UserID,
-                                firstName = userJson.firstName,
+                                UserID = userData.UserID,
+                                firstName = userData.firstName,
                                 Successs = true,
                                 Message = "User Added"
                             };
@@ -80,10 +80,10 @@ namespace server_side.Services
                         {
                             return new UserResponse
                             {
-                                UserID = userJson.UserID,
-                                firstName = userJson.firstName,
-                                lastName = userJson.lastName,
-                                UserEmail = userJson.UserEmail,
+                                UserID = updateUser.UserID,
+                                firstName = updateUser.firstName,
+                                lastName = updateUser.lastName,
+                                UserEmail = updateUser.UserEmail,
                                 Successs = true,
                                 Message = "User Updated Successfully"
                             };
