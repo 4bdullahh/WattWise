@@ -2,7 +2,6 @@
 using NetMQ.Sockets;
 using System.Security.Cryptography;
 using System.Text;
-using client_side.Models;
 using client_side.Services.Interfaces;
 
 namespace client_side.Services
@@ -74,19 +73,19 @@ namespace client_side.Services
                         {
                             string clientAddress = state.ToString();
                             
-                            // var modelData = new SmartDevice
-                            // {
-                            //     SmartMeterID = 205, 
-                            //     EnergyPerKwH = 20.5, 
-                            //     CurrentMonthCost = 200
-                            // };
-                            
-                            var modelData = new UserData
+                            var modelData = new SmartDevice
                             {
-                                UserID = 607,
-                                UserEmail = "addyfive@gmail.com",
-                                Topic = "addUser"
+                                SmartMeterID = 206, 
+                                EnergyPerKwH = 60.5, 
+                                CurrentMonthCost = 600
                             };
+                            
+                            // var modelData = new UserData
+                            // {
+                            //     UserID = 607,
+                            //     UserEmail = "addyfive@gmail.com",
+                            //     Topic = "addUser"
+                            // };
                             
                              var messageToServer = _messagesServices.SendReading(
                                     clientAddress,

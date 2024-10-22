@@ -15,5 +15,10 @@
     "SmartMeterID": 205,
     "EnergyPerKwH": 20.5,
     "CurrentMonthCost": 200.0
+  },
+  {
+    "SmartMeterID": 206,
+    "EnergyPerKwH": 60.5,
+    "CurrentMonthCost": 600.0
   }
 ]
