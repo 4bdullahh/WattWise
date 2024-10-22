@@ -2,6 +2,7 @@
 using server_side.Repository.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using server_side.Services;
 
 namespace server_side.Repository
 {
@@ -9,18 +10,18 @@ namespace server_side.Repository
     {
         private List<UserData> usersList;
         private IHashHandle userHash;
-        private readonly IWattWiseFolderPath _wattWiseFolderPath;
+        private FolderPathServices folderpath;
         private readonly ISaveData _saveData;
-        public UserMessageRepo(IWattWiseFolderPath wattWiseFolderPath, ISaveData saveData)
+        public UserMessageRepo(ISaveData saveData)
         {
-            _wattWiseFolderPath = wattWiseFolderPath;
+            folderpath= new FolderPathServices();
             _saveData = saveData;
             LoadUserData();
         }
 
         private void LoadUserData()
         {
-            string jsonFilePath = Path.Combine(_wattWiseFolderPath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
+            string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
             
             if (File.Exists(jsonFilePath))
             {

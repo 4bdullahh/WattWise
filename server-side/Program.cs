@@ -18,7 +18,6 @@ namespace server_side
             services.AddScoped<ISmartMeterServices, SmartMeterServices>();
             services.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
             services.AddScoped<ISaveData, SaveData>();
-            services.AddScoped<IWattWiseFolderPath, WattWiseFolderPath>();
             services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IHashHandle, HashHandle>();
 

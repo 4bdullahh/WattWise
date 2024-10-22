@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using server_side.Repository.Interface;
+using server_side.Services;
 using server_side.Services.Models;
 
 namespace server_side.Repository;
@@ -9,18 +10,18 @@ namespace server_side.Repository;
 public class SmartMeterRepo : ISmartMeterRepo
 {
     private List<SmartDevice> meterList;
-    private readonly IWattWiseFolderPath _wattWiseFolderPath;
+    private FolderPathServices folderpath;
     private readonly ISaveData _saveData;
-    public SmartMeterRepo(IWattWiseFolderPath wattWiseFolderPath, ISaveData saveData)
+    public SmartMeterRepo(ISaveData saveData)
     {
-        _wattWiseFolderPath = wattWiseFolderPath;
+        folderpath = new FolderPathServices();
         _saveData = saveData;
         LoadUserData();
     }
     
     private void LoadUserData()
     {
-        string jsonFilePath = Path.Combine(_wattWiseFolderPath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
+        string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
             
         if (File.Exists(jsonFilePath))
         {

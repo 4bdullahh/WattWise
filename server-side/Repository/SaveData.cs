@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using server_side.Repository.Interface;
+using server_side.Services;
 
 namespace server_side.Repository;
 
 public class SaveData : ISaveData
 {
-    private readonly IWattWiseFolderPath _wattWiseFolderPath;
-    public SaveData(IWattWiseFolderPath wattWiseFolderPath)
+    private FolderPathServices folderpath;
+
+    public SaveData()
     {
-        _wattWiseFolderPath = wattWiseFolderPath;
+        folderpath= new FolderPathServices();
     }
     
        public T ListToJson<T>(T data)
@@ -20,7 +22,7 @@ public class SaveData : ISaveData
                 string filePath = ""; 
                 filePath = data is UserData ? "UserJson" : "MeterJson";
                 
-                string jsonFilePath = Path.Combine(_wattWiseFolderPath.GetWattWiseFolderPath(), "server-side", "Data", $"{filePath}.json");
+                string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", $"{filePath}.json");
                 
                 string existingJson = File.ReadAllText(jsonFilePath);
                 JArray userInfo = JArray.Parse(existingJson);
