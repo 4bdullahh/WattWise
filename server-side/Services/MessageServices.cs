@@ -35,13 +35,11 @@ namespace server_side.Services
             envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
-            _serverCertificate = new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "John@Muhammad@Vinny");
+            _serverCertificate = new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
 
         public void ReceiveMessageServices()
         {
-            // For Vincent and Muhammad explanation
-            // I am initiating on port 5556 to get a secure connection via TLS first
             TcpListener tcpListener = new TcpListener(System.Net.IPAddress.Any, 5556);
             tcpListener.Start();
 
@@ -49,10 +47,8 @@ namespace server_side.Services
             NetMQPoller poller = new NetMQPoller();
             server.Bind("tcp://*:5555");
 
-           // Now I am accepting the incoming TLS connection
                 Task.Factory.StartNew(() =>
                 {
-                    Console.WriteLine($"Server: Using certificate: {_serverCertificate.Subject}");
                     while (true)
                     {
                         try
