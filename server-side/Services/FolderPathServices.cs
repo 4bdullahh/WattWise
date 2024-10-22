@@ -18,6 +18,23 @@ namespace server_side.Services
             }
             return currentDirectory.FullName;
         }
+        public string GetClientFolderPath()
+        {
+            string folderName = "client-side";  
+            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+
+            while (currentDirectory != null && currentDirectory.Name != folderName)
+            {
+                currentDirectory = currentDirectory.Parent;
+            }
+
+            if (currentDirectory == null)
+            {
+                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+            }
+
+            return currentDirectory.FullName; // Return the full path to the WattWise folder
+        }
         public string GetWattWiseFolderPath()
         {
             string folderName = "WattWise";  

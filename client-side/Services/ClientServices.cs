@@ -1,9 +1,14 @@
-﻿using NetMQ;
+﻿using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using NetMQ;
 using NetMQ.Sockets;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using client_side.Models;
 using client_side.Services.Interfaces;
+using server_side.Services;
 
 namespace client_side.Services
 {
@@ -11,10 +16,14 @@ namespace client_side.Services
     {
 
         private readonly IMessagesServices _messagesServices;
+        private X509Certificate2 _clientCertificate;
+        private FolderPathServices folderpath;
 
         public ClientServices(IMessagesServices messagesServices)
         {
+            folderpath= new FolderPathServices();
             _messagesServices = messagesServices;
+            _clientCertificate = new X509Certificate2(folderpath.GetClientFolderPath() + "\\client_certificate.pfx", "John@Muhammad@Vinny");
         }
 
         public void StartClient()
@@ -45,12 +54,33 @@ namespace client_side.Services
                      Task.Factory.StartNew(state =>
                     {
                         Console.WriteLine($"Client: {clientId} started");
+                        
+                        // The first thing I want is to establish a secure SSL/TLS connection
+                        // For the secure connection I am using port 5556
+                        TcpClient tcpClient = new TcpClient("localhost", 5556); 
+
+                        using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
+                        {
+                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
+                            if (sslStream.IsAuthenticated)
+                            {
+                                Console.WriteLine("Client: TLS authentication successful!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Client: TLS authentication failed!");
+                            }
+                        }
+                        
                         DealerSocket client = null;
+
                         if (!clientSocketPerThread.IsValueCreated)
                         {
                             client = new DealerSocket();
-                            client.Connect("tcp://localhost:5555");
                             client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
+                            // Here is when I changed the route again
+                            client.Connect("tcp://localhost:5555");
+                            
                             client.ReceiveReady += (s, e) =>
                             {
                                 var message = e.Socket.ReceiveMultipartMessage();

@@ -1,13 +1,18 @@
-﻿namespace server_side.Cryptography;
+﻿using server_side.Services;
+
+namespace server_side.Cryptography;
 
 public class GenerateEnvFile
 {
+    private FolderPathServices folderpath;
+
     public void EnvFileGenerator()
-    { 
+    {
         
-    string envFilePath = Path.Combine(GetWattWiseFolderPath(), "server-side", ".env");
-    string privateKeyFilePath = Path.Combine(GetWattWiseFolderPath(), "server-side", "private_key.xml");
-    string publicKeyFilePath = Path.Combine(GetWattWiseFolderPath(), "server-side", "public_key.xml");
+    folderpath = new FolderPathServices();
+    string envFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", ".env");
+    string privateKeyFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "private_key.xml");
+    string publicKeyFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "public_key.xml");
 
     var envVariables = new Dictionary<string, string>();
 
@@ -53,20 +58,4 @@ public class GenerateEnvFile
         }
     }
 }
-    private string GetWattWiseFolderPath()
-    {
-        string folderName = "WattWise";  
-        var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-
-        while (currentDirectory != null && currentDirectory.Name != folderName)
-        {
-            currentDirectory = currentDirectory.Parent;
-        }
-
-        if (currentDirectory == null)
-        {
-            throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
-        }
-        return currentDirectory.FullName; 
-    }
 }
