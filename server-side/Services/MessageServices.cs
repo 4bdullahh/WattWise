@@ -85,24 +85,18 @@ namespace server_side.Services
                                             Console.WriteLine($"Received message: {recievedMessage}");
 
                                             var clientAddress = recievedMessage[0];
-                                            byte[] encryptedKey = Convert.FromBase64String(Encoding.UTF8.GetString(recievedMessage[3].ToByteArray()));
-                                            byte[] encryptedIv = Convert.FromBase64String(Encoding.UTF8.GetString(recievedMessage[4].ToByteArray()));
-                                            byte[] key = Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey, encryptedKey);
-                                            byte[] iv = Cryptography.Cryptography.RSADecrypt(_rsaPrivateKey, encryptedIv);
-                                            string receivedHash = Encoding.UTF8.GetString(recievedMessage[5].Buffer);
-                                            string receivedUser = Encoding.UTF8.GetString(recievedMessage[6].Buffer);
-                                            byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
-                                            string decryptedMessage = Cryptography.Cryptography.AESDecrypt(encryptedMessage, key, iv);
-                                            string userHash = Cryptography.Cryptography.GenerateHash(decryptedMessage);
-
+                                            var handleEncryption = new HandleEncryption();
+                                            var result = handleEncryption.ApplyEncryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
+                                                Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
+                                            
                                             //This is for test when the data is temperaded
                                             /*
-                                            UserData tempered = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
+                                            UserData tempered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
                                             tempered.UserID = 1000;
                                             var temperedJson = JsonConvert.SerializeObject(tempered);
-                                            string userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
+                                            string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
 
-                                            if (userHash != receivedHash)
+                                            if (result.userHash != result.receivedHash)
                                             {
                                                 Console.WriteLine("Hash doesn't match");
                                             }
@@ -112,7 +106,7 @@ namespace server_side.Services
                                                 messageToClient.Append(clientAddress);
                                                 messageToClient.AppendEmptyFrame();
 
-                                                var response = _userServices.UserOperations(decryptedMessage);
+                                                var response = _userServices.UserOperations(result.decryptedMessage);
                                                 var jsonResponse = JsonConvert.SerializeObject(response);
                                                 messageToClient.Append(jsonResponse);
                                                 server.SendMultipartMessage(messageToClient);
