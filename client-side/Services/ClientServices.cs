@@ -145,18 +145,66 @@ namespace client_side.Services
 
         public async Task ElectronServerAsync()
         {
-            await Task.Factory.StartNew(() =>
+            Task getByIdPipeTask = Task.Factory.StartNew(async () =>
             {
-                using (var server = new NamedPipeServerStream("base-pipe"))
+                while (true)
                 {
-                    server.WaitForConnection();
-                    StreamReader reader = new StreamReader(server);
-                    StreamWriter writer = new StreamWriter(server);
+                    using (var server = new NamedPipeServerStream("get-by-id"))
+                    {
+                        server.WaitForConnection();
+                        using (StreamReader reader = new StreamReader(server))
+                        using (StreamWriter writer = new StreamWriter(server))
+                        {
+                            char[] buffer = new char[1024];
+                            int numRead;
 
-                    writer.WriteLine("THIS IS A NEW MESSAGE");
-                    writer.Flush();
+                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                string receivedMessage = new string(buffer, 0, numRead);
+                                if (receivedMessage == "getData")
+                                {
+                                    // CODE TO GET BY ID
+                                }
+                                Console.WriteLine($"Received: {receivedMessage}");
+
+                                // RETURN THE DATA 
+                                await writer.WriteLineAsync("GET BY ID DATA");
+                                await writer.FlushAsync();
+                            }
+                        }
+                    }
+
                 }
-            });
+            }, TaskCreationOptions.LongRunning);
+
+            Task basePipeTask = Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    using (var server = new NamedPipeServerStream("base-pipe"))
+                    {
+                        server.WaitForConnection();
+                        using (StreamReader reader = new StreamReader(server))
+                        using (StreamWriter writer = new StreamWriter(server))
+                        {
+                            char[] buffer = new char[1024];
+                            int numRead;
+
+                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                string receivedMessage = new string(buffer, 0, numRead);
+                                Console.WriteLine($"Received: {receivedMessage}");
+
+                                await writer.WriteLineAsync("Message received: " + receivedMessage);
+                                await writer.FlushAsync();
+                            }
+                        }
+                    }
+
+                }
+            }, TaskCreationOptions.LongRunning);
+
+            await Task.WhenAll(getByIdPipeTask, basePipeTask);
         }
 
     }

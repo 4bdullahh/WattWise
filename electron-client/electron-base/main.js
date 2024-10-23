@@ -21,15 +21,33 @@ app.whenReady().then(() => {
       const client = net.createConnection("\\\\.\\pipe\\base-pipe", () => {
         console.log("Connected to .NET named pipe server");
 
-        // Send a message to the .NET server
         client.write("Hello from Electron!");
 
-        console.log(client);
-        // Receive data from the server
         client.on("data", (data) => {
           const message = data.toString();
           console.log("Received from .NET:", message);
-          resolve(message); // Resolve the IPC with the received message
+          resolve(message);
+        });
+      });
+
+      client.on("error", (err) => {
+        console.error("Error connecting to named pipe:", err);
+        reject(err);
+      });
+    });
+  });
+
+  ipcMain.handle("getByID", async () => {
+    return new Promise((resolve, reject) => {
+      const client = net.createConnection("\\\\.\\pipe\\get-by-id", () => {
+        console.log("Connected to .NET named pipe server");
+
+        client.write("getData");
+
+        client.on("data", (data) => {
+          const message = data.toString();
+          console.log("Received from .NET:", message);
+          resolve(message);
         });
       });
 
