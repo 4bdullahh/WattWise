@@ -116,7 +116,17 @@ namespace server_side.Services
                                                 messageToClient.Append(clientAddress);
                                                 messageToClient.AppendEmptyFrame();
 
-                                                var response = _userServices.UserOperations(decryptedMessage);
+                                                object response;
+                        
+                                                if (decryptedMessage.Contains("UserID"))
+                                                {
+                                                    response = _userServices.UserOperations(decryptedMessage);
+                                                }
+                                                else
+                                                {
+                                                    response = _smartMeterServices.UpdateMeterServices(decryptedMessage);
+                                                }
+                                                
                                                 var jsonResponse = JsonConvert.SerializeObject(response);
                                                 messageToClient.Append(jsonResponse);
                                                 server.SendMultipartMessage(messageToClient);

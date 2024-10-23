@@ -18,11 +18,13 @@ namespace client_side.Services
         private readonly IMessagesServices _messagesServices;
         private X509Certificate2 _clientCertificate;
         private FolderPathServices folderpath;
+        private ICalculateCostClient _calculateCostClient;
 
-        public ClientServices(IMessagesServices messagesServices)
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient)
         {
             folderpath= new FolderPathServices();
             _messagesServices = messagesServices;
+            _calculateCostClient = calculateCostClient;
             _clientCertificate = new X509Certificate2(folderpath.GetClientFolderPath() + "\\client_certificate.pfx", "John@Muhammad@Vinny");
         }
 
@@ -103,20 +105,10 @@ namespace client_side.Services
                         timer.Elapsed += (sender, e) =>
                         {
                             string clientAddress = state.ToString();
-                            
-                            // var modelData = new SmartDevice
-                            // {
-                            //     SmartMeterID = 205, 
-                            //     EnergyPerKwH = 20.5, 
-                            //     CurrentMonthCost = 200
-                            // };
-                            
-                            var modelData = new UserData
-                            {
-                                UserID = 607,
-                                UserEmail = "addyfive@gmail.com",
-                                Topic = "addUser"
-                            };
+
+                            var genTestModel = new SmartDevice();
+
+                            var modelData = _calculateCostClient.getRandomCost(genTestModel);
                             
                              var messageToServer = _messagesServices.SendReading(
                                     clientAddress,
