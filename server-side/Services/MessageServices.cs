@@ -86,7 +86,7 @@ namespace server_side.Services
 
                                             var clientAddress = recievedMessage[0];
                                             var handleEncryption = new HandleEncryption();
-                                            var result = handleEncryption.ApplyEncryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
+                                            var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
                                                 Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
                                             
                                             //This is for test when the data is temperaded
