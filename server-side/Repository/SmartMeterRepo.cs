@@ -1,9 +1,7 @@
-﻿using System.ServiceModel.Channels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using server_side.Repository.Interface;
 using server_side.Services;
-using server_side.Services.Models;
 
 namespace server_side.Repository;
 
@@ -45,10 +43,11 @@ public class SmartMeterRepo : ISmartMeterRepo
         }
         else
         {
-            return new SmartDevice
-            {
-                Message = "Smart Device Not Found"
-            };
+            
+            var device = new SmartDevice();
+            AddMeterData(device);
+           
+            return device;
         }
     }
     public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
@@ -57,7 +56,6 @@ public class SmartMeterRepo : ISmartMeterRepo
 
        if (existingDevice != null)
        {
-           //calculate energy bill here
            
            existingDevice.SmartMeterID = smartDevice.SmartMeterID;
            existingDevice.EnergyPerKwH = smartDevice.EnergyPerKwH;
@@ -68,15 +66,10 @@ public class SmartMeterRepo : ISmartMeterRepo
        }
        else
        {
-           
-           var device = new SmartDevice
-           {
-               SmartMeterID = smartDevice.SmartMeterID,
-               EnergyPerKwH = smartDevice.EnergyPerKwH,
-               CurrentMonthCost = smartDevice.CurrentMonthCost,
-               Message = "Smart Device Does Not Exist. New User Added"
-           };
+
+           var device = new SmartDevice();
            AddMeterData(device);
+           
            return device;
        }
        
@@ -84,15 +77,14 @@ public class SmartMeterRepo : ISmartMeterRepo
     
     public void AddMeterData(SmartDevice smartDevice)
     {
+        var generateId = meterList.Count();
         
-        var smartMeters = new SmartDevice
-        {
-            SmartMeterID = smartDevice.SmartMeterID,
-            EnergyPerKwH = smartDevice.EnergyPerKwH,
-            CurrentMonthCost = smartDevice.CurrentMonthCost
-        };
+        smartDevice.SmartMeterID = generateId;
+        smartDevice.EnergyPerKwH = 0;
+        smartDevice.CurrentMonthCost = 0;
         
-         _saveData.ListToJson(smartMeters);
+        
+         _saveData.ListToJson(smartDevice);
     }
 
 }
