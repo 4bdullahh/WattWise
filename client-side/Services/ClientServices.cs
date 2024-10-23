@@ -10,6 +10,7 @@ using client_side.Models;
 using client_side.Services.Interfaces;
 using server_side.Cryptography;
 using server_side.Services;
+using System.IO.Pipes;
 
 namespace client_side.Services
 {
@@ -22,14 +23,14 @@ namespace client_side.Services
 
         public ClientServices(IMessagesServices messagesServices)
         {
-            folderpath= new FolderPathServices();
+            folderpath = new FolderPathServices();
             _messagesServices = messagesServices;
             _clientCertificate = new X509Certificate2(folderpath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
 
         public void StartClient()
         {
-            
+
             byte[] key = new byte[32];
             byte[] iv = new byte[16];
             using (var rng = new RNGCryptoServiceProvider())
@@ -49,102 +50,116 @@ namespace client_side.Services
 
                 for (int i = 0; i < maxClients; i++)
                 {
-                    
+
                     int clientId = i;
-                    
-                     Task.Factory.StartNew(state =>
-                    {
-                        Console.WriteLine($"Client: {clientId} started");
-                        
-                        TcpClient tcpClient = new TcpClient("localhost", 5556); 
 
-                        using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
-                        {
-                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
-                            if (sslStream.IsAuthenticated)
-                            {
-                                Console.WriteLine("Client: TLS authentication successful!");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Client: TLS authentication failed!");
-                            }
-                        }
-                        
-                        DealerSocket client = null;
+                    Task.Factory.StartNew(state =>
+                   {
+                       Console.WriteLine($"Client: {clientId} started");
 
-                        if (!clientSocketPerThread.IsValueCreated)
-                        {
-                            client = new DealerSocket();
-                            client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
-                            // Here is when I changed the route again
-                            client.Connect("tcp://localhost:5555");
-                            
-                            client.ReceiveReady += (s, e) =>
-                            {
-                                var message = e.Socket.ReceiveMultipartMessage();
-                                var response = message[1].ConvertToString();
-                                Console.WriteLine($"Server Recieved: {response}, ClientId: {clientId}");
-                            };
-                            clientSocketPerThread.Value = client;
-                            poller.Add(client);
-                        }
-                        else
-                        {
-                            client = clientSocketPerThread.Value;
-                        }
-                        
-                        var timer = new NetMQTimer(firstSend);
-                        poller.Add(timer);
-                        
-                        
-                        
-                        timer.Elapsed += (sender, e) =>
-                        {
-                            string clientAddress = state.ToString();
-                            
-                            // var modelData = new SmartDevice
-                            // {
-                            //     SmartMeterID = 205, 
-                            //     EnergyPerKwH = 20.5, 
-                            //     CurrentMonthCost = 200
-                            // };
-                            
-                            var modelData = new UserData
-                            {
-                                UserID = 607,
-                                UserEmail = "addyfive@gmail.com",
-                                Topic = "addUser"
-                            };
-                            
-                             var messageToServer = _messagesServices.SendReading(
-                                    clientAddress,
-                                    modelData,
-                                    key,
-                                    iv
-                                );
-                            
-                            Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
-                            client.SendMultipartMessage(messageToServer);
-                            
-                            int newTime = currentInterval.Next(minInterval, maxInterval);
-                            timer.Interval = newTime;
-                            Console.WriteLine($"New time {newTime}");
-                        };
-                      
-                    },i , TaskCreationOptions.LongRunning); 
+                       TcpClient tcpClient = new TcpClient("localhost", 5556);
+
+                       using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
+                       {
+                           sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
+                           if (sslStream.IsAuthenticated)
+                           {
+                               Console.WriteLine("Client: TLS authentication successful!");
+                           }
+                           else
+                           {
+                               Console.WriteLine("Client: TLS authentication failed!");
+                           }
+                       }
+
+                       DealerSocket client = null;
+
+                       if (!clientSocketPerThread.IsValueCreated)
+                       {
+                           client = new DealerSocket();
+                           client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
+                           // Here is when I changed the route again
+                           client.Connect("tcp://localhost:5555");
+
+                           client.ReceiveReady += (s, e) =>
+                           {
+                               var message = e.Socket.ReceiveMultipartMessage();
+                               var response = message[1].ConvertToString();
+                               Console.WriteLine($"Server Recieved: {response}, ClientId: {clientId}");
+                           };
+                           clientSocketPerThread.Value = client;
+                           poller.Add(client);
+                       }
+                       else
+                       {
+                           client = clientSocketPerThread.Value;
+                       }
+
+                       var timer = new NetMQTimer(firstSend);
+                       poller.Add(timer);
+
+
+
+                       timer.Elapsed += (sender, e) =>
+                       {
+                           string clientAddress = state.ToString();
+
+                           // var modelData = new SmartDevice
+                           // {
+                           //     SmartMeterID = 205, 
+                           //     EnergyPerKwH = 20.5, 
+                           //     CurrentMonthCost = 200
+                           // };
+
+                           var modelData = new UserData
+                           {
+                               UserID = 607,
+                               UserEmail = "addyfive@gmail.com",
+                               Topic = "addUser"
+                           };
+
+                           var messageToServer = _messagesServices.SendReading(
+                                   clientAddress,
+                                   modelData,
+                                   key,
+                                   iv
+                               );
+
+                           Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
+                           client.SendMultipartMessage(messageToServer);
+
+                           int newTime = currentInterval.Next(minInterval, maxInterval);
+                           timer.Interval = newTime;
+                           Console.WriteLine($"New time {newTime}");
+                       };
+
+                   }, i, TaskCreationOptions.LongRunning);
                 }
-                
+
                 poller.RunAsync();
                 Console.Read();
                 poller.Stop();
             }
-            
+
         }
-        
-    
-        
+
+        public async Task ElectronServerAsync()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (var server = new NamedPipeServerStream("base-pipe"))
+                {
+                    server.WaitForConnection();
+                    StreamReader reader = new StreamReader(server);
+                    StreamWriter writer = new StreamWriter(server);
+
+                    writer.WriteLine("THIS IS A NEW MESSAGE");
+                    writer.Flush();
+                }
+            });
+        }
+
     }
-    
+
 }
 

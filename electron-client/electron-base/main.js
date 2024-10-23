@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron/main");
 const NamedPipes = require("named-pipes");
+const net = require("net");
 const path = require("node:path");
 
 const createWindow = () => {
@@ -15,19 +16,25 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  ipcMain.handle("ping", () => "pong");
-
   ipcMain.handle("open", async () => {
     return new Promise((resolve, reject) => {
-      const pipe = NamedPipes.connect("your-pipe-name");
+      const client = net.createConnection("\\\\.\\pipe\\base-pipe", () => {
+        console.log("Connected to .NET named pipe server");
 
-      pipe.on("topic", (str) => {
-        console.log(str);
-        resolve(str);
+        // Send a message to the .NET server
+        client.write("Hello from Electron!");
+
+        console.log(client);
+        // Receive data from the server
+        client.on("data", (data) => {
+          const message = data.toString();
+          console.log("Received from .NET:", message);
+          resolve(message); // Resolve the IPC with the received message
+        });
       });
 
-      pipe.on("error", (err) => {
-        console.error("Pipe connection error:", err);
+      client.on("error", (err) => {
+        console.error("Error connecting to named pipe:", err);
         reject(err);
       });
     });

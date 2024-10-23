@@ -3,4 +3,6 @@
 public interface IClientServices
 {
     public void StartClient();
+
+    public Task ElectronServerAsync();
 }
