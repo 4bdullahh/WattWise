@@ -1,6 +1,7 @@
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using NetMQ;
 using NetMQ.Sockets;
@@ -17,6 +18,7 @@ namespace server_side.Services
     {
         private readonly IUserServices _userServices;
         private readonly string _rsaPrivateKey;
+        private readonly string _rsa_public_key;
         private X509Certificate2 _serverCertificate;
 
 
@@ -35,11 +37,13 @@ namespace server_side.Services
             envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
+            _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
             _serverCertificate = new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
 
         public void ReceiveMessageServices()
         {
+    
             TcpListener tcpListener = new TcpListener(System.Net.IPAddress.Any, 5556);
             tcpListener.Start();
 
@@ -102,14 +106,23 @@ namespace server_side.Services
                                             }
                                             else
                                             {
+                                              
                                                 var messageToClient = new NetMQMessage();
                                                 messageToClient.Append(clientAddress);
                                                 messageToClient.AppendEmptyFrame();
-
+                                                var generateKeys = new HandleEncryption();
+                                                var getKeys = generateKeys.GenerateKeys();
                                                 var response = _userServices.UserOperations(result.decryptedMessage);
+                                                var encryptMessage = new HandleEncryption();
                                                 var jsonResponse = JsonConvert.SerializeObject(response);
-                                                messageToClient.Append(jsonResponse);
+                                                var encryptedResponse = encryptMessage.ApplyEncryptionServer(jsonResponse, getKeys.key, getKeys.iv, _rsa_public_key);
+                                                messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedKey));
+                                                messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedIv));
+                                                messageToClient.Append(encryptedResponse.hashJson);
+                                                messageToClient.Append(encryptedResponse.base64EncryptedData);
+                                                
                                                 server.SendMultipartMessage(messageToClient);
+                                                
                                                 Console.WriteLine($"Sending to Client: {messageToClient}");
                                             }
                                         }

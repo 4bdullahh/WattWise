@@ -39,7 +39,7 @@ namespace client_side.Services
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
             var encryptMessage = new HandleEncryption();
-            var result = encryptMessage.ApplyEncryption(modelData, key, iv,_rsa_public_key );
+            var result = encryptMessage.ApplyEncryptionClient(modelData, key, iv,_rsa_public_key );
             messageToServer.Append(Convert.ToBase64String(result.encryptedKey));
             messageToServer.Append(Convert.ToBase64String(result.encryptedIv));
             messageToServer.Append(result.hashJson); //4
