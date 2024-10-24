@@ -35,24 +35,15 @@ namespace client_side.Services
             byte[] iv
         )
         {
-            
             var messageToServer = new NetMQMessage();
             messageToServer.Append(clientAddress); //0
             messageToServer.AppendEmptyFrame(); //1
-
-            var jsonRequest = JsonConvert.SerializeObject(modelData);
-            string hashJson = Cryptography.GenerateHash(jsonRequest);
-            byte[] encryptedData = Cryptography.AESEncrypt(jsonRequest, key, iv);
-            string base64EncryptedData = Convert.ToBase64String(encryptedData);
-            // We might use this later for Electron
-            //var topic = userData.Topic;
-            byte[] encryptedKey = Cryptography.RSAEncrypt(_rsa_public_key, key);
-            byte[] encryptedIv = Cryptography.RSAEncrypt(_rsa_public_key, iv);
-
-            messageToServer.Append(Convert.ToBase64String(encryptedKey));
-            messageToServer.Append(Convert.ToBase64String(encryptedIv));
-            messageToServer.Append(hashJson); //4
-            messageToServer.Append(base64EncryptedData); //5
+            var encryptMessage = new HandleEncryption();
+            var result = encryptMessage.ApplyEncryptionClient(modelData, key, iv,_rsa_public_key );
+            messageToServer.Append(Convert.ToBase64String(result.encryptedKey));
+            messageToServer.Append(Convert.ToBase64String(result.encryptedIv));
+            messageToServer.Append(result.hashJson); //4
+            messageToServer.Append(result.base64EncryptedData); //5
             return messageToServer;
         }
     }

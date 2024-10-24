@@ -11,6 +11,7 @@ using client_side.Services.Interfaces;
 using server_side.Cryptography;
 using server_side.Services;
 using System.IO.Pipes;
+using DotNetEnv;
 
 namespace client_side.Services
 {
@@ -19,25 +20,24 @@ namespace client_side.Services
 
         private readonly IMessagesServices _messagesServices;
         private X509Certificate2 _clientCertificate;
+        private readonly string _rsaPrivateKey;
         private FolderPathServices folderpath;
 
         public ClientServices(IMessagesServices messagesServices)
         {
             folderpath = new FolderPathServices();
+            var envGenerator = new GenerateEnvFile();
+            envGenerator.EnvFileGenerator();
+            Env.Load(folderpath.GetWattWiseFolderPath() + "\\server-side\\.env");
+            _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
             _messagesServices = messagesServices;
             _clientCertificate = new X509Certificate2(folderpath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
 
         public void StartClient()
         {
-
-            byte[] key = new byte[32];
-            byte[] iv = new byte[16];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(key);
-                rng.GetBytes(iv);
-            }
+            var generateKeys = new HandleEncryption();
+            var getKeys = generateKeys.GenerateKeys();
             var clientSocketPerThread = new ThreadLocal<DealerSocket>();
 
             using (var poller = new NetMQPoller())
@@ -59,9 +59,11 @@ namespace client_side.Services
 
                        TcpClient tcpClient = new TcpClient("localhost", 5556);
 
-                       using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
+                       using (var sslStream = new SslStream(tcpClient.GetStream(), false,
+                                  (sender, cert, chain, errors) => true))
                        {
-                           sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
+                           sslStream.AuthenticateAsClient("localhost",
+                               new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
                            if (sslStream.IsAuthenticated)
                            {
                                Console.WriteLine("Client: TLS authentication successful!");
@@ -70,69 +72,70 @@ namespace client_side.Services
                            {
                                Console.WriteLine("Client: TLS authentication failed!");
                            }
-                       }
 
-                       DealerSocket client = null;
 
-                       if (!clientSocketPerThread.IsValueCreated)
-                       {
-                           client = new DealerSocket();
-                           client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
-                           // Here is when I changed the route again
-                           client.Connect("tcp://localhost:5555");
+                           DealerSocket client = null;
 
-                           client.ReceiveReady += (s, e) =>
+                           if (!clientSocketPerThread.IsValueCreated)
                            {
-                               var message = e.Socket.ReceiveMultipartMessage();
-                               var response = message[1].ConvertToString();
-                               Console.WriteLine($"Server Recieved: {response}, ClientId: {clientId}");
-                           };
-                           clientSocketPerThread.Value = client;
-                           poller.Add(client);
-                       }
-                       else
-                       {
-                           client = clientSocketPerThread.Value;
-                       }
+                               client = new DealerSocket();
+                               client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
+                               // Here is when I changed the route again
+                               client.Connect("tcp://localhost:5555");
 
-                       var timer = new NetMQTimer(firstSend);
-                       poller.Add(timer);
-
-
-
-                       timer.Elapsed += (sender, e) =>
-                       {
-                           string clientAddress = state.ToString();
-
-                           // var modelData = new SmartDevice
-                           // {
-                           //     SmartMeterID = 205, 
-                           //     EnergyPerKwH = 20.5, 
-                           //     CurrentMonthCost = 200
-                           // };
-
-                           var modelData = new UserData
+                               client.ReceiveReady += (s, e) =>
+                               {
+                                   var recievedMessage = client.ReceiveMultipartMessage();
+                                   Console.WriteLine($"Server Recieved: {recievedMessage}");
+                                   var handleEncryption = new HandleEncryption();
+                                   var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[1].Buffer, recievedMessage[2].Buffer,
+                                       Encoding.UTF8.GetString(recievedMessage[3].Buffer), Encoding.UTF8.GetString(recievedMessage[4].Buffer), _rsaPrivateKey);
+                               };
+                               clientSocketPerThread.Value = client;
+                               poller.Add(client);
+                           }
+                           else
                            {
-                               UserID = 607,
-                               UserEmail = "addyfive@gmail.com",
-                               Topic = "addUser"
-                           };
+                               client = clientSocketPerThread.Value;
+                           }
 
-                           var messageToServer = _messagesServices.SendReading(
+                           var timer = new NetMQTimer(firstSend);
+                           poller.Add(timer);
+
+
+
+                           timer.Elapsed += (sender, e) =>
+                           {
+                               string clientAddress = state.ToString();
+
+                               // var modelData = new SmartDevice
+                               // {
+                               //     SmartMeterID = 205, 
+                               //     EnergyPerKwH = 20.5, 
+                               //     CurrentMonthCost = 200
+                               // };
+
+                               var modelData = new UserData
+                               {
+                                   UserID = 607,
+                                   Topic = "getId"
+                               };
+
+                               var messageToServer = _messagesServices.SendReading(
                                    clientAddress,
                                    modelData,
-                                   key,
-                                   iv
+                                   getKeys.key,
+                                   getKeys.iv
                                );
 
-                           Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
-                           client.SendMultipartMessage(messageToServer);
+                               Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
+                               client.SendMultipartMessage(messageToServer);
 
-                           int newTime = currentInterval.Next(minInterval, maxInterval);
-                           timer.Interval = newTime;
-                           Console.WriteLine($"New time {newTime}");
-                       };
-
+                               int newTime = currentInterval.Next(minInterval, maxInterval);
+                               timer.Interval = newTime;
+                               Console.WriteLine($"New time {newTime}");
+                           };
+                       }
                    }, i, TaskCreationOptions.LongRunning);
                 }
 
