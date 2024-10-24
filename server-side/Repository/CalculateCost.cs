@@ -38,15 +38,23 @@ public class CalculateCost : ICalculateCost
     }
 
     public double CalculateRates(DateTime currentTime, double kwhPerHour, double standingCharge, double costPerKwh)
-    { 
-        kwhPerHour = kwhPerHour * currentTime.Hour;
-        var currentDayCost = costPerKwh * kwhPerHour;
+    {
+        try
+        {
+            kwhPerHour = kwhPerHour * currentTime.Hour;
+            var currentDayCost = costPerKwh * kwhPerHour;
 
-        var daysPassedInMonth = currentTime.Day;
-        var currentMonthCost = currentDayCost * daysPassedInMonth;
-        var calcStandingCharge =  standingCharge * daysPassedInMonth;
-        var totalCost = currentMonthCost + calcStandingCharge;
+            var daysPassedInMonth = currentTime.Day;
+            var currentMonthCost = currentDayCost * daysPassedInMonth;
+            var calcStandingCharge = standingCharge * daysPassedInMonth;
+            var totalCost = currentMonthCost + calcStandingCharge;
+
+            return totalCost;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Calculate Rate Error", e);
+        }
         
-        return totalCost;
     }
 }

@@ -16,6 +16,7 @@ public class CalculateCostClient :ICalculateCostClient
          * https://www.ofgem.gov.uk/average-gas-and-electricity-usage#:~:text=high%20energy%20use.-,Typical%20values,-The%20energy%20price
          */
 
+        //can go into detail energy based on time of day
         var generateAvgUse = new Random();
         double max = 0.1;
         double min = 0.05;
@@ -33,44 +34,59 @@ public class CalculateCostClient :ICalculateCostClient
         double medUsePerHour = 0.30;
         double highUsePerHour = 0.46;
         double latestUsePerHour;
-        
-        
-        switch (customerType)
-        {
-            case "Large Household":
-            {
-                latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH,highUsePerHour, multiplier);
-            }
-                break;
-            case "Average Household":
-            {
-                latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, medUsePerHour, multiplier);
-            }
-                break;
-            case "Small Household":
-            {
-                latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, lowUsePerHour, multiplier);
-            }
-                break;
-            default:
-            {
-                latestUsePerHour = 0;
-            }
-                break;
-                
-        }
 
-        modelData.EnergyPerKwH = latestUsePerHour;
+        try
+        {
+            switch (customerType)
+            {
+                case "Large Household":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, highUsePerHour, multiplier);
+                }
+                    break;
+                case "Average Household":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, medUsePerHour, multiplier);
+                }
+                    break;
+                case "Small Household":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, lowUsePerHour, multiplier);
+                }
+                    break;
+                default:
+                {
+                    latestUsePerHour = 0;
+                }
+                    break;
+
+            }
+
+            modelData.EnergyPerKwH = latestUsePerHour;
+
+            return modelData;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
         
-        return modelData;
     }
 
     
     public double AddPriceFluctuation(double modelEnergyData, double usePerHour, double multiplier)
     {
-        double energyFluctuation = usePerHour * multiplier;
-        modelEnergyData = usePerHour + energyFluctuation;
-        return modelEnergyData;
+        try
+        {
+            double energyFluctuation = usePerHour * multiplier;
+            modelEnergyData = usePerHour + energyFluctuation;
+            return modelEnergyData;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
     }
     
     
