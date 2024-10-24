@@ -10,10 +10,12 @@ public class SmartMeterRepo : ISmartMeterRepo
     private List<SmartDevice> meterList;
     private FolderPathServices folderpath;
     private readonly ISaveData _saveData;
-    public SmartMeterRepo(ISaveData saveData)
+    private readonly ICalculateCost _calculateCost;
+    public SmartMeterRepo(ISaveData saveData, ICalculateCost calculateCost)
     {
         folderpath = new FolderPathServices();
         _saveData = saveData;
+        _calculateCost = calculateCost;
         LoadUserData();
     }
     
@@ -53,13 +55,16 @@ public class SmartMeterRepo : ISmartMeterRepo
     public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
     {
        var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
-
+        
+       
+       
        if (existingDevice != null)
        {
+           var calculateReadings = _calculateCost.getCurrentBill(existingDevice);
            
-           existingDevice.SmartMeterID = smartDevice.SmartMeterID;
-           existingDevice.EnergyPerKwH = smartDevice.EnergyPerKwH;
-           existingDevice.CurrentMonthCost = smartDevice.CurrentMonthCost;
+           existingDevice.SmartMeterID = calculateReadings.SmartMeterID;
+           existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
+           existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
            
            var result = _saveData.ListToJson(existingDevice);
            return result;

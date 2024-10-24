@@ -2,6 +2,6 @@
 
 public interface ICalculateCost
 {
-    SmartDevice GetCurrentBill(double EnergyPerKwH);
+    SmartDevice getCurrentBill(SmartDevice smartDevice);
     
 }

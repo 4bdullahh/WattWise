@@ -1,6 +1,8 @@
-﻿namespace client_side.Services.Interfaces;
+﻿using client_side.Models;
+
+namespace client_side.Services.Interfaces;
 
 public interface ICalculateCostClient
 {
-    SmartDevice getRandomCost(SmartDevice modelData);
+    SmartDeviceClient getRandomCost(SmartDeviceClient modelData, string customerType);
 }

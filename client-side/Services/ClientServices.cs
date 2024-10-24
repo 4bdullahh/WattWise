@@ -106,9 +106,10 @@ namespace client_side.Services
                         {
                             string clientAddress = state.ToString();
 
-                            var genTestModel = new SmartDevice();
+                            var genTestModel = new SmartDeviceClient();
+                            var genUserModel = new UserModel();
 
-                            var modelData = _calculateCostClient.getRandomCost(genTestModel);
+                            var modelData = _calculateCostClient.getRandomCost(genTestModel, genUserModel.CustomerType);
                             
                              var messageToServer = _messagesServices.SendReading(
                                     clientAddress,
