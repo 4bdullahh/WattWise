@@ -11,8 +11,6 @@ public class HandleEncryption
     public (string userHash, string decryptedMessage, string receivedHash) 
         ApplyDencryption(NetMQMessage receivedMessage, byte[] encryptedKey, byte[] encryptedIv, string receivedHash, string receivedUser, string _rsaPrivateKey)
     {
-        if (receivedMessage.FrameCount.Equals(7))
-        {
             encryptedKey = Convert.FromBase64String(Encoding.UTF8.GetString(receivedMessage[3].ToByteArray()));
             encryptedIv = Convert.FromBase64String(Encoding.UTF8.GetString(receivedMessage[4].ToByteArray()));
             byte[] key = Cryptography.RSADecrypt(_rsaPrivateKey, encryptedKey);
@@ -22,24 +20,7 @@ public class HandleEncryption
             byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
             string decryptedMessage = Cryptography.AESDecrypt(encryptedMessage, key, iv);
             string userHash = Cryptography.GenerateHash(decryptedMessage);
-            
             return (userHash, decryptedMessage, receivedHash);
-        }
-        if (receivedMessage.FrameCount.Equals(6))
-        {
-            encryptedKey = Convert.FromBase64String(Encoding.UTF8.GetString(receivedMessage[1].ToByteArray()));
-            encryptedIv = Convert.FromBase64String(Encoding.UTF8.GetString(receivedMessage[2].ToByteArray()));
-            byte[] key = Cryptography.RSADecrypt(_rsaPrivateKey, encryptedKey);
-            byte[] iv = Cryptography.RSADecrypt(_rsaPrivateKey, encryptedIv);
-            receivedHash = Encoding.UTF8.GetString(receivedMessage[3].Buffer);
-            receivedUser = Encoding.UTF8.GetString(receivedMessage[4].Buffer);
-            byte[] encryptedMessage = Convert.FromBase64String(receivedUser);
-            string decryptedMessage = Cryptography.AESDecrypt(encryptedMessage, key, iv);
-            string userHash = Cryptography.GenerateHash(decryptedMessage);
-            
-            return (userHash, decryptedMessage, receivedHash);
-        }
-        return (null, null, null);
     }
 
     public (string hashJson, byte[] encryptedKey, byte[] encryptedIv, string base64EncryptedData )
@@ -64,7 +45,7 @@ public class HandleEncryption
         byte[] encryptedIv = Cryptography.RSAEncrypt(_rsa_public_key, iv);
         return (hashJson, encryptedKey, encryptedIv, base64EncryptedData);
     }
-    /*public (string userHash, string decryptedMessage, string receivedHash) 
+    public (string userHash, string decryptedMessage, string receivedHash) 
         ApplyDencryptionServer(NetMQMessage recievedMessage, byte[] encryptedKey, byte[] encryptedIv, string receivedHash, string receivedUser, string _rsaPrivateKey)
     {
         encryptedKey = Convert.FromBase64String(Encoding.UTF8.GetString(recievedMessage[1].ToByteArray()));
@@ -78,7 +59,7 @@ public class HandleEncryption
         string userHash = Cryptography.GenerateHash(decryptedMessage);
             
         return (userHash, decryptedMessage, receivedHash);
-    }*/
+    }
     public (byte[] key, byte[] iv) 
         GenerateKeys()
     {

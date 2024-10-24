@@ -88,7 +88,7 @@ namespace client_side.Services
                                    var recievedMessage = client.ReceiveMultipartMessage();
                                    Console.WriteLine($"Server Recieved: {recievedMessage}");
                                    var handleEncryption = new HandleEncryption();
-                                   var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[1].Buffer, recievedMessage[2].Buffer,
+                                   var result = handleEncryption.ApplyDencryptionServer(recievedMessage, recievedMessage[1].Buffer, recievedMessage[2].Buffer,
                                        Encoding.UTF8.GetString(recievedMessage[3].Buffer), Encoding.UTF8.GetString(recievedMessage[4].Buffer), _rsaPrivateKey);
                                };
                                clientSocketPerThread.Value = client;
