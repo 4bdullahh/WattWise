@@ -41,15 +41,15 @@ public class CalculateCost : ICalculateCost
     {
         try
         {
-            kwhPerHour = kwhPerHour * currentTime.Hour;
-            var currentDayCost = costPerKwh * kwhPerHour;
-
+           
+            var currentDayCost = costPerKwh * (kwhPerHour * currentTime.Hour);
             var daysPassedInMonth = currentTime.Day;
             var currentMonthCost = currentDayCost * daysPassedInMonth;
             var calcStandingCharge = standingCharge * daysPassedInMonth;
             var totalCost = currentMonthCost + calcStandingCharge;
-
-            return totalCost;
+            var roundedTotalCost = Math.Round(totalCost, 2);
+            
+            return roundedTotalCost;
         }
         catch (Exception e)
         {
