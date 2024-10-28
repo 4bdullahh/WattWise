@@ -1,7 +1,6 @@
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using NetMQ;
 using NetMQ.Sockets;
@@ -10,7 +9,6 @@ using server_side.Services.Interface;
 using System.Text;
 using DotNetEnv;
 using server_side.Cryptography;
-using server_side.Services.Models;
 
 namespace server_side.Services
 {
@@ -20,12 +18,9 @@ namespace server_side.Services
         private readonly string _rsaPrivateKey;
         private readonly string _rsa_public_key;
         private X509Certificate2 _serverCertificate;
-
-
-
-
         private readonly IFolderPathServices _folderPathServices;
         private readonly ISmartMeterServices _smartMeterServices;
+
         public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
 
         {

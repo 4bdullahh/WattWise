@@ -6,51 +6,77 @@ namespace server_side.Services
     {
         public string GetServerSideFolderPath()
         {
-            string folderName = "server-side";
-            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-            while (currentDirectory != null && currentDirectory.Name != folderName)
+            try
             {
-                currentDirectory = currentDirectory.Parent;
+                string folderName = "server-side";
+                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+                while (currentDirectory != null && currentDirectory.Name != folderName)
+                {
+                    currentDirectory = currentDirectory.Parent;
+                }
+
+                if (currentDirectory == null)
+                {
+                    throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                }
+
+                return currentDirectory.FullName;
             }
-            if (currentDirectory == null)
+            catch (Exception e)
             {
-                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                Console.WriteLine($"We were unable to get the server side folder path: {e.Message}");
+                throw;
             }
-            return currentDirectory.FullName;
         }
         public string GetClientFolderPath()
         {
-            string folderName = "client-side";  
-            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-
-            while (currentDirectory != null && currentDirectory.Name != folderName)
+            try
             {
-                currentDirectory = currentDirectory.Parent;
-            }
+                string folderName = "client-side";
+                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
 
-            if (currentDirectory == null)
+                while (currentDirectory != null && currentDirectory.Name != folderName)
+                {
+                    currentDirectory = currentDirectory.Parent;
+                }
+
+                if (currentDirectory == null)
+                {
+                    throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                }
+
+                return currentDirectory.FullName;
+            }
+            catch (Exception e)
             {
-                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                Console.WriteLine($"We were unable to get the client folder path: {e.Message}");
+                throw;
             }
-
-            return currentDirectory.FullName; // Return the full path to the WattWise folder
         }
         public string GetWattWiseFolderPath()
         {
-            string folderName = "WattWise";  
-            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-
-            while (currentDirectory != null && currentDirectory.Name != folderName)
+            try
             {
-                currentDirectory = currentDirectory.Parent;
-            }
+                string folderName = "WattWise";
+                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
 
-            if (currentDirectory == null)
+                while (currentDirectory != null && currentDirectory.Name != folderName)
+                {
+                    currentDirectory = currentDirectory.Parent;
+                }
+
+                if (currentDirectory == null)
+                {
+                    throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                }
+
+                return currentDirectory.FullName; 
+            }
+            catch (Exception e)
             {
-                throw new DirectoryNotFoundException($"Could not find the '{folderName}' directory.");
+                Console.WriteLine($"We were unable to get the wat Wise folder path: {e.Message}");
+                throw;
             }
-
-            return currentDirectory.FullName; // Return the full path to the WattWise folder
         }
     }
     

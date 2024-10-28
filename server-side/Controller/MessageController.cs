@@ -15,7 +15,6 @@ namespace server_side.Controller
         public void ReceiveMessage()
         {
             _messageServices.ReceiveMessageServices();
-
         }
     }
 

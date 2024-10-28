@@ -23,16 +23,24 @@ namespace server_side.Repository
         {
             string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
             
-            if (File.Exists(jsonFilePath))
+            try
             {
-                string jsonData = File.ReadAllText(jsonFilePath);
-                JArray _users = JArray.Parse(jsonData);
-                usersList = JsonConvert.DeserializeObject<List<UserData>>(_users.ToString());
+                if (File.Exists(jsonFilePath))
+                {
+                    string jsonData = File.ReadAllText(jsonFilePath);
+                    JArray _users = JArray.Parse(jsonData);
+                    usersList = JsonConvert.DeserializeObject<List<UserData>>(_users.ToString());
+                }
+                else
+                {
+                    File.Create(jsonFilePath).Close();
+                    LoadUserData();
+                }
             }
-            else
+            catch (Exception e)
             {
-                File.Create(jsonFilePath).Close();
-                LoadUserData();
+                Console.WriteLine($"We could not load users data: {e.Message}");
+                throw;
             }
         }
 
@@ -40,59 +48,81 @@ namespace server_side.Repository
         {
             var user = usersList.FirstOrDefault(user => user.UserID == UserID);
 
-            if (user != null)
+            try
             {
-                return user;
-            }
-            else
-            {
+                if (user != null)
+                {
+                    return user;
+                }
+
                 return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"We could not get user id: {e.Message}");
+                throw;
             }
         }
 
         public UserData UpdateUserData(UserData user)
         {
-            var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
-            
-            existingUser.UserID =  user.UserID;
-            existingUser.firstName = user.firstName;
-            existingUser.lastName = user.lastName;
-            existingUser.Address = user.Address;
-            existingUser.UserEmail = user.UserEmail;
-            existingUser.Passcode = user.Passcode;
-            existingUser.SmartMeterID = user.SmartMeterID;
-            existingUser.EnergyPerKwH = user.EnergyPerKwH;
-            existingUser.CurrentMonthCost = user.CurrentMonthCost;
-            
-            string serializedUserData = JsonConvert.SerializeObject(existingUser);
-            var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
-            existingUser.Hash = hashedUserdData;
-            var result = _saveData.ListToJson(existingUser);
-            return result;
+            try
+            {
+                var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
+
+                existingUser.UserID = user.UserID;
+                existingUser.firstName = user.firstName;
+                existingUser.lastName = user.lastName;
+                existingUser.Address = user.Address;
+                existingUser.UserEmail = user.UserEmail;
+                existingUser.Passcode = user.Passcode;
+                existingUser.SmartMeterID = user.SmartMeterID;
+                existingUser.EnergyPerKwH = user.EnergyPerKwH;
+                existingUser.CurrentMonthCost = user.CurrentMonthCost;
+
+                string serializedUserData = JsonConvert.SerializeObject(existingUser);
+                var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
+                existingUser.Hash = hashedUserdData;
+                var result = _saveData.ListToJson(existingUser);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"We could not update user data: {e.Message}");
+                throw;
+            }
         }
         
         public UserData AddUserData(UserData userData)
         {
-            var users = new UserData
+            try
             {
-                UserID = userData.UserID,
-                firstName = userData.firstName,
-                lastName = userData.lastName,
-                Address = userData.Address,
-                UserEmail = userData.UserEmail,
-                Passcode = userData.Passcode,
-                SmartDevice = new SmartDevice
+                var users = new UserData
                 {
-                    SmartMeterID = userData.SmartMeterID,
-                    EnergyPerKwH = userData.EnergyPerKwH,
-                    CurrentMonthCost = userData.CurrentMonthCost
-                }
-            };
-            string serializedUserData = JsonConvert.SerializeObject(users);
-            var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
-            users.Hash = hashedUserdData;
-            var result = _saveData.ListToJson(users);
-            return result;
+                    UserID = userData.UserID,
+                    firstName = userData.firstName,
+                    lastName = userData.lastName,
+                    Address = userData.Address,
+                    UserEmail = userData.UserEmail,
+                    Passcode = userData.Passcode,
+                    SmartDevice = new SmartDevice
+                    {
+                        SmartMeterID = userData.SmartMeterID,
+                        EnergyPerKwH = userData.EnergyPerKwH,
+                        CurrentMonthCost = userData.CurrentMonthCost
+                    }
+                };
+                string serializedUserData = JsonConvert.SerializeObject(users);
+                var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
+                users.Hash = hashedUserdData;
+                var result = _saveData.ListToJson(users);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"We could not add user data: {e.Message}");
+                throw;
+            }
         }
 
  

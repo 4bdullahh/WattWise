@@ -23,28 +23,34 @@ namespace server_side.Services
 
         public SmartMeterResponse UpdateMeterServices(string decryptedMessage)
         { 
-            SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
-            
-            var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
+            try
+            {
+                SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
 
-            if (meterReadings != null)
-            {
-                return new SmartMeterResponse
+                var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
+
+                if (meterReadings != null)
                 {
-                    SmartMeterID = meterReadings.SmartMeterID,
-                    EnergyPerKwH = meterReadings.EnergyPerKwH,
-                    CurrentMonthCost = meterReadings.CurrentMonthCost,
-                    Message = ""
-                };
-            }
-            else
-            {
+                    return new SmartMeterResponse
+                    {
+                        SmartMeterID = meterReadings.SmartMeterID,
+                        EnergyPerKwH = meterReadings.EnergyPerKwH,
+                        CurrentMonthCost = meterReadings.CurrentMonthCost,
+                        Message = ""
+                    };
+                }
+
                 return new SmartMeterResponse
                 {
                     Message = "SmartMeter not found"
                 };
             }
-            
+            catch (Exception e)
+            {
+                Console.WriteLine($"We were unable to process the message: {e.Message}");
+                throw;
+            }
+
         }
          
     

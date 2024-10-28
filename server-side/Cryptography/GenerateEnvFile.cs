@@ -18,20 +18,27 @@ public class GenerateEnvFile
 
     if (File.Exists(envFilePath))
     {
-        // Read the .env file
-        string[] envLines = File.ReadAllLines(envFilePath);
-        foreach (var line in envLines)
+        try
         {
-            if (!string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
+            string[] envLines = File.ReadAllLines(envFilePath);
+            foreach (var line in envLines)
             {
-                var keyValue = line.Split('=', 2);
-                if (keyValue.Length == 2)
+                if (!string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
                 {
-                    string key = keyValue[0].Trim();
-                    string value = keyValue[1].Trim();
-                    envVariables[key] = value;
+                    var keyValue = line.Split('=', 2);
+                    if (keyValue.Length == 2)
+                    {
+                        string key = keyValue[0].Trim();
+                        string value = keyValue[1].Trim();
+                        envVariables[key] = value;
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to load env file: {envFilePath}, error: {e.Message}");
+            throw;
         }
     }
     else
@@ -52,9 +59,17 @@ public class GenerateEnvFile
    
     using (StreamWriter writer = new StreamWriter(envFilePath))
     {
-        foreach (var entry in envVariables)
+        try
         {
-            writer.WriteLine($"{entry.Key}={entry.Value}");
+            foreach (var entry in envVariables)
+            {
+                writer.WriteLine($"{entry.Key}={entry.Value}");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"We could not write env file: {envFilePath}, error: {e.Message}");
+            throw;
         }
     }
 }
