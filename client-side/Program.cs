@@ -2,6 +2,8 @@
 using client_side.Services;
 using client_side.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using server_side.Services;
+using server_side.Services.Interface;
 
 namespace client_side
 {
@@ -14,7 +16,7 @@ namespace client_side
             serviceCollection.AddScoped<IMessagesServices, MessagesServices>();
             serviceCollection.AddScoped<IClientServices, ClientServices>();
             serviceCollection.AddScoped<ICalculateCostClient, CalculateCostClient>();
-
+            serviceCollection.AddScoped<IFolderPathServices, FolderPathServices>();
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var clientService = serviceProvider.GetService<IClientServices>();
             clientService.StartClient();
