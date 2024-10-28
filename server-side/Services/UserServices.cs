@@ -7,12 +7,12 @@ namespace server_side.Services
     public class UserServices : IUserServices
     {
         private readonly IUserMessageRepo _userRepo;
-        
+
         public UserServices(IUserMessageRepo userRepo)
         {
             _userRepo = userRepo;
         }
-        
+
         public UserResponse UserOperations(string decryptedMessage)
         {
             try
@@ -30,6 +30,7 @@ namespace server_side.Services
                         {
                             return new UserResponse { Successs = false };
                         }
+
                         return new UserResponse
                         {
                             Successs = true,
@@ -44,6 +45,7 @@ namespace server_side.Services
                     case "addUser":
                     {
                         var isExisting = _userRepo.GetById(userJson.UserID);
+
                         if (isExisting != null)
                         {
                             return new UserResponse
@@ -52,19 +54,22 @@ namespace server_side.Services
                                 Message = "User allready exists and cannot be added again"
                             };
                         }
+
                         var userData = _userRepo.AddUserData(userJson);
                         if (userData != null)
                         {
                             return new UserResponse
                             {
-                                UserID = userJson.UserID,
-                                FirstName = userJson.firstName,
+                                UserID = userData.UserID,
+                                FirstName = userData.firstName,
                                 Successs = true,
                                 Message = "User Added"
                             };
                         }
+
                         return new UserResponse { Successs = false, Message = "Error adding user" }; // Add this return
                     }
+
                     case "UpdateUser":
                     {
                         var existingUserData = _userRepo.GetById(userJson.UserID);
@@ -77,25 +82,32 @@ namespace server_side.Services
                             {
                                 return new UserResponse
                                 {
-                                    UserID = userJson.UserID,
-                                    FirstName = userJson.firstName,
-                                    LastName = userJson.lastName,
-                                    UserEmail = userJson.UserEmail,
+                                    UserID = updateUser.UserID,
+                                    FirstName = updateUser.firstName,
+                                    LastName = updateUser.lastName,
+                                    UserEmail = updateUser.UserEmail,
                                     Successs = true,
                                     Message = "User Updated Successfully"
                                 };
                             }
+                            else
+                            {
+                                return new UserResponse
+                                {
+                                    Successs = false,
+                                    Message = "Error updating user"
+                                };
+                            }
+                        }
+                        else
+                        {
                             return new UserResponse
                             {
                                 Successs = false,
-                                Message = "Error updating user"
+                                Message = "User doesn't exist"
                             };
                         }
-                        return new UserResponse
-                        {
-                            Successs = false,
-                            Message = "User doesn't exist"
-                        };
+
                     }
                     default:
                     {
@@ -105,6 +117,7 @@ namespace server_side.Services
                             Message = "Invalid Topic Request from client"
                         };
                     }
+
                 }
             }
             catch (Exception e)
@@ -112,9 +125,7 @@ namespace server_side.Services
                 Console.WriteLine($"We could not process this message: {e.Message}");
                 throw;
             }
-
         }
     }
-    
 }
 

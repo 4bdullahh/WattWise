@@ -12,10 +12,12 @@ namespace server_side.Repository
         private IHashHandle userHash;
         private FolderPathServices folderpath;
         private readonly ISaveData _saveData;
-        public UserMessageRepo(ISaveData saveData)
+        private readonly ISmartMeterRepo _smartMeterRepo;
+        public UserMessageRepo(ISaveData saveData, ISmartMeterRepo smartMeterRepo)
         {
             folderpath= new FolderPathServices();
             _saveData = saveData;
+            _smartMeterRepo = smartMeterRepo;
             LoadUserData();
         }
 
@@ -97,9 +99,13 @@ namespace server_side.Repository
         {
             try
             {
+                var generateId = usersList.Count();
+            
+                var smartMeter = _smartMeterRepo.GetById(userData.SmartMeterID);
+            
                 var users = new UserData
                 {
-                    UserID = userData.UserID,
+                    UserID = generateId,
                     firstName = userData.firstName,
                     lastName = userData.lastName,
                     Address = userData.Address,
@@ -107,9 +113,9 @@ namespace server_side.Repository
                     Passcode = userData.Passcode,
                     SmartDevice = new SmartDevice
                     {
-                        SmartMeterID = userData.SmartMeterID,
-                        EnergyPerKwH = userData.EnergyPerKwH,
-                        CurrentMonthCost = userData.CurrentMonthCost
+                        SmartMeterID = smartMeter.SmartMeterID,
+                        EnergyPerKwH = smartMeter.EnergyPerKwH,
+                        CurrentMonthCost = smartMeter.CurrentMonthCost
                     }
                 };
                 string serializedUserData = JsonConvert.SerializeObject(users);
@@ -117,6 +123,7 @@ namespace server_side.Repository
                 users.Hash = hashedUserdData;
                 var result = _saveData.ListToJson(users);
                 return result;
+                
             }
             catch (Exception e)
             {

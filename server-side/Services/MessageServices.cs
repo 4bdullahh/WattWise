@@ -20,7 +20,6 @@ namespace server_side.Services
         private X509Certificate2 _serverCertificate;
         private readonly IFolderPathServices _folderPathServices;
         private readonly ISmartMeterServices _smartMeterServices;
-
         public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
 
         {
@@ -101,13 +100,23 @@ namespace server_side.Services
                                             }
                                             else
                                             {
-                                              
                                                 var messageToClient = new NetMQMessage();
                                                 messageToClient.Append(clientAddress);
                                                 messageToClient.AppendEmptyFrame();
                                                 var generateKeys = new HandleEncryption();
                                                 var getKeys = generateKeys.GenerateKeys();
-                                                var response = _userServices.UserOperations(result.decryptedMessage);
+                                                
+                                                object response;
+                        
+                                                if (result.decryptedMessage.Contains("UserID"))
+                                                {
+                                                    response = _userServices.UserOperations(result.decryptedMessage);
+                                                }
+                                                else
+                                                {
+                                                    response = _smartMeterServices.UpdateMeterServices(result.decryptedMessage);
+                                                }
+                                                
                                                 var encryptMessage = new HandleEncryption();
                                                 var jsonResponse = JsonConvert.SerializeObject(response);
                                                 var encryptedResponse = encryptMessage.ApplyEncryptionServer(jsonResponse, getKeys.key, getKeys.iv, _rsa_public_key);
@@ -117,7 +126,6 @@ namespace server_side.Services
                                                 messageToClient.Append(encryptedResponse.base64EncryptedData);
                                                 
                                                 server.SendMultipartMessage(messageToClient);
-                                                
                                                 Console.WriteLine($"Sending to Client: {messageToClient}");
                                             }
                                         }

@@ -22,8 +22,9 @@ namespace client_side.Services
         private X509Certificate2 _clientCertificate;
         private readonly string _rsaPrivateKey;
         private FolderPathServices folderPath;
+        private ICalculateCostClient _calculateCostClient;
 
-        public ClientServices(IMessagesServices messagesServices)
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient)
         {
             folderPath = new FolderPathServices();
             var envGenerator = new GenerateEnvFile();
@@ -31,6 +32,7 @@ namespace client_side.Services
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
             _messagesServices = messagesServices;
+            _calculateCostClient = calculateCostClient;
             _clientCertificate = new X509Certificate2(folderPath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
 
@@ -110,18 +112,16 @@ namespace client_side.Services
                                 {
                                     string clientAddress = state.ToString();
 
-                                    // var modelData = new SmartDevice
-                                    // {
-                                    //     SmartMeterID = 205, 
-                                    //     EnergyPerKwH = 20.5, 
-                                    //     CurrentMonthCost = 200
-                                    // };
-
-                                    var modelData = new UserData
+                                    var genTestModel = new SmartDeviceClient();
+                                    var genUserModel = new UserModel
                                     {
                                         UserID = 607,
+                                        CustomerType = "Small Household",
                                         Topic = "getId"
                                     };
+
+                                    var modelData = _calculateCostClient.getRandomCost(genTestModel, genUserModel.CustomerType);
+                                    
 
                                     var messageToServer = _messagesServices.SendReading(
                                         clientAddress,

@@ -17,6 +17,7 @@ namespace server_side
             services.AddScoped<IUserMessageRepo, UserMessageRepo>();
             services.AddScoped<ISmartMeterServices, SmartMeterServices>();
             services.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
+            services.AddScoped<ICalculateCost, CalculateCost>();
             services.AddScoped<ISaveData, SaveData>();
             services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IHashHandle, HashHandle>();

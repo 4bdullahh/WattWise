@@ -13,6 +13,7 @@ namespace client_side.Models
         public SmartDevice? SmartDevice { get; set; }
         public string? Hash { get; set; }
         public string? Topic { get; set; }
+        public string? CustomerType { get; set; }
     }
     
 }

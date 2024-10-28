@@ -10,7 +10,7 @@ public class UserData : SmartDevice
     public string? Topic { get; set; }
     
     public string? Hash { get; set; }
-
+    public string? CustomerType { get; set; }
 }
 
 
