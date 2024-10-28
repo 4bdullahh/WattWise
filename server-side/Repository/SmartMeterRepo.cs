@@ -23,52 +23,66 @@ public class SmartMeterRepo : ISmartMeterRepo
     {
         string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
             
-        if (File.Exists(jsonFilePath))
+        try
         {
-            string jsonData = File.ReadAllText(jsonFilePath);
-            JArray _smartMeters = JArray.Parse(jsonData);
-            meterList = JsonConvert.DeserializeObject<List<SmartDevice>>(_smartMeters.ToString());
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonData = File.ReadAllText(jsonFilePath);
+                JArray _smartMeters = JArray.Parse(jsonData);
+                meterList = JsonConvert.DeserializeObject<List<SmartDevice>>(_smartMeters.ToString());
+            }
+            else
+            {
+                File.Create(jsonFilePath).Close();
+                LoadUserData();
+            }
         }
-        else
+        catch (Exception e)
         {
-            File.Create(jsonFilePath).Close();
-            LoadUserData();
+            Console.WriteLine($"We could not load user data: {e.Message}");
+            throw;
         }
     }
 
     public SmartDevice GetById(int SmartMeterID)
     {
         var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterID == SmartMeterID);
-        if (smartMeterById != null)
+        try
         {
-            return smartMeterById;
-        }
-        else
-        {
+            if (smartMeterById != null)
+            {
+                return smartMeterById;
+            }
+
             return new SmartDevice
             {
                 Message = "Smart Device Not Found"
             };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"We could not get user id: {e.Message}");
+            throw;
         }
     }
     public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
     {
        var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
 
-       if (existingDevice != null)
+       try
        {
-           //calculate energy bill here
-           
-           existingDevice.SmartMeterID = smartDevice.SmartMeterID;
-           existingDevice.EnergyPerKwH = smartDevice.EnergyPerKwH;
-           existingDevice.CurrentMonthCost = smartDevice.CurrentMonthCost;
-           
-           var result = _saveData.ListToJson(existingDevice);
-           return result;
-       }
-       else
-       {
-           
+           if (existingDevice != null)
+           {
+               //calculate energy bill here
+
+               existingDevice.SmartMeterID = smartDevice.SmartMeterID;
+               existingDevice.EnergyPerKwH = smartDevice.EnergyPerKwH;
+               existingDevice.CurrentMonthCost = smartDevice.CurrentMonthCost;
+
+               var result = _saveData.ListToJson(existingDevice);
+               return result;
+           }
+
            var device = new SmartDevice
            {
                SmartMeterID = smartDevice.SmartMeterID,
@@ -78,21 +92,34 @@ public class SmartMeterRepo : ISmartMeterRepo
            };
            AddMeterData(device);
            return device;
+
        }
-       
+       catch (Exception e)
+       {
+           Console.WriteLine($"We could not update smart device: {e.Message}");
+           throw;
+       }
     }
     
     public void AddMeterData(SmartDevice smartDevice)
     {
         
-        var smartMeters = new SmartDevice
+        try
         {
-            SmartMeterID = smartDevice.SmartMeterID,
-            EnergyPerKwH = smartDevice.EnergyPerKwH,
-            CurrentMonthCost = smartDevice.CurrentMonthCost
-        };
-        
-         _saveData.ListToJson(smartMeters);
+            var smartMeters = new SmartDevice
+            {
+                SmartMeterID = smartDevice.SmartMeterID,
+                EnergyPerKwH = smartDevice.EnergyPerKwH,
+                CurrentMonthCost = smartDevice.CurrentMonthCost
+            };
+
+            _saveData.ListToJson(smartMeters);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"We could not add smart device: {e.Message}");
+            throw;
+        }
     }
 
 }

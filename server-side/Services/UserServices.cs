@@ -15,12 +15,14 @@ namespace server_side.Services
         
         public UserResponse UserOperations(string decryptedMessage)
         {
-            UserData userJson = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
-            
-            var topic = userJson.Topic;
-            switch (topic)
+            try
             {
-                case "getId":
+                UserData userJson = JsonConvert.DeserializeObject<UserData>(decryptedMessage);
+
+                var topic = userJson.Topic;
+                switch (topic)
+                {
+                    case "getId":
                     {
                         int userId = userJson.UserID;
                         var userData = _userRepo.GetById(userId);
@@ -28,22 +30,20 @@ namespace server_side.Services
                         {
                             return new UserResponse { Successs = false };
                         }
-
                         return new UserResponse
                         {
                             Successs = true,
                             UserID = userData.UserID,
-                            firstName = userData.firstName,
-                            lastName = userData.lastName,
+                            FirstName = userData.firstName,
+                            LastName = userData.lastName,
                             UserEmail = userData.UserEmail,
                             Address = userData.Address,
                             Topic = userData.Topic,
                         };
                     }
-                case "addUser":
+                    case "addUser":
                     {
                         var isExisting = _userRepo.GetById(userJson.UserID);
-                        
                         if (isExisting != null)
                         {
                             return new UserResponse
@@ -52,62 +52,52 @@ namespace server_side.Services
                                 Message = "User allready exists and cannot be added again"
                             };
                         }
-
                         var userData = _userRepo.AddUserData(userJson);
                         if (userData != null)
                         {
                             return new UserResponse
                             {
                                 UserID = userJson.UserID,
-                                firstName = userJson.firstName,
+                                FirstName = userJson.firstName,
                                 Successs = true,
                                 Message = "User Added"
                             };
                         }
-                        return new UserResponse { Successs = false, Message = "Error adding user" };  // Add this return
-
+                        return new UserResponse { Successs = false, Message = "Error adding user" }; // Add this return
                     }
-                
-                case "UpdateUser":
-                {
-                    var existingUserData = _userRepo.GetById(userJson.UserID);
-
-                    if (existingUserData != null)
+                    case "UpdateUser":
                     {
-                        var updateUser = _userRepo.UpdateUserData(userJson);
+                        var existingUserData = _userRepo.GetById(userJson.UserID);
 
-                        if (updateUser != null)
+                        if (existingUserData != null)
                         {
-                            return new UserResponse
+                            var updateUser = _userRepo.UpdateUserData(userJson);
+
+                            if (updateUser != null)
                             {
-                                UserID = userJson.UserID,
-                                firstName = userJson.firstName,
-                                lastName = userJson.lastName,
-                                UserEmail = userJson.UserEmail,
-                                Successs = true,
-                                Message = "User Updated Successfully"
-                            };
-                        }
-                        else
-                        {
+                                return new UserResponse
+                                {
+                                    UserID = userJson.UserID,
+                                    FirstName = userJson.firstName,
+                                    LastName = userJson.lastName,
+                                    UserEmail = userJson.UserEmail,
+                                    Successs = true,
+                                    Message = "User Updated Successfully"
+                                };
+                            }
                             return new UserResponse
                             {
                                 Successs = false,
                                 Message = "Error updating user"
                             };
                         }
-                    }
-                    else
-                    {
                         return new UserResponse
                         {
                             Successs = false,
                             Message = "User doesn't exist"
                         };
                     }
-                }
-                
-                default:
+                    default:
                     {
                         return new UserResponse
                         {
@@ -115,6 +105,12 @@ namespace server_side.Services
                             Message = "Invalid Topic Request from client"
                         };
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"We could not process this message: {e.Message}");
+                throw;
             }
 
         }

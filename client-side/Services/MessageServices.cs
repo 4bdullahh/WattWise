@@ -14,7 +14,6 @@ namespace client_side.Services
     {
         private readonly string _rsa_public_key;
         private FolderPathServices folderpath;
-
         
         public MessagesServices()
         {
@@ -23,9 +22,7 @@ namespace client_side.Services
             envGenerator.EnvFileGenerator();
             Env.Load(folderpath.GetWattWiseFolderPath() + "\\server-side\\.env");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
-
         }
-
         
         public NetMQMessage SendReading<T>
         (
@@ -35,16 +32,24 @@ namespace client_side.Services
             byte[] iv
         )
         {
-            var messageToServer = new NetMQMessage();
-            messageToServer.Append(clientAddress); //0
-            messageToServer.AppendEmptyFrame(); //1
-            var encryptMessage = new HandleEncryption();
-            var result = encryptMessage.ApplyEncryptionClient(modelData, key, iv,_rsa_public_key );
-            messageToServer.Append(Convert.ToBase64String(result.encryptedKey));
-            messageToServer.Append(Convert.ToBase64String(result.encryptedIv));
-            messageToServer.Append(result.hashJson); //4
-            messageToServer.Append(result.base64EncryptedData); //5
-            return messageToServer;
+            try
+            {
+                var messageToServer = new NetMQMessage();
+                messageToServer.Append(clientAddress); //0
+                messageToServer.AppendEmptyFrame(); //1
+                var encryptMessage = new HandleEncryption();
+                var result = encryptMessage.ApplyEncryptionClient(modelData, key, iv, _rsa_public_key);
+                messageToServer.Append(Convert.ToBase64String(result.encryptedKey));
+                messageToServer.Append(Convert.ToBase64String(result.encryptedIv));
+                messageToServer.Append(result.hashJson); //4
+                messageToServer.Append(result.base64EncryptedData); //5
+                return messageToServer;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"We could not send the message to the server, error: {e.Message}");
+                throw;
+            }
         }
     }
 }
