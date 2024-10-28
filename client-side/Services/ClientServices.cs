@@ -12,6 +12,7 @@ using server_side.Cryptography;
 using server_side.Services;
 using System.IO.Pipes;
 using DotNetEnv;
+using server_side.Services.Interface;
 
 namespace client_side.Services
 {
@@ -21,13 +22,13 @@ namespace client_side.Services
         private readonly IMessagesServices _messagesServices;
         private X509Certificate2 _clientCertificate;
         private readonly string _rsaPrivateKey;
-        private FolderPathServices folderPath;
         private ICalculateCostClient _calculateCostClient;
+        private readonly IFolderPathServices folderPath;
 
-        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient)
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath)
         {
-            folderPath = new FolderPathServices();
-            var envGenerator = new GenerateEnvFile();
+            this.folderPath = folderPath;
+            var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");

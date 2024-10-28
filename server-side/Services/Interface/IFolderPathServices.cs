@@ -4,4 +4,6 @@ public interface IFolderPathServices
 {
     string GetServerSideFolderPath();
     string GetWattWiseFolderPath();
+    string GetClientFolderPath();
+
 }

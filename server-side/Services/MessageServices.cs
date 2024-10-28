@@ -24,10 +24,10 @@ namespace server_side.Services
 
         {
             _userServices = userServices;
-
-            string serverSideFolderPath = folderPathServices.GetServerSideFolderPath();
+            this._folderPathServices = _folderPathServices;
+            string serverSideFolderPath = _folderPathServices.GetServerSideFolderPath();
             _smartMeterServices = smartMeterServices;
-            var envGenerator = new GenerateEnvFile();
+            var envGenerator = new GenerateEnvFile(_folderPathServices);
             envGenerator.EnvFileGenerator();
             Env.Load(serverSideFolderPath + "\\.env");
             _rsaPrivateKey = Env.GetString("RSA_PRIVATE_KEY");
