@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using client_side.Services.Interfaces;
 using DotNetEnv;
 using server_side.Services;
+using server_side.Services.Interface;
 
 
 namespace client_side.Services
@@ -13,14 +14,14 @@ namespace client_side.Services
     public class MessagesServices : IMessagesServices
     {
         private readonly string _rsa_public_key;
-        private FolderPathServices folderpath;
+        private readonly IFolderPathServices folderPath;
         
-        public MessagesServices()
+        public MessagesServices(IFolderPathServices folderPath)
         {
-            folderpath = new FolderPathServices();
-            var envGenerator = new GenerateEnvFile();
+            this.folderPath= folderPath;
+            var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
-            Env.Load(folderpath.GetWattWiseFolderPath() + "\\server-side\\.env");
+            Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
         }
         

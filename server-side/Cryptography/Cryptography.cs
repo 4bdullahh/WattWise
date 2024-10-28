@@ -36,8 +36,8 @@ public static class Cryptography
             using (var rsa = new RSACryptoServiceProvider(2048))
             {
                 rsa.PersistKeyInCsp = false;
-                var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
-                var privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
+                string publicKey = rsa.ToXmlString(false); 
+                string privateKey = rsa.ToXmlString(true); 
                 return (publicKey, privateKey);
             }
         }
