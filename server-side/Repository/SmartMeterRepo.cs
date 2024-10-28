@@ -46,9 +46,10 @@ public class SmartMeterRepo : ISmartMeterRepo
 
     public SmartDevice GetById(int SmartMeterID)
     {
-        var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterID == SmartMeterID);
         try
         {
+            var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterID == SmartMeterID);
+
             if (smartMeterById != null)
             {
                 return smartMeterById;
@@ -70,29 +71,29 @@ public class SmartMeterRepo : ISmartMeterRepo
     }
     public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
     {
-       var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
-
 
        try
        {
-              if (existingDevice != null)
-                  {
-                      var calculateReadings = _calculateCost.getCurrentBill(existingDevice);
-                      
-                      existingDevice.SmartMeterID = calculateReadings.SmartMeterID;
-                      existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
-                      existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
-                      
-                      var result = _saveData.ListToJson(existingDevice);
-                      return result;
-                  }
-                  else
-                  {
-           
-                      var device = new SmartDevice();
-                      AddMeterData(device);
-                      return device;
-                  }
+           var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
+
+          if (existingDevice != null)
+          {
+              var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
+              
+              existingDevice.SmartMeterID = calculateReadings.SmartMeterID;
+              existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
+              existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
+              
+              var result = _saveData.ListToJson(existingDevice);
+              return result;
+          }
+          else
+          {
+   
+              var device = new SmartDevice();
+              AddMeterData(device);
+              return device;
+          }
        } 
     
        catch (Exception e)

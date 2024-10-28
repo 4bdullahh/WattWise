@@ -17,7 +17,8 @@ namespace client_side
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var clientService = serviceProvider.GetService<IClientServices>();
-            await clientService.ElectronServerAsync();
+            clientService.StartClient();
+            //await clientService.ElectronServerAsync();
 
         }
 

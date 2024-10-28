@@ -112,7 +112,10 @@ namespace client_side.Services
                                 {
                                     string clientAddress = state.ToString();
 
-                                    var genTestModel = new SmartDeviceClient();
+                                    var genTestModel = new SmartDeviceClient
+                                    {
+                                        SmartMeterId = 4
+                                    };
                                     var genUserModel = new UserModel
                                     {
                                         UserID = 607,
