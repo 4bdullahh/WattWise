@@ -56,7 +56,6 @@ public class SmartMeterRepo : ISmartMeterRepo
             }
             else
             {
-
                 var device = new SmartDevice();
                 AddMeterData(device);
 

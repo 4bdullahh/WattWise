@@ -37,8 +37,9 @@ public class CalculateCost_Tests
         var actualCost = calculateCost.CalculateRates(dateTime, kwhPerHour, standingCharge, costPerKwh);
         
         //Assert
+        Assert.NotNull(actualCost);
+        Assert.True(actualCost >= 0, "Expected cost to be non negative");
         Assert.Equal(expectedCost, actualCost);
-        
     }
     
 
@@ -51,6 +52,7 @@ public class CalculateCost_Tests
         var getCurrentBill = new CalculateCost();
         var actualResult = getCurrentBill.getCurrentBill(smartDevice);
         //Assert
+        Assert.NotNull(actualResult);
         Assert.Equal(smartDevice, actualResult);
     }
     
