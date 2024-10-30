@@ -7,13 +7,13 @@ using Moq;
 
 namespace server_side.Tests
 {
-    public class GenerateEnvFileTests
+    public class GenerateEnvFile_Tests
     {
         
         private readonly Mock<IFolderPathServices> _mockFolderPathServices;
         private readonly GenerateEnvFile _generateEnvFile;
 
-        public GenerateEnvFileTests()
+        public GenerateEnvFile_Tests()
         {
             _mockFolderPathServices = new Mock<IFolderPathServices>();
             _generateEnvFile = new GenerateEnvFile(_mockFolderPathServices.Object);

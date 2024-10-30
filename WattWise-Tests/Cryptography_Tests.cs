@@ -6,7 +6,7 @@ using server_side.Cryptography;
 
 namespace CryptographyTests
 {
-    public class CryptographyTests
+    public class Cryptography_Tests
     {
         
         [Fact]
