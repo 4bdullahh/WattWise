@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Castle.Core.Logging;
+using Moq;
 using server_side.Repository;
 using server_side.Repository.Interface;
 
@@ -6,64 +7,78 @@ namespace WattWise_Tests;
 
 public class SmartMeterRepo_Tests
 {
-    private readonly SmartMeterRepo _repo;
     
-
     [Theory]
-    
-    // Test Should Fail
+    //TEST SHOULD FAIL
+    // [InlineData(
+    //     999
+    // )]
+    //TEST SHOULD PASS
     [InlineData(
             4
         )]
-    public void GetById_Should_Return_int(int meterId)
+    public void GetById_Should_Return_int(int deviceId)
     {
         //Arrange
-        var expectedId = meterId;
-        
-        //Act
-        var returnedId = _repo.GetById(expectedId);
-        var actualResult = returnedId.SmartMeterID;
-       
-        //Assert
-        Assert.NotNull(actualResult);
-        Assert.Equal(expectedId, actualResult);
-    }
-    
-    
-    [Theory]
-    //Test Should Pass
-    // [InlineData(
-    //     999,
-    //     0.21
-    // )]
-    
-    //Test Should Fail
-    [InlineData(
-        4,
-        0.21,
-        0.60,
-        0.24
-        )]
-    public void UpdateMeterRepo_Should_Update_When_Does_Exist(int existingId, double energyPerKwh, double standingCharge, double costPerKwh)
-    {
-        // Arrange
-        var curTime = DateTime.Now;
-        var currentCost = new CalculateCost();
-        var returnedTotalCost = currentCost.CalculateRates(curTime, energyPerKwh, standingCharge, costPerKwh);
-        
-        var smartDevice = new SmartDevice 
-            {   
-                SmartMeterID = existingId, 
-                EnergyPerKwH = energyPerKwh,
-                CurrentMonthCost = returnedTotalCost,
-            }; 
-        
-        //Act
-        var result = _repo.UpdateMeterRepo(smartDevice);
-         
+        var mockRepo = new Mock<ISmartMeterRepo>();
+        var mockCost = new Mock<CalculateCost>();
+        var mockSaveData = new Mock<ISaveData>();
+        var expectedId = new SmartDevice
+        {
+            SmartMeterID = deviceId
+        };
+        mockRepo.Setup(repo => repo.GetById(deviceId)).Returns(expectedId);
+        var service = new SmartMeterRepo(mockSaveData.Object, mockCost.Object);
+
+        // Act
+        var result = service.GetById(deviceId);
+
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(smartDevice.SmartMeterID, result.SmartMeterID);
-        
+        Assert.Equal(expectedId.SmartMeterID, result.SmartMeterID);
+        mockRepo.Verify(repo => repo.GetById(deviceId), Times.Once);
+       
     }
+    
+    
+     [Theory]
+    //Test Should Pass
+     // [InlineData(
+     //     999,
+     //     0.21
+     // )]
+     //
+    //Test Should Pass
+     [InlineData(
+         4,
+         0.21,
+         0.60,
+         0.24
+         )]
+     public void UpdateMeterRepo_Should_Update_When_Does_Exist(int existingId, double energyPerKwh, double standingCharge, double costPerKwh)
+     {
+         //Arrange
+         var mockRepo = new Mock<ISmartMeterRepo>();
+         var mockCost = new Mock<CalculateCost>();
+         var mockSaveData = new Mock<ISaveData>();
+         var expectedData = new SmartDevice
+         {
+             SmartMeterID = existingId,
+             EnergyPerKwH = energyPerKwh,
+             CostPerKwh = costPerKwh,
+             StandingCharge = standingCharge
+         };
+         mockRepo.Setup(repo => repo.UpdateMeterRepo(expectedData)).Returns(expectedData);
+         var service = new SmartMeterRepo(mockSaveData.Object, mockCost.Object);
+
+         // Act
+         var result = service.UpdateMeterRepo(expectedData);
+
+         // Assert
+         Assert.NotNull(result);
+         Assert.Equal(expectedData.SmartMeterID, result.SmartMeterID);
+         mockRepo.Verify(repo => repo.UpdateMeterRepo(expectedData), Times.Once);
+         
+     }
+    
 }

@@ -16,10 +16,10 @@ public class SmartMeterRepo : ISmartMeterRepo
         folderpath = new FolderPathServices();
         _saveData = saveData;
         _calculateCost = calculateCost;
-        LoadUserData();
+        LoadSmartMeterData();
     }
     
-    private void LoadUserData()
+    private void LoadSmartMeterData()
     {
         string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
             
@@ -34,7 +34,7 @@ public class SmartMeterRepo : ISmartMeterRepo
             else
             {
                 File.Create(jsonFilePath).Close();
-                LoadUserData();
+                LoadSmartMeterData();
             }
         }
         catch (Exception e)
@@ -73,7 +73,7 @@ public class SmartMeterRepo : ISmartMeterRepo
 
        try
        {
-           var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
+          var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
 
           if (existingDevice != null)
           {
