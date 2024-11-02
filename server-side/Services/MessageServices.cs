@@ -20,7 +20,7 @@ namespace server_side.Services
         private X509Certificate2 _serverCertificate;
         private readonly IFolderPathServices _folderPathServices;
         private readonly ISmartMeterServices _smartMeterServices;
-        public MessageService(IFolderPathServices _folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
+        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
 
         {
             _userServices = userServices;
