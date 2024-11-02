@@ -47,7 +47,7 @@ namespace client_side.Services
             {
                 using (var poller = new NetMQPoller())
                 {
-                    var maxClients = 1;
+                    var maxClients = 2;
                     int firstSend = 300;
                     int minInterval = 1000;
                     int maxInterval = 3000;
