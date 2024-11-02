@@ -14,13 +14,14 @@ namespace server_side.Services
 {
     public class MessageService : IMessageServices
     {
-        private readonly IUserServices _userServices;
-        private readonly string _rsaPrivateKey;
-        private readonly string _rsa_public_key;
-        private X509Certificate2 _serverCertificate;
         private readonly IFolderPathServices _folderPathServices;
+        private readonly string _rsa_public_key;
+        private readonly string _rsaPrivateKey;
         private readonly ISmartMeterServices _smartMeterServices;
-        public MessageService(IFolderPathServices folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
+        private readonly IUserServices _userServices;
+        private X509Certificate2 _serverCertificate;
+
+        public MessageService(IFolderPathServices _folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices)
 
         {
             _userServices = userServices;
@@ -37,7 +38,6 @@ namespace server_side.Services
 
         public void ReceiveMessageServices()
         {
-    
             TcpListener tcpListener = new TcpListener(System.Net.IPAddress.Any, 5556);
             tcpListener.Start();
 
@@ -45,112 +45,112 @@ namespace server_side.Services
             NetMQPoller poller = new NetMQPoller();
             server.Bind("tcp://*:5555");
 
-                Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
                 {
-                    while (true)
+                    try
                     {
-                        try
+                        var tcpClient = tcpListener.AcceptTcpClient();
+                        Task.Factory.StartNew(() =>
                         {
-                            var tcpClient = tcpListener.AcceptTcpClient();
-                            Task.Factory.StartNew(() =>
+                            using (var sslStream = new SslStream(tcpClient.GetStream(), false))
                             {
-                                using (var sslStream = new SslStream(tcpClient.GetStream(), false))
+                                try
+                                {
+                                    Console.WriteLine("Server: Starting TLS handshake...");
+                                    sslStream.AuthenticateAsServer(_serverCertificate, false, SslProtocols.Tls12, false);
+                                    Console.WriteLine("Server: TLS handshake completed!");
+
+                                    if (sslStream.IsAuthenticated)
+                                    {
+                                        Console.WriteLine("Server: TLS authentication successful!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Server: TLS authentication failed!");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error during TLS handshake: {ex.Message}");
+                                }
+                                server.ReceiveReady += (s, e) =>
                                 {
                                     try
                                     {
-                                        Console.WriteLine("Server: Starting TLS handshake...");
-                                        sslStream.AuthenticateAsServer(_serverCertificate, false, SslProtocols.Tls12, false);
-                                        Console.WriteLine("Server: TLS handshake completed!");
+                                        var recievedMessage = server.ReceiveMultipartMessage();
+                                        Console.WriteLine($"Received message: {recievedMessage}");
 
-                                        if (sslStream.IsAuthenticated)
+                                        var clientAddress = recievedMessage[0];
+                                        var handleEncryption = new HandleEncryption();
+                                        var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
+                                            Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
+
+                                        //This is for test when the data is temperaded
+                                        /*
+                                        UserData tempered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
+                                        tempered.UserID = 1000;
+                                        var temperedJson = JsonConvert.SerializeObject(tempered);
+                                        string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
+
+                                        if (result.userHash != result.receivedHash)
                                         {
-                                            Console.WriteLine("Server: TLS authentication successful!");
+                                            Console.WriteLine("Hash doesn't match");
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Server: TLS authentication failed!");
+                                            var messageToClient = new NetMQMessage();
+                                            messageToClient.Append(clientAddress);
+                                            messageToClient.AppendEmptyFrame();
+                                            var generateKeys = new HandleEncryption();
+                                            var getKeys = generateKeys.GenerateKeys();
+
+                                            object response;
+
+                                            if (result.decryptedMessage.Contains("UserID"))
+                                            {
+                                                response = _userServices.UserOperations(result.decryptedMessage);
+                                            }
+                                            else
+                                            {
+                                                response = _smartMeterServices.UpdateMeterServices(result.decryptedMessage);
+                                            }
+
+                                            var encryptMessage = new HandleEncryption();
+                                            var jsonResponse = JsonConvert.SerializeObject(response);
+                                            var encryptedResponse = encryptMessage.ApplyEncryptionServer(jsonResponse, getKeys.key, getKeys.iv, _rsa_public_key);
+                                            messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedKey));
+                                            messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedIv));
+                                            messageToClient.Append(encryptedResponse.hashJson);
+                                            messageToClient.Append(encryptedResponse.base64EncryptedData);
+
+                                            server.SendMultipartMessage(messageToClient);
+                                            Console.WriteLine($"Sending to Client: {messageToClient}");
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        Console.WriteLine($"Error during TLS handshake: {ex.Message}");
+                                        Console.WriteLine($"Error handling message: {ex.Message}");
                                     }
-                                    server.ReceiveReady += (s, e) =>
-                                    {
-                                        try
-                                        {
-                                            var recievedMessage = server.ReceiveMultipartMessage();
-                                            Console.WriteLine($"Received message: {recievedMessage}");
-
-                                            var clientAddress = recievedMessage[0];
-                                            var handleEncryption = new HandleEncryption();
-                                            var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
-                                                Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
-                                            
-                                            //This is for test when the data is temperaded
-                                            /*
-                                            UserData tempered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
-                                            tempered.UserID = 1000;
-                                            var temperedJson = JsonConvert.SerializeObject(tempered);
-                                            string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
-
-                                            if (result.userHash != result.receivedHash)
-                                            {
-                                                Console.WriteLine("Hash doesn't match");
-                                            }
-                                            else
-                                            {
-                                                var messageToClient = new NetMQMessage();
-                                                messageToClient.Append(clientAddress);
-                                                messageToClient.AppendEmptyFrame();
-                                                var generateKeys = new HandleEncryption();
-                                                var getKeys = generateKeys.GenerateKeys();
-                                                
-                                                object response;
-                        
-                                                if (result.decryptedMessage.Contains("UserID"))
-                                                {
-                                                    response = _userServices.UserOperations(result.decryptedMessage);
-                                                }
-                                                else
-                                                {
-                                                    response = _smartMeterServices.UpdateMeterServices(result.decryptedMessage);
-                                                }
-                                                
-                                                var encryptMessage = new HandleEncryption();
-                                                var jsonResponse = JsonConvert.SerializeObject(response);
-                                                var encryptedResponse = encryptMessage.ApplyEncryptionServer(jsonResponse, getKeys.key, getKeys.iv, _rsa_public_key);
-                                                messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedKey));
-                                                messageToClient.Append(Convert.ToBase64String(encryptedResponse.encryptedIv));
-                                                messageToClient.Append(encryptedResponse.hashJson);
-                                                messageToClient.Append(encryptedResponse.base64EncryptedData);
-                                                
-                                                server.SendMultipartMessage(messageToClient);
-                                                Console.WriteLine($"Sending to Client: {messageToClient}");
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Console.WriteLine($"Error handling message: {ex.Message}");
-                                        }
-                                    };
-                                    if (!poller.IsRunning)
-                                    {
-                                        poller.Add(server);
-                                        poller.RunAsync();
-                                    }
+                                };
+                                if (!poller.IsRunning)
+                                {
+                                    poller.Add(server);
+                                    poller.RunAsync();
                                 }
-                            }, TaskCreationOptions.LongRunning);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error accepting TCP client: {ex.Message}");
-                        }
+                            }
+                        }, TaskCreationOptions.LongRunning);
                     }
-                }, TaskCreationOptions.LongRunning); 
-                
-                Console.ReadLine();
-                poller.Stop(); 
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error accepting TCP client: {ex.Message}");
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
+
+            Console.ReadLine();
+            poller.Stop();
         }
     }
 }

@@ -69,7 +69,7 @@ public class SmartMeterRepo : ISmartMeterRepo
         }
     }
     public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
-    {
+     {
 
        try
        {
