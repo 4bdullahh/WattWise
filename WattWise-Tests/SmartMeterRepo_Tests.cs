@@ -82,7 +82,7 @@ public class SmartMeterRepo_Tests
     //     999,
     //     0,
     //     0,
-    //     0,
+    //     0
     // )]
     //
     //Test Should Pass
