@@ -43,17 +43,16 @@ public class HandleEncryption_Tests
         public void ApplyEncryptionAndDecryption_ShouldMatchOriginalData()
         {
             // Arrange
-            var folderPathMock = new Mock<IFolderPathServices>();
             string _rsa_public_key;
             string _rsa_private_key;
-            folderPathMock.Setup(fp => fp.GetWattWiseFolderPath()).Returns("C:\\WattWise");
+            _folderPathMock.Setup(fp => fp.GetWattWiseFolderPath()).Returns("C:\\WattWise");
             var wattWisePath = "C:\\WattWise\\server-side";
             if (!Directory.Exists(wattWisePath))
             {
                 Directory.CreateDirectory(wattWisePath);
             }
 
-            var envGenerator = new GenerateEnvFile(folderPathMock.Object);
+            var envGenerator = new GenerateEnvFile(_folderPathMock.Object);
             envGenerator.EnvFileGenerator();
             Env.Load($"{wattWisePath}\\.env ");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
@@ -62,8 +61,7 @@ public class HandleEncryption_Tests
             var jsonData = JsonConvert.SerializeObject(new { UserID = 1, Name = "Test User" });
             var (key, iv) = _encryptionHandler.GenerateKeys();
             var clientAddress = "Client123";
-            var encryptMessage = new HandleEncryption();
-            var encryptedData = encryptMessage.ApplyEncryptionClient(jsonData, key, iv, _rsa_public_key);
+            var encryptedData = _encryptionHandler.ApplyEncryptionClient(jsonData, key, iv, _rsa_public_key);
             var receivedMessage = new NetMQMessage();
             receivedMessage.AppendEmptyFrame();
             receivedMessage.Append(Convert.ToBase64String(encryptedData.encryptedKey));
@@ -74,7 +72,7 @@ public class HandleEncryption_Tests
          //   tamperedMessage.Append(Convert.ToBase64String(tamperedEncryptedData));
             
             // Decrypt
-            var decryptedData = encryptMessage
+            var decryptedData = _encryptionHandler
                 .ApplyDencryptionServer(receivedMessage, receivedMessage[1].Buffer, receivedMessage[2].Buffer, encryptedData.hashJson,receivedMessage[4].Buffer.ToString(), _rsa_private_key);
 
             // Assert
@@ -99,17 +97,16 @@ public class HandleEncryption_Tests
         public void ApplyDecryptionWithTamperedData_ShouldNotMatchOriginalHash()
         {
             // Arrange
-            var folderPathMock = new Mock<IFolderPathServices>();
             string _rsa_public_key;
             string _rsa_private_key;
-            folderPathMock.Setup(fp => fp.GetWattWiseFolderPath()).Returns("C:\\WattWise");
+            _folderPathMock.Setup(fp => fp.GetWattWiseFolderPath()).Returns("C:\\WattWise");
             var wattWisePath = "C:\\WattWise\\server-side";
             if (!Directory.Exists(wattWisePath))
             {
                 Directory.CreateDirectory(wattWisePath);
             }
 
-            var envGenerator = new GenerateEnvFile(folderPathMock.Object);
+            var envGenerator = new GenerateEnvFile(_folderPathMock.Object);
             envGenerator.EnvFileGenerator();
             Env.Load($"{wattWisePath}\\.env ");
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
@@ -119,8 +116,7 @@ public class HandleEncryption_Tests
             var (key, iv) = _encryptionHandler.GenerateKeys();
             var clientAddress = "Client123";
             
-            var encryptMessage = new HandleEncryption();
-            var result = encryptMessage.ApplyEncryptionClient(originalData, key, iv, _rsa_public_key);
+            var result = _encryptionHandler.ApplyEncryptionClient(originalData, key, iv, _rsa_public_key);
             
             var originalMessage = new NetMQMessage();
             originalMessage.Append(clientAddress);
