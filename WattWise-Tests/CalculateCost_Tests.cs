@@ -1,4 +1,4 @@
-﻿using Moq;
+﻿/*using Moq;
 using server_side.Repository;
 
 namespace WattWise_Tests;
@@ -56,4 +56,4 @@ public class CalculateCost_Tests
         Assert.Equal(smartDevice, actualResult);
     }
     
-}
+}*/

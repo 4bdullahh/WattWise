@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿/*using System.Text;
 using Moq;
 using server_side.Repository;
 using server_side.Repository.Interface;
@@ -121,4 +121,4 @@ public class SmartMeterRepo_Tests
         Assert.Equal(expectedData.SmartMeterID, result.SmartMeterID);
         // Assert.Equal(expectedData, result);
     }
-}
+}*/

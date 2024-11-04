@@ -33,7 +33,7 @@ namespace server_side.Services
                 {
                     return new SmartMeterResponse
                     {
-                        SmartMeterID = meterReadings.SmartMeterID,
+                        SmartMeterID = meterReadings.SmartMeterId,
                         EnergyPerKwH = meterReadings.EnergyPerKwH,
                         CurrentMonthCost = meterReadings.CurrentMonthCost,
                         Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"

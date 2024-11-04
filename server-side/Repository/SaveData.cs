@@ -46,7 +46,7 @@ public class SaveData : ISaveData
                         { "Passcode", userData.Passcode},
                         {"Hash" , userData.Hash},
                         { "SmartDevice", new JObject {
-                                { "SmartMeterID", userData.SmartMeterID},
+                                { "SmartMeterID", userData.SmartMeterId},
                                 { "EnergyPerKwH", userData.EnergyPerKwH },
                                 {"CurrentMonthCost", userData.CurrentMonthCost}
                             }
@@ -58,7 +58,7 @@ public class SaveData : ISaveData
                 else if (data is SmartDevice smartDevice)
                 {
                     var deviceToUpdate =
-                        userInfo.FirstOrDefault(u => (int)u["SmartMeterID"] == smartDevice.SmartMeterID);
+                        userInfo.FirstOrDefault(u => (int)u["SmartMeterID"] == smartDevice.SmartMeterId);
                     if (deviceToUpdate != null)
                     {
                         deviceToUpdate["CurrentMonthCost"] = smartDevice.CurrentMonthCost;
@@ -69,7 +69,7 @@ public class SaveData : ISaveData
 
                         JObject smartDataObject = new JObject
                         {
-                            { "SmartMeterID", smartDevice.SmartMeterID },
+                            { "SmartMeterID", smartDevice.SmartMeterId },
                             { "EnergyPerKwH", smartDevice.EnergyPerKwH },
                             { "CurrentMonthCost", smartDevice.CurrentMonthCost },
                             { "CustomerType", smartDevice.CustomerType }

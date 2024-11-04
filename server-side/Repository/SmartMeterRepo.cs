@@ -48,7 +48,7 @@ public class SmartMeterRepo : ISmartMeterRepo
     {
         try
         {
-            var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterID == SmartMeterID);
+            var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterId == SmartMeterID);
 
             if (smartMeterById != null)
             {
@@ -73,13 +73,13 @@ public class SmartMeterRepo : ISmartMeterRepo
 
        try
        {
-          var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterID == smartDevice.SmartMeterID);
+          var existingDevice = meterList.FirstOrDefault(x => x.SmartMeterId == smartDevice.SmartMeterId);
 
           if (existingDevice != null)
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
               
-              existingDevice.SmartMeterID = calculateReadings.SmartMeterID;
+              existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
               existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
               existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               
@@ -108,7 +108,7 @@ public class SmartMeterRepo : ISmartMeterRepo
         {
              var generateId = meterList.Count();
                     
-                    smartDevice.SmartMeterID = generateId;
+                    smartDevice.SmartMeterId = generateId;
                     smartDevice.EnergyPerKwH = 0;
                     smartDevice.CurrentMonthCost = 0;
                     

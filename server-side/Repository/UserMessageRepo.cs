@@ -78,7 +78,7 @@ namespace server_side.Repository
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
                 existingUser.Passcode = user.Passcode;
-                existingUser.SmartMeterID = user.SmartMeterID;
+                existingUser.SmartMeterId = user.SmartMeterId;
                 existingUser.EnergyPerKwH = user.EnergyPerKwH;
                 existingUser.CurrentMonthCost = user.CurrentMonthCost;
 
@@ -101,7 +101,7 @@ namespace server_side.Repository
             {
                 var generateId = usersList.Count();
             
-                var smartMeter = _smartMeterRepo.GetById(userData.SmartMeterID);
+                var smartMeter = _smartMeterRepo.GetById(userData.SmartMeterId);
             
                 var users = new UserData
                 {
@@ -113,7 +113,7 @@ namespace server_side.Repository
                     Passcode = userData.Passcode,
                     SmartDevice = new SmartDevice
                     {
-                        SmartMeterID = smartMeter.SmartMeterID,
+                        SmartMeterId = smartMeter.SmartMeterId,
                         EnergyPerKwH = smartMeter.EnergyPerKwH,
                         CurrentMonthCost = smartMeter.CurrentMonthCost
                     }

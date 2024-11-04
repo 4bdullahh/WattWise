@@ -36,5 +36,5 @@ namespace server_side
             Console.ReadKey();
         }
     }
-
 }
+
