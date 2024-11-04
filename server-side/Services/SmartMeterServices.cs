@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Text;
 using DotNetEnv;
 using server_side.Cryptography;
+using server_side.Repository.Models;
 using server_side.Services.Models;
 
 namespace server_side.Services
@@ -14,15 +15,19 @@ namespace server_side.Services
     {
         private readonly ISmartMeterRepo _smartMeterRepo;
         private readonly string _decryptedMessage;
+        private readonly IErrorLogRepo _errorLogRepo;
         
-        
-        public SmartMeterServices(ISmartMeterRepo smartMeterRepo)
+        public SmartMeterServices(ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
              _smartMeterRepo = smartMeterRepo;
+             _errorLogRepo = errorLogRepo;
         }
 
         public SmartMeterResponse UpdateMeterServices(string decryptedMessage)
-        { 
+        {
+            string errMsg;
+            var errorMessage = new ErrorLogMessage();
+            
             try
             {
                 SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
@@ -47,8 +52,10 @@ namespace server_side.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We were unable to process the message: {e.Message}");
-                
+                errMsg = "Server: Unable to access smart meter repo";
+                Console.WriteLine($"{errMsg} {e.Message}");
+                errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                _errorLogRepo.LogError(errorMessage);
                 throw;
             }
 
