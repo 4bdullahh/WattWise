@@ -62,5 +62,6 @@ public class CalculateCost : ICalculateCost
 
         double totalCost = currentEnergyCost + totalStandingCharge;
         return totalCost;
+
     }
 }

@@ -7427,6 +7427,7 @@
   },
   "packageFolders": {
     "C:\\Users\\johnny.rodrigues\\.nuget\\packages\\": {}
+
   },
   "project": {
     "version": "1.0.0",
@@ -7439,6 +7440,7 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\johnny.rodrigues\\AppData\\Roaming\\NuGet\\NuGet.Config",
+
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7446,6 +7448,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7502,6 +7505,7 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+
       }
     }
   }

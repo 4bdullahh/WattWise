@@ -1,23 +1,72 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script
+      src="https://cdn.plot.ly/plotly-2.35.2.min.js"
+      charset="utf-8"
+    ></script>
+
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
+    <!-- <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
     <meta
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
-    />
+    /> -->
     <title>Hello from Electron renderer!</title>
   </head>
   <body>
     <h1>Hello from Electron renderer!</h1>
     <p>👋</p>
-    <p id="info"></p>
-    <button id="GetById">Click Me to Get By ID!!!</button>
+    <p id="myDiv"></p>
+    <script>
+      var data = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: 300,
+          title: { text: "Live Usage" },
+          type: "indicator",
+          mode: "gauge+number",
+          gauge: {
+            axis: { range: [null, 500] },
+            steps: [
+              { range: [0, 250], color: "lightgreen" },
+              { range: [250, 400], color: "yellow" },
+              { range: [400, 500], color: "red" },
+            ],
+            threshold: {
+              line: { color: "darkred", width: 4 },
+              thickness: 20,
+            },
+            bar: {
+              color: "white",
+              line: { color: "gray", width: 4 },
+              threshold: {
+                thickness: 100,
+              },
+            },
+          },
+        },
+      ];
+
+      var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+      Plotly.newPlot("myDiv", data, layout);
+
+      function updateGaugeWithRandomValue() {
+        const randomValue = Math.floor(Math.random() * 501);
+        data[0].value = randomValue;
+        Plotly.react("myDiv", data, layout);
+      }
+
+      setInterval(() => {
+        updateGaugeWithRandomValue();
+      }, 2000);
+      // window.versions.onUpdateGauge(() => {
+      // });
+    </script>
   </body>
   <script src="./renderer.js"></script>
 </html>
