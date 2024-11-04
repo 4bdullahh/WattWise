@@ -68,8 +68,6 @@ public class HandleEncryption_Tests
             receivedMessage.Append(Convert.ToBase64String(encryptedData.encryptedIv));
             receivedMessage.Append(encryptedData.hashJson);
             receivedMessage.Append(encryptedData.base64EncryptedData);
-           // byte[] encrypteAES = Cryptography.AESEncrypt(jsonData, key, iv);
-         //   tamperedMessage.Append(Convert.ToBase64String(tamperedEncryptedData));
             
             // Decrypt
             var decryptedData = _encryptionHandler
