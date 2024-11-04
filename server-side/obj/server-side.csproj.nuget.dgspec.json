@@ -1,20 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj": {}
+    "C:\\Users\\johnny.rodrigues\\Documents\\Programming Lecture\\WattWise\\server-side\\server-side.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj": {
+    "C:\\Users\\johnny.rodrigues\\Documents\\Programming Lecture\\WattWise\\server-side\\server-side.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj",
+        "projectUniqueName": "C:\\Users\\johnny.rodrigues\\Documents\\Programming Lecture\\WattWise\\server-side\\server-side.csproj",
         "projectName": "server-side",
-        "projectPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj",
-        "packagesPath": "C:\\Users\\Muhammad.Mamoon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\obj\\",
+        "projectPath": "C:\\Users\\johnny.rodrigues\\Documents\\Programming Lecture\\WattWise\\server-side\\server-side.csproj",
+        "packagesPath": "C:\\Users\\johnny.rodrigues\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\johnny.rodrigues\\Documents\\Programming Lecture\\WattWise\\server-side\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Muhammad.Mamoon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\johnny.rodrigues\\AppData\\Roaming\\NuGet\\NuGet.Config",
+
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -35,11 +36,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -51,6 +47,10 @@
               "version": "[3.1.1, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting": {
               "target": "Package",
               "version": "[8.0.0, )"
             },
@@ -79,7 +79,8 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+
         }
       }
     }

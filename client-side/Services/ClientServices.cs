@@ -3,15 +3,15 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using NetMQ;
 using NetMQ.Sockets;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using client_side.Models;
 using client_side.Services.Interfaces;
 using server_side.Cryptography;
-using server_side.Services;
 using System.IO.Pipes;
 using DotNetEnv;
+using Microsoft.Extensions.Logging;
+using server_side.Repository.Interface;
 using server_side.Services.Interface;
 
 namespace client_side.Services
@@ -24,8 +24,8 @@ namespace client_side.Services
         private readonly string _rsaPrivateKey;
         private ICalculateCostClient _calculateCostClient;
         private readonly IFolderPathServices folderPath;
-
-        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath)
+        private readonly ISmartMeterRepo _smartMeterRepo;
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath, ISmartMeterRepo _smartMeterRepo)
         {
             this.folderPath = folderPath;
             var envGenerator = new GenerateEnvFile(folderPath);
@@ -35,128 +35,129 @@ namespace client_side.Services
             _messagesServices = messagesServices;
             _calculateCostClient = calculateCostClient;
             _clientCertificate = new X509Certificate2(folderPath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
+            this._smartMeterRepo = _smartMeterRepo;
+
         }
 
-        public void StartClient()
+
+public void StartClient()
+{
+    var generateKeys = new HandleEncryption();
+    var getKeys = generateKeys.GenerateKeys();
+
+    try
+    {
+        using (var poller = new NetMQPoller())
         {
-            var generateKeys = new HandleEncryption();
-            var getKeys = generateKeys.GenerateKeys();
-            var clientSocketPerThread = new ThreadLocal<DealerSocket>();
+            int maxClients = 12;
+            int minInterval = 1000;
+            int maxInterval = 3000;
+            var currentInterval = new Random();
 
-            try
+            for (int i = 0; i < maxClients; i++)
             {
-                using (var poller = new NetMQPoller())
+                int clientId = i;
+
+                bool sslAuthenticated = false;
+                Task sslTask = Task.Run(() =>
                 {
-                    var maxClients = 1;
-                    int firstSend = 300;
-                    int minInterval = 1000;
-                    int maxInterval = 3000;
-                    var currentInterval = new Random();
-
-                    for (int i = 0; i < maxClients; i++)
+                    try
                     {
-                        int clientId = i;
-
-                        Task.Factory.StartNew(state =>
-                         {
-                             Console.WriteLine($"Client: {clientId} started");
-
-                             TcpClient tcpClient = new TcpClient("localhost", 5556);
-
-                             using (var sslStream = new SslStream(tcpClient.GetStream(), false,
-                                        (sender, cert, chain, errors) => true))
-                             {
-                                 sslStream.AuthenticateAsClient("localhost",
-                                     new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
-                                 if (sslStream.IsAuthenticated)
-                                 {
-                                     Console.WriteLine("Client: TLS authentication successful!");
-                                 }
-                                 else
-                                 {
-                                     Console.WriteLine("Client: TLS authentication failed!");
-                                 }
-
-                                 DealerSocket client = null;
-
-                                 if (!clientSocketPerThread.IsValueCreated)
-                                 {
-                                     client = new DealerSocket();
-                                     client.Options.Identity = Encoding.UTF8.GetBytes(state.ToString());
-                                     // Here is when I changed the route again
-                                     client.Connect("tcp://localhost:5555");
-
-                                     client.ReceiveReady += (s, e) =>
-                                     {
-                                         var recievedMessage = client.ReceiveMultipartMessage();
-                                         Console.WriteLine($"Server Recieved: {recievedMessage}");
-                                         var handleEncryption = new HandleEncryption();
-                                         var result = handleEncryption.ApplyDencryptionServer(recievedMessage,
-                                             recievedMessage[1].Buffer, recievedMessage[2].Buffer,
-                                             Encoding.UTF8.GetString(recievedMessage[3].Buffer),
-                                             Encoding.UTF8.GetString(recievedMessage[4].Buffer), _rsaPrivateKey);
-                                     };
-                                     clientSocketPerThread.Value = client;
-                                     poller.Add(client);
-                                 }
-                                 else
-                                 {
-                                     client = clientSocketPerThread.Value;
-                                 }
-
-                                 var timer = new NetMQTimer(firstSend);
-                                 poller.Add(timer);
-
-
-
-                                 timer.Elapsed += (sender, e) =>
-                                 {
-                                     string clientAddress = state.ToString();
-
-                                     var genTestModel = new SmartDeviceClient
-                                     {
-                                         SmartMeterId = 4
-                                     };
-                                     var genUserModel = new UserModel
-                                     {
-                                         UserID = 607,
-                                         CustomerType = "Small Household",
-                                         Topic = "getId"
-                                     };
-
-                                     var modelData = _calculateCostClient.getRandomCost(genTestModel, genUserModel.CustomerType);
-
-
-                                     var messageToServer = _messagesServices.SendReading(
-                                         clientAddress,
-                                         modelData,
-                                         getKeys.key,
-                                         getKeys.iv
-                                     );
-
-                                     Console.WriteLine($"ClientId: {clientId}, Waiting for message...");
-                                     client.SendMultipartMessage(messageToServer);
-
-                                     int newTime = currentInterval.Next(minInterval, maxInterval);
-                                     timer.Interval = newTime;
-                                     Console.WriteLine($"New time {newTime}");
-                                 };
-                             }
-                         }, i, TaskCreationOptions.LongRunning);
+                        Console.WriteLine($"Client {clientId}: Initializing SSL connection");
+                        using (TcpClient tcpClient = new TcpClient("localhost", 5556))
+                        using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
+                        {
+                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
+                            if (sslStream.IsAuthenticated)
+                            {
+                                sslAuthenticated = true;
+                                Console.WriteLine($"Client {clientId}: TLS authentication successful!");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Client {clientId}: TLS authentication failed!");
+                            }
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Client {clientId}: SSL setup error - {ex.Message}");
+                    }
+                });
 
-                    poller.RunAsync();
-                    Console.Read();
-                    poller.Stop();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"We could not start the client, error: {e.Message}");
-                throw;
+                sslTask.Wait(); 
+                if (!sslAuthenticated) continue;
+
+                var clientSocket = new DealerSocket();
+                clientSocket.Options.Identity = Encoding.UTF8.GetBytes($"Client-{clientId}");
+                clientSocket.Connect("tcp://localhost:5555");
+
+                var timer = new NetMQTimer(minInterval);
+                bool awaitingResponse = false;
+
+                clientSocket.ReceiveReady += (s, e) =>
+                {
+                    var receivedMessage = e.Socket.ReceiveMultipartMessage();
+                    Console.WriteLine($"Client {clientId} received response: {receivedMessage}");
+
+                    var handleEncryption = new HandleEncryption();
+                    var result = handleEncryption.ApplyDencryptionServer(
+                        receivedMessage,
+                        receivedMessage[1].Buffer,
+                        receivedMessage[2].Buffer,
+                        Encoding.UTF8.GetString(receivedMessage[3].Buffer),
+                        Encoding.UTF8.GetString(receivedMessage[4].Buffer),
+                        _rsaPrivateKey
+                    );
+
+                    awaitingResponse = false;
+                    int newInterval = currentInterval.Next(minInterval, maxInterval);
+                    timer.Interval = newInterval;
+                    Console.WriteLine($"Client {clientId}: Next message in {newInterval} ms");
+                    timer.Enable = true;
+                };
+
+                timer.Elapsed += (sender, e) =>
+                {
+                    if (!awaitingResponse)
+                    {
+                        awaitingResponse = true;
+                        string clientAddress = $"Client-{clientId}";
+
+                        var genTestModel = new SmartDeviceClient { SmartMeterId = clientId };
+                      
+                        var getSmartMeterId = _smartMeterRepo.GetById(clientId);
+                        
+                        var modelData = _calculateCostClient.getRandomCost(genTestModel, getSmartMeterId.CustomerType);
+                        var messageToServer = _messagesServices.SendReading(
+                            clientAddress,
+                            modelData,
+                            getKeys.key,
+                            getKeys.iv
+                        );
+
+                        Console.WriteLine($"Client {clientId}: Sending message...");
+                        clientSocket.SendMultipartMessage(messageToServer);
+
+                        timer.Enable = false; 
+                    }
+                };
+
+                poller.Add(clientSocket);
+                poller.Add(timer);
             }
 
+            poller.RunAsync();
+            Console.ReadLine();
+            poller.Stop();
         }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"We could not start the client, error: {e.Message}");
+        throw;
+    }
+}
 
         public async Task ElectronServerAsync()
         {

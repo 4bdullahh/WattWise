@@ -1,24 +1,74 @@
 [
   {
-    "SmartMeterID": 501,
-    "SmartMeterData": "23.5 kWh"
-  },
-  {
-    "SmartMeterID": 502,
-    "SmartMeterData": "18.2 kWh"
-  },
-  {
-    "SmartMeterID": 503,
-    "SmartMeterData": "27.8 kWh"
-  },
-  {
-    "SmartMeterID": 205,
-    "EnergyPerKwH": 20.5,
-    "CurrentMonthCost": 200.0
+    "SmartMeterID": 2,
+    "EnergyPerKwH": 0.21497024413966814,
+    "CurrentMonthCost": 24.9450867115,
+    "CustomerType": "Average Household"
   },
   {
     "SmartMeterID": 4,
-    "EnergyPerKwH": 0.21097428635147297,
-    "CurrentMonthCost": 2.92
+    "EnergyPerKwH": 0.21964190717747917,
+    "CurrentMonthCost": 24.94508737479111,
+    "CustomerType": "Average Household"
+  },
+  {
+    "SmartMeterID": 6,
+    "EnergyPerKwH": 0.21430077427876024,
+    "CurrentMonthCost": 24.945088068942223,
+    "CustomerType": "Small Household"
+  },
+  {
+    "SmartMeterID": 9,
+    "EnergyPerKwH": 0.21321646181732407,
+    "CurrentMonthCost": 24.945088997008888,
+    "CustomerType": "Small Household"
+  },
+  {
+    "SmartMeterID": 5,
+    "EnergyPerKwH": 0.2111074575168515,
+    "CurrentMonthCost": 24.945087719357776,
+    "CustomerType": "Average Household"
+  },
+  {
+    "SmartMeterID": 8,
+    "EnergyPerKwH": 0.21093182490545342,
+    "CurrentMonthCost": 24.94508870284889,
+    "CustomerType": "Small Household"
+  },
+  {
+    "SmartMeterID": 10,
+    "EnergyPerKwH": 0.21324390135036608,
+    "CurrentMonthCost": 24.945089275093334,
+    "CustomerType": "Average Household"
+  },
+  {
+    "SmartMeterID": 11,
+    "EnergyPerKwH": 0.2164180979038137,
+    "CurrentMonthCost": 24.945086251946666,
+    "CustomerType": "Small Household"
+  },
+  {
+    "SmartMeterID": 7,
+    "EnergyPerKwH": 0.21148403313853686,
+    "CurrentMonthCost": 24.945088343402222,
+    "CustomerType": "Small Household"
+  },
+  {
+    "SmartMeterID": 3,
+    "EnergyPerKwH": 0.2189204364145482,
+    "CurrentMonthCost": 24.945087122771113,
+    "CustomerType": "Large Household"
+  },
+  {
+    "SmartMeterID": 1,
+    "EnergyPerKwH": 0.4851430451332129,
+    "CurrentMonthCost": 31.029614166091665,
+    "CustomerType": "Large Household"
+  },
+  {
+    "SmartMeterID": 0,
+    "EnergyPerKwH": 0.4862029895331855,
+    "CurrentMonthCost": 31.029560204975,
+    "CustomerType": "Large Household"
   }
 ]

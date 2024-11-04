@@ -18,6 +18,8 @@ namespace server_side
             services.AddScoped<ISmartMeterServices, SmartMeterServices>();
             services.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
             services.AddScoped<ICalculateCost, CalculateCost>();
+            services.AddSingleton<CostUpdateService>();
+            services.AddHostedService<CostUpdateService>();
             services.AddScoped<ISaveData, SaveData>();
             services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IHashHandle, HashHandle>();
