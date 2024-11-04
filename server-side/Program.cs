@@ -22,6 +22,7 @@ namespace server_side
             services.AddHostedService<CostUpdateService>();
             services.AddScoped<ISaveData, SaveData>();
             services.AddScoped<IFolderPathServices, FolderPathServices>();
+            services.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             services.AddScoped<IHashHandle, HashHandle>();
 
             services.AddSingleton<MessageController>();

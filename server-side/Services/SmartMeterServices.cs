@@ -24,19 +24,20 @@ namespace server_side.Services
         }
 
         public SmartMeterResponse UpdateMeterServices(string decryptedMessage)
-        { 
         {
             string errMsg;
             var errorMessage = new ErrorLogMessage();
             
             try
             {
+          
                 SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
 
                 var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
 
                 if (meterReadings != null)
                 {
+                   // throw new Exception("Intentional failure");
                     return new SmartMeterResponse
                     {
                         SmartMeterID = meterReadings.SmartMeterId,
@@ -44,12 +45,14 @@ namespace server_side.Services
                         CurrentMonthCost = meterReadings.CurrentMonthCost,
                         Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
                     };
+                    
                 }
 
                 return new SmartMeterResponse
                 {
                     Message = "SmartMeter not found"
                 };
+                
             }
             catch (Exception e)
             {

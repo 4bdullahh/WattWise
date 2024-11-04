@@ -2,6 +2,7 @@
 using server_side.Repository.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using server_side.Repository.Models;
 using server_side.Services;
 
 namespace server_side.Repository
@@ -13,14 +14,20 @@ namespace server_side.Repository
         private FolderPathServices folderpath;
         private readonly ISaveData _saveData;
         private readonly ISmartMeterRepo _smartMeterRepo;
-        public UserMessageRepo(ISaveData saveData, ISmartMeterRepo smartMeterRepo)
+        private ErrorLogMessage _errorMsg;
+        private IErrorLogRepo _errorLogRepo;
+        public UserMessageRepo(ISaveData saveData, ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
             folderpath= new FolderPathServices();
             _saveData = saveData;
             _smartMeterRepo = smartMeterRepo;
+            _errorLogRepo = errorLogRepo;
+            _errorMsg = new ErrorLogMessage();
             LoadUserData();
+            
         }
 
+        
         private void LoadUserData()
         {
             string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
@@ -52,16 +59,20 @@ namespace server_side.Repository
 
             try
             {
-                if (user != null)
-                {
-                    return user;
-                }
-
-                return null;
+                // if (user != null)
+                // {
+                //     return user;
+                // }
+                //
+                // return null;
+                throw new Exception("Intentional failure");
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not get user id: {e.Message}");
+                _errorMsg.Message = $"Server: could not fetch user ID {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorMsg.Message} {e.Message}");
+              
+                _errorLogRepo.LogError(_errorMsg);
                 throw;
             }
         }
