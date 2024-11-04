@@ -77,10 +77,10 @@ namespace server_side.Repository
                 existingUser.lastName = user.lastName;
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
-                existingUser.Passcode = user.Passcode;
                 existingUser.SmartMeterId = user.SmartMeterId;
                 existingUser.EnergyPerKwH = user.EnergyPerKwH;
                 existingUser.CurrentMonthCost = user.CurrentMonthCost;
+                existingUser.CustomerType = user.CustomerType;
 
                 string serializedUserData = JsonConvert.SerializeObject(existingUser);
                 var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
@@ -131,8 +131,5 @@ namespace server_side.Repository
                 throw;
             }
         }
-
- 
-   
     }
 }

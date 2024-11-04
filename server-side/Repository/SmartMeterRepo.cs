@@ -79,6 +79,7 @@ public class SmartMeterRepo : ISmartMeterRepo
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
               
+              
               existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
               existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
               existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
