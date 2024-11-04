@@ -10,6 +10,8 @@ using client_side.Services.Interfaces;
 using server_side.Cryptography;
 using System.IO.Pipes;
 using DotNetEnv;
+using Microsoft.Extensions.Logging;
+using server_side.Repository.Interface;
 using server_side.Services.Interface;
 
 namespace client_side.Services
@@ -22,8 +24,8 @@ namespace client_side.Services
         private readonly string _rsaPrivateKey;
         private ICalculateCostClient _calculateCostClient;
         private readonly IFolderPathServices folderPath;
-
-        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath)
+        private readonly ISmartMeterRepo _smartMeterRepo;
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath, ISmartMeterRepo _smartMeterRepo)
         {
             this.folderPath = folderPath;
             var envGenerator = new GenerateEnvFile(folderPath);
@@ -33,6 +35,8 @@ namespace client_side.Services
             _messagesServices = messagesServices;
             _calculateCostClient = calculateCostClient;
             _clientCertificate = new X509Certificate2(folderPath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
+            this._smartMeterRepo = _smartMeterRepo;
+
         }
 
 
@@ -121,14 +125,10 @@ public void StartClient()
                         string clientAddress = $"Client-{clientId}";
 
                         var genTestModel = new SmartDeviceClient { SmartMeterId = clientId };
-                        var genUserModel = new UserModel
-                        {
-                            UserID = 607,
-                            CustomerType = "Small Household",
-                            Topic = "getId"
-                        };
-
-                        var modelData = _calculateCostClient.getRandomCost(genTestModel, genUserModel.CustomerType);
+                      
+                        var getSmartMeterId = _smartMeterRepo.GetById(clientId);
+                        
+                        var modelData = _calculateCostClient.getRandomCost(genTestModel, getSmartMeterId.CustomerType);
                         var messageToServer = _messagesServices.SendReading(
                             clientAddress,
                             modelData,

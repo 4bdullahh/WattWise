@@ -52,8 +52,7 @@ namespace server_side.Services
             }
 
         }
-         
-    
+        
     }
 }
 

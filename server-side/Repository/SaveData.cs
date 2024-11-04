@@ -57,19 +57,25 @@ public class SaveData : ISaveData
                 }
                 else if (data is SmartDevice smartDevice)
                 {
-                    var deviceToUpdate = userInfo.FirstOrDefault(u => (int)u["SmartMeterID"] == smartDevice.SmartMeterID);
+                    var deviceToUpdate =
+                        userInfo.FirstOrDefault(u => (int)u["SmartMeterID"] == smartDevice.SmartMeterID);
                     if (deviceToUpdate != null)
                     {
-                        userInfo.Remove(deviceToUpdate);
+                        deviceToUpdate["CurrentMonthCost"] = smartDevice.CurrentMonthCost;
+                        deviceToUpdate["EnergyPerKwH"] = smartDevice.EnergyPerKwH;
                     }
-
-                    JObject smartDataObject = new JObject
+                    else
                     {
-                        { "SmartMeterID", smartDevice.SmartMeterID },
-                        { "EnergyPerKwH", smartDevice.EnergyPerKwH },
-                        { "CurrentMonthCost", smartDevice.CurrentMonthCost }
-                    };
-                    userInfo.Add(smartDataObject);
+
+                        JObject smartDataObject = new JObject
+                        {
+                            { "SmartMeterID", smartDevice.SmartMeterID },
+                            { "EnergyPerKwH", smartDevice.EnergyPerKwH },
+                            { "CurrentMonthCost", smartDevice.CurrentMonthCost },
+                            { "CustomerType", smartDevice.CustomerType }
+                        };
+                        userInfo.Add(smartDataObject);
+                    }
                 }
                 else
                 {

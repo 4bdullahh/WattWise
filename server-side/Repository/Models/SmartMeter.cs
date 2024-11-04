@@ -8,4 +8,6 @@ public class SmartDevice
     public double StandingCharge { get; set; }
     public double CostPerKwh { get; set; }
     public string Message { get; set; }
+    public double KwhUsed { get; set; }
+    public string CustomerType { get; set; }
 }

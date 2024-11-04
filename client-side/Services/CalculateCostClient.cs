@@ -63,6 +63,7 @@ public class CalculateCostClient :ICalculateCostClient
             }
 
             modelData.EnergyPerKwH = latestUsePerHour;
+            modelData.CustomerType = customerType;
 
             return modelData;
         }
