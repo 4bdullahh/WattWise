@@ -16,28 +16,27 @@ namespace server_side.Services
         private readonly ISmartMeterRepo _smartMeterRepo;
         private readonly string _decryptedMessage;
         private readonly IErrorLogRepo _errorLogRepo;
-        
+        private readonly ErrorLogMessage _errorLogMessage;
         public SmartMeterServices(ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
              _smartMeterRepo = smartMeterRepo;
              _errorLogRepo = errorLogRepo;
+             _errorLogMessage = new ErrorLogMessage();
         }
 
         public SmartMeterResponse UpdateMeterServices(string decryptedMessage)
         {
-            string errMsg;
-            var errorMessage = new ErrorLogMessage();
             
             try
             {
-          
                 SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
+                _errorLogMessage.ClientId = smartDevice.SmartMeterId;
 
                 var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
 
                 if (meterReadings != null)
                 {
-                   // throw new Exception("Intentional failure");
+                    //throw new Exception("Intentional failure");
                     return new SmartMeterResponse
                     {
                         SmartMeterID = meterReadings.SmartMeterId,
@@ -56,10 +55,9 @@ namespace server_side.Services
             }
             catch (Exception e)
             {
-                errMsg = "Server: Unable to access smart meter repo";
-                Console.WriteLine($"{errMsg} {e.Message}");
-                errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
-                _errorLogRepo.LogError(errorMessage);
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Unable to access smart meter repo : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
 
