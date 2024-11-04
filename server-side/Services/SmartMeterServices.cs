@@ -48,6 +48,7 @@ namespace server_side.Services
             catch (Exception e)
             {
                 Console.WriteLine($"We were unable to process the message: {e.Message}");
+                
                 throw;
             }
 
