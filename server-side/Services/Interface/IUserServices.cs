@@ -1,8 +1,8 @@
-namespace server_side.Service.Interface
+﻿namespace server_side.Services.Interface
 {
-
     public interface IUserServices
     {
-        public void ReceiveMessageServices();
+         UserResponse UserOperations(string decryptedMessage);
     }
 }
+

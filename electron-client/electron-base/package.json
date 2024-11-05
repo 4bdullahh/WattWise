@@ -1,0 +1,22 @@
+{
+  "name": "electron-base",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^33.0.2"
+  },
+  "dependencies": {
+    "fusioncharts": "^4.0.2",
+    "named-pipes": "^0.0.1",
+    "net": "^1.0.2",
+    "plotly.js-dist": "^2.35.2",
+    "plotly.js-dist-min": "^2.35.2"
+  }
+}

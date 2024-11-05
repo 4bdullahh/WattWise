@@ -1,45 +1,21 @@
 
-using server_side.Service.Interface;
-
-namespace server_side
-{
-    public class MessageController
-    {
-        private readonly IUserServices _userServices;
-
-        public MessageController(IUserServices userServices)
-        {
-            _userServices = userServices;
-        }
-
-        public void ReceiveMessage()
-        {
-            _userServices.ReceiveMessageServices();
-
-        }
-    }
-
-}
-
-
 using server_side.Services.Interface;
+
 namespace server_side.Controller
 {
     public class MessageController
     {
-        private readonly IUserServices _userServices;
+        private readonly IMessageServices _messageServices;
 
-        public MessageController(IUserServices userServices)
+        public MessageController(IMessageServices messageServices)
         {
-            _userServices = userServices;
+            _messageServices = messageServices;
         }
 
         public void ReceiveMessage()
         {
-            _userServices.ReceiveMessageServices();
+            _messageServices.ReceiveMessageServices();
         }
-
     }
 
 }
-

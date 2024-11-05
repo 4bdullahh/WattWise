@@ -1,1 +1,98 @@
-[{"Address":"1234 Elm Street, Springfield","UserID":101,"firstName":"John","lastName":"Doe","UserEmail":"john.doe@example.com","Passcode":"password123","SmartDevice":{"SmartMeterID":501,"SmartMeterData":"23.5 kWh"},"SmartMeterID":0,"SmartMeterData":null},{"Address":"5678 Oak Avenue, Shelbyville","UserID":102,"firstName":"Jane","lastName":"Smith","UserEmail":"jane.smith@example.com","Passcode":"password456","SmartDevice":{"SmartMeterID":502,"SmartMeterData":"45.2 kWh"},"SmartMeterID":0,"SmartMeterData":null}]
+[
+  {
+    "Address": "1234 Elm Street, Springfield",
+    "UserID": 101,
+    "firstName": "John",
+    "lastName": "Doe",
+    "UserEmail": "john.doe@example.com",
+    "Passcode": "password123",
+    "SmartDevice": {
+      "SmartMeterID": 501,
+      "SmartMeterData": "23.5 kWh"
+    },
+    "SmartMeterID": 0,
+    "SmartMeterData": null
+  },
+  {
+    "Address": "5678 Oak Street, Metropolis",
+    "UserID": 102,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "UserEmail": "jane.smith@example.com",
+    "Passcode": "password456",
+    "SmartDevice": {
+      "SmartMeterID": 502,
+      "SmartMeterData": "27.3 kWh"
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 106,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "Hash": "7750681716996a16dc86c1838ad112983ac35db5a0c37cc67c6d8c24119739b3",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 202,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "fedhf@hotmail",
+    "Passcode": null,
+    "Hash": "161644f0d7d040659d459c9e5b51b97705cfc1238cf79a6811be18f17bd446ff",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 204,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "liverpool@hotmail",
+    "Passcode": null,
+    "Hash": "eb1c7abc032a4a9bb9e7c903f101c3410bdca08b8406675f6d46e963aa0b192e",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 205,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "liverpool@hotmail",
+    "Passcode": null,
+    "Hash": "7451546d321be9ceebc79bb44dcb95a66124deb67af629d18334395eeb5f840e",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  },
+  {
+    "Address": null,
+    "UserID": 607,
+    "firstName": null,
+    "lastName": null,
+    "UserEmail": "addyfive@gmail.com",
+    "Passcode": null,
+    "Hash": "1e398692a5a6c3f49881108b5fd6d135cf1037fe9f5c5207e4293301b1deee90",
+    "SmartDevice": {
+      "SmartMeterID": 0,
+      "EnergyPerKwH": 0.0,
+      "CurrentMonthCost": 0.0
+    }
+  }
+]

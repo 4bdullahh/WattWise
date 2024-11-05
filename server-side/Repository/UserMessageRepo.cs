@@ -1,111 +1,156 @@
-using server_side.Repository.Interface;
 
+using server_side.Repository.Interface;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using server_side.Repository.Models;
+using server_side.Services;
 
 namespace server_side.Repository
 {
     public class UserMessageRepo : IUserMessageRepo
     {
-        private readonly List<UserData> userDatabase;
-        private List<UserData> _users;
-        public UserMessageRepo()
+        private List<UserData> usersList;
+        private IHashHandle userHash;
+        private FolderPathServices folderpath;
+        private readonly ISaveData _saveData;
+        private readonly ISmartMeterRepo _smartMeterRepo;
+        private ErrorLogMessage _errorLogMessage;
+        private IErrorLogRepo _errorLogRepo;
+        public UserMessageRepo(ISaveData saveData, ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
-            userDatabase = new List<UserData>();
+            folderpath= new FolderPathServices();
+            _saveData = saveData;
+            _smartMeterRepo = smartMeterRepo;
+            _errorLogRepo = errorLogRepo;
+            _errorLogMessage = new ErrorLogMessage();
             LoadUserData();
+            
         }
+
         
         private void LoadUserData()
         {
-            // Path to your JSON file
-            var jsonFilePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
-
-            if (File.Exists(jsonFilePath))
+            string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "UserJson.json");
+            
+            try
             {
-                var jsonData = File.ReadAllText(jsonFilePath);
-                _users = JsonConvert.DeserializeObject<List<UserData>>(jsonData);
+                if (File.Exists(jsonFilePath))
+                {
+                    string jsonData = File.ReadAllText(jsonFilePath);
+                    JArray _users = JArray.Parse(jsonData);
+                    usersList = JsonConvert.DeserializeObject<List<UserData>>(_users.ToString());
+                }
+                else
+                {
+                    File.Create(jsonFilePath).Close();
+                    LoadUserData();
+                }
             }
-            else
+            catch (Exception e)
             {
-                _users = new List<UserData>();
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} We could not load users data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
+                _errorLogRepo.LogError(_errorLogMessage);
+                throw;
             }
         }
 
         public UserData GetById(int UserID)
         {
-            return _users.FirstOrDefault(user => user.UserID == UserID);
+            var user = usersList.FirstOrDefault(user => user.UserID == UserID);
+
+            try
+            {
+                //throw new Exception("Intentional failure");
+                if (user != null)
+                {
+                    return user;
+                }
+                
+                return null;
+                
+            }
+            catch (Exception e)
+            {
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not fetch user ID: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
+                throw;
+            }
         }
 
+        public UserData UpdateUserData(UserData user)
+        {
+            try
+            {
+                var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
 
+                existingUser.UserID = user.UserID;
+                existingUser.firstName = user.firstName;
+                existingUser.lastName = user.lastName;
+                existingUser.Address = user.Address;
+                existingUser.UserEmail = user.UserEmail;
+                existingUser.Passcode = user.Passcode;
+                existingUser.SmartMeterId = user.SmartMeterId;
+                existingUser.EnergyPerKwH = user.EnergyPerKwH;
+                existingUser.CurrentMonthCost = user.CurrentMonthCost;
+
+                string serializedUserData = JsonConvert.SerializeObject(existingUser);
+                var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
+                existingUser.Hash = hashedUserdData;
+                var result = _saveData.ListToJson(existingUser);
+                return result;
+            }
+            catch (Exception e)
+            {
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not update user data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
+                throw;
+            }
+        }
+        
         public UserData AddUserData(UserData userData)
         {
-            var store = ListToJson(userData);
-            // userDatabase.Add(userData);
-            return userData;
-        }
-
-        public UserData UpdateData(UserData userData)
-        {
-
-            var existingMessage = GetById(userData.UserID);
-            if (existingMessage != null)
+            try
             {
-                userDatabase.Remove(existingMessage);
-                userDatabase.Add(userData);
-                return userData;
-            }
-            else
-            {
-                return userData;
-            }
-        }
-
-
-        //WRITE SAVE TO FILE METHOD USE 
-        public bool ListToJson(UserData users)
-        {
-            string json = JsonConvert.SerializeObject(users);
-            string filePath = "C:/Users/Muhammad.Mamoon/Documents/ENTERPRISE DESIGN/WattWise/server-side/Data/UserJson.json";
-            File.WriteAllText(filePath, json);
-
-            return true;
-        }
-
-        public bool TestListToJson()
-        {
-            // Step 3: Create test data
-            List<UserData> testUsers = new List<UserData>
-            {
-                new UserData
+                var generateId = usersList.Count();
+            
+                var smartMeter = _smartMeterRepo.GetById(userData.SmartMeterId);
+            
+                var users = new UserData
                 {
-                    UserID = 101,
-                    firstName = "John",
-                    lastName = "Doe",
-                    Address = "1234 Elm Street, Springfield",
-                    UserEmail = "john.doe@example.com",
-                    Passcode = "password123",
+                    UserID = generateId,
+                    firstName = userData.firstName,
+                    lastName = userData.lastName,
+                    Address = userData.Address,
+                    UserEmail = userData.UserEmail,
+                    Passcode = userData.Passcode,
                     SmartDevice = new SmartDevice
                     {
-                        SmartMeterID = 501,
-                        SmartMeterData = "23.5 kWh"
+                        SmartMeterId = smartMeter.SmartMeterId,
+                        EnergyPerKwH = smartMeter.EnergyPerKwH,
+                        CurrentMonthCost = smartMeter.CurrentMonthCost
                     }
-                },
-                new UserData
-                {
-                    UserID = 102,
-                    firstName = "Jane",
-                    lastName = "Smith",
-                    Address = "5678 Oak Avenue, Shelbyville",
-                    UserEmail = "jane.smith@example.com",
-                    Passcode = "password456",
-                    SmartDevice = new SmartDevice
-                    {
-                        SmartMeterID = 502,
-                        SmartMeterData = "45.2 kWh"
-                    }
-                }
-            };
-
-            return true;
+                };
+                string serializedUserData = JsonConvert.SerializeObject(users);
+                var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
+                users.Hash = hashedUserdData;
+                var result = _saveData.ListToJson(users);
+                return result;
+                
+            }
+            catch (Exception e)
+            {
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not add user data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
+                throw;
+            }
         }
+
+ 
+   
     }
 }

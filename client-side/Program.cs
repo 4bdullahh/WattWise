@@ -1,29 +1,34 @@
-using System;
-using Newtonsoft.Json;
-using NetMQ;
-using NetMQ.Sockets;
+
+using client_side.Services;
+using client_side.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using server_side.Repository;
+using server_side.Repository.Interface;
+using server_side.Services;
+using server_side.Services.Interface;
 
 namespace client_side
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            using (var client = new RequestSocket())
-            {
-                client.Connect("tcp://localhost:5555");
-                for (int i = 0; i < 10; i++)
-                {
-                    var userData = new UserModel { UserID = 1, UserEmail = "fred@hotmail.com" };
-                    var jsonRequest = JsonConvert.SerializeObject(userData);
-                    client.SendFrame(jsonRequest);
-                    Console.WriteLine("Sending UserData: ", jsonRequest);
 
-                    var message = client.ReceiveFrameString();
-                    var jsonResponse = JsonConvert.DeserializeObject<UserModel>(message);
-                    Console.WriteLine("Received: ", jsonResponse);
-                }
-            }
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddScoped<IMessagesServices, MessagesServices>();
+            serviceCollection.AddScoped<IClientServices, ClientServices>();
+            serviceCollection.AddScoped<ICalculateCostClient, CalculateCostClient>();
+            serviceCollection.AddScoped<IFolderPathServices, FolderPathServices>();
+            serviceCollection.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
+            serviceCollection.AddScoped<ISaveData, SaveData>();
+            serviceCollection.AddScoped<ICalculateCost, CalculateCost>();
+            serviceCollection.AddScoped<IErrorLogRepo, ErrorLogRepo>();
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var clientService = serviceProvider.GetService<IClientServices>();
+            clientService.StartClient();
+            //await clientService.ElectronServerAsync();
+
         }
+
     }
 }

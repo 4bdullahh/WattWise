@@ -3,11 +3,10 @@ namespace server_side.Repository.Interface
 {
     public interface IUserMessageRepo
     {
-        public UserData GetById(int UserID);
-        public UserData AddUserData(UserData userData);
-        public UserData UpdateData(UserData userData);
-        public bool TestListToJson();
-
+        UserData GetById(int UserID);
+        UserData AddUserData(UserData userData);
+        
+        UserData UpdateUserData(UserData userData);
 
     }
 
