@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services;
 
 namespace server_side.Repository;
@@ -11,11 +12,16 @@ public class SmartMeterRepo : ISmartMeterRepo
     private FolderPathServices folderpath;
     private readonly ISaveData _saveData;
     private readonly ICalculateCost _calculateCost;
-    public SmartMeterRepo(ISaveData saveData, ICalculateCost calculateCost)
+    private readonly IErrorLogRepo _errorLogRepo;
+    private readonly ErrorLogMessage _errorLogMessage;
+    
+    public SmartMeterRepo(ISaveData saveData, ICalculateCost calculateCost, IErrorLogRepo errorLogRepo)
     {
         folderpath = new FolderPathServices();
         _saveData = saveData;
         _calculateCost = calculateCost;
+        _errorLogRepo = errorLogRepo;
+        _errorLogMessage = new ErrorLogMessage();
         LoadSmartMeterData();
     }
     
@@ -39,7 +45,9 @@ public class SmartMeterRepo : ISmartMeterRepo
         }
         catch (Exception e)
         {
-            Console.WriteLine($"We could not load user data: {e.Message}");
+            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} SmartMeterRepo could not load user data: {e.Message} : {DateTime.UtcNow}";
+            Console.WriteLine($"{_errorLogMessage.Message}");
+            _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
     }
@@ -64,7 +72,9 @@ public class SmartMeterRepo : ISmartMeterRepo
         }
         catch (Exception e)
         {
-            Console.WriteLine($"We could not get user id: {e.Message}");
+            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} SmartMeterRepo could not get user id: {e.Message} : {DateTime.UtcNow}";
+            Console.WriteLine($"{_errorLogMessage.Message}");
+            _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
     }
@@ -97,7 +107,9 @@ public class SmartMeterRepo : ISmartMeterRepo
     
        catch (Exception e)
        {
-           Console.WriteLine($"We could not update smart device: {e.Message}");
+           _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} SmartMeterRepo could not update device: {e.Message} : {DateTime.UtcNow}";
+           Console.WriteLine($"{_errorLogMessage.Message}");
+           _errorLogRepo.LogError(_errorLogMessage);
            throw;
        }
     }
@@ -116,7 +128,9 @@ public class SmartMeterRepo : ISmartMeterRepo
                      _saveData.ListToJson(smartDevice);
         } catch (Exception e)
         {
-            Console.WriteLine($"We could not add smart device: {e.Message}");
+            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} SmartMeterRepo could not add device: {e.Message} : {DateTime.UtcNow}";
+            Console.WriteLine($"{_errorLogMessage.Message}");
+            _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
        

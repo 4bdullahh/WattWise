@@ -55,7 +55,7 @@ namespace server_side.Services
             }
             catch (Exception e)
             {
-                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Unable to access smart meter repo : {DateTime.UtcNow}";
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Unable to access smart meter repo from SmartMeterServices: {e.Message} : {DateTime.UtcNow}";
                 Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
                 _errorLogRepo.LogError(_errorLogMessage);
                 throw;

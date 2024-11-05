@@ -23,12 +23,14 @@ namespace server_side.Services
         private readonly IFolderPathServices _folderPathServices;
         private readonly ISmartMeterServices _smartMeterServices;
         private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage _errorLogMessage;
         public MessageService(IFolderPathServices _folderPathServices, IUserServices userServices, ISmartMeterServices smartMeterServices, IErrorLogRepo errorLogRepo)
 
         {
             _userServices = userServices;
             this._folderPathServices = _folderPathServices;
             _errorLogRepo = errorLogRepo;
+            _errorLogMessage = new ErrorLogMessage();
             string serverSideFolderPath = _folderPathServices.GetServerSideFolderPath();
             _smartMeterServices = smartMeterServices;
             var envGenerator = new GenerateEnvFile(_folderPathServices);
@@ -74,18 +76,18 @@ namespace server_side.Services
                                         }
                                         else
                                         {
-                                            errMsg = "Server: TLS authentication failed!";
-                                            Console.WriteLine($"{errMsg}");
-                                            errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                                            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} TLS authentication failed! : {DateTime.UtcNow}";
+                                            Console.WriteLine($"{_errorLogMessage.Message}");
+                                            _errorLogRepo.LogError(_errorLogMessage);
                                             _errorLogRepo.LogError(errorMessage);
                                             
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        errMsg = "Server: Error during TLS handshake";
-                                        Console.WriteLine($"{errMsg} {ex.Message}");
-                                        errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                                        _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error during TLS handshake : {DateTime.UtcNow}";
+                                        Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
+                                        _errorLogRepo.LogError(_errorLogMessage);
                                         _errorLogRepo.LogError(errorMessage);
                                     }
                                     server.ReceiveReady += (s, e) =>
@@ -109,9 +111,9 @@ namespace server_side.Services
 
                                             if (result.userHash != result.receivedHash)
                                             {
-                                                errMsg = "Server: Hash doesn't match for this message closing connection";
-                                                Console.WriteLine($"{errMsg}");
-                                                errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                                                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Hash doesn't match for this message closing connection : {DateTime.UtcNow}";
+                                                Console.WriteLine($"{_errorLogMessage.Message}");
+                                                _errorLogRepo.LogError(_errorLogMessage);
                                                 _errorLogRepo.LogError(errorMessage);
                                             }
                                             else
@@ -147,9 +149,9 @@ namespace server_side.Services
                                         }
                                         catch (Exception ex)
                                         {
-                                            errMsg = "Server: Error handling message in ReceiveReady Method MessageServices";
-                                            Console.WriteLine($"{errMsg} {ex.Message}");
-                                            errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                                            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error handling message in ReceiveReady Method MessageServices : {ex.Message} : {DateTime.UtcNow}";
+                                            Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
+                                            _errorLogRepo.LogError(_errorLogMessage);
                                             _errorLogRepo.LogError(errorMessage);
                                         }
                                     };
@@ -163,9 +165,9 @@ namespace server_side.Services
                         }
                         catch (Exception ex)
                         {
-                            errMsg = "Server: Error accepting TCP client";
-                            Console.WriteLine($"{errMsg} {ex.Message}");
-                            errorMessage.Message = $"{errMsg} : {DateTime.UtcNow}";
+                            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error accepting TCP client : {ex.Message} : {DateTime.UtcNow}";
+                            Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
+                            _errorLogRepo.LogError(_errorLogMessage);
                             _errorLogRepo.LogError(errorMessage);
                         }
                     }

@@ -5,6 +5,8 @@ using server_side.Cryptography;
 using Newtonsoft.Json;
 using client_side.Services.Interfaces;
 using DotNetEnv;
+using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services;
 using server_side.Services.Interface;
 
@@ -13,12 +15,17 @@ namespace client_side.Services
 {
     public class MessagesServices : IMessagesServices
     {
+        
         private readonly string _rsa_public_key;
         private readonly IFolderPathServices folderPath;
+        private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage _errorLogMessage;
         
-        public MessagesServices(IFolderPathServices folderPath)
+        public MessagesServices(IFolderPathServices folderPath, IErrorLogRepo errorLogRepo)
         {
             this.folderPath= folderPath;
+            _errorLogRepo = errorLogRepo;
+            _errorLogMessage = new ErrorLogMessage();
             var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
@@ -48,7 +55,9 @@ namespace client_side.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not send the message to the server, error: {e.Message}");
+                _errorLogMessage.Message = $"Client: ClientID {_errorLogMessage.ClientId} Message did not sent to server, error: : {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }

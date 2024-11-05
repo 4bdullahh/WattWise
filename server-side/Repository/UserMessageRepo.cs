@@ -14,7 +14,7 @@ namespace server_side.Repository
         private FolderPathServices folderpath;
         private readonly ISaveData _saveData;
         private readonly ISmartMeterRepo _smartMeterRepo;
-        private ErrorLogMessage _errorMsg;
+        private ErrorLogMessage _errorLogMessage;
         private IErrorLogRepo _errorLogRepo;
         public UserMessageRepo(ISaveData saveData, ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
@@ -22,7 +22,7 @@ namespace server_side.Repository
             _saveData = saveData;
             _smartMeterRepo = smartMeterRepo;
             _errorLogRepo = errorLogRepo;
-            _errorMsg = new ErrorLogMessage();
+            _errorLogMessage = new ErrorLogMessage();
             LoadUserData();
             
         }
@@ -48,7 +48,10 @@ namespace server_side.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not load users data: {e.Message}");
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} We could not load users data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
@@ -59,20 +62,20 @@ namespace server_side.Repository
 
             try
             {
-                // if (user != null)
-                // {
-                //     return user;
-                // }
-                //
-                // return null;
-                throw new Exception("Intentional failure");
+                //throw new Exception("Intentional failure");
+                if (user != null)
+                {
+                    return user;
+                }
+                
+                return null;
+                
             }
             catch (Exception e)
             {
-                _errorMsg.Message = $"Server: could not fetch user ID {DateTime.UtcNow}";
-                Console.WriteLine($"{_errorMsg.Message} {e.Message}");
-              
-                _errorLogRepo.LogError(_errorMsg);
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not fetch user ID: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
@@ -101,7 +104,9 @@ namespace server_side.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not update user data: {e.Message}");
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not update user data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
@@ -138,7 +143,9 @@ namespace server_side.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not add user data: {e.Message}");
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not add user data: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
