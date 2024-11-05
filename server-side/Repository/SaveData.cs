@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services;
 
 namespace server_side.Repository;
@@ -8,10 +9,13 @@ namespace server_side.Repository;
 public class SaveData : ISaveData
 {
     private FolderPathServices folderpath;
-
+    private IErrorLogRepo errorLogRepo;
+    private ErrorLogMessage errorLogMessage;
     public SaveData()
     {
         folderpath= new FolderPathServices();
+        errorLogMessage = new ErrorLogMessage();
+        
     }
     
        public T ListToJson<T>(T data)
@@ -89,7 +93,7 @@ public class SaveData : ISaveData
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error Writing to File: " + e.ToString());
+                Console.WriteLine($"Error Writing to File: {e.Message}");
                 return data;
             }
         }

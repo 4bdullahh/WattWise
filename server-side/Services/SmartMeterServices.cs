@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Text;
 using DotNetEnv;
 using server_side.Cryptography;
+using server_side.Repository.Models;
 using server_side.Services.Models;
 
 namespace server_side.Services
@@ -14,23 +15,28 @@ namespace server_side.Services
     {
         private readonly ISmartMeterRepo _smartMeterRepo;
         private readonly string _decryptedMessage;
-        
-        
-        public SmartMeterServices(ISmartMeterRepo smartMeterRepo)
+        private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage _errorLogMessage;
+        public SmartMeterServices(ISmartMeterRepo smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
              _smartMeterRepo = smartMeterRepo;
+             _errorLogRepo = errorLogRepo;
+             _errorLogMessage = new ErrorLogMessage();
         }
 
         public SmartMeterResponse UpdateMeterServices(string decryptedMessage)
-        { 
+        {
+            
             try
             {
                 SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
+                _errorLogMessage.ClientId = smartDevice.SmartMeterId;
 
                 var meterReadings = _smartMeterRepo.UpdateMeterData(smartDevice);
 
                 if (meterReadings != null)
                 {
+                    //throw new Exception("Intentional failure");
                     return new SmartMeterResponse
                     {
                         SmartMeterID = meterReadings.SmartMeterId,
@@ -38,16 +44,20 @@ namespace server_side.Services
                         CurrentMonthCost = meterReadings.CurrentMonthCost,
                         Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
                     };
+                    
                 }
 
                 return new SmartMeterResponse
                 {
                     Message = "SmartMeter not found"
                 };
+                
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We were unable to process the message: {e.Message}");
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Unable to access smart meter repo from SmartMeterServices: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
 

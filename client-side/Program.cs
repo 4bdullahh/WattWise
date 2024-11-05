@@ -22,6 +22,7 @@ namespace client_side
             serviceCollection.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
             serviceCollection.AddScoped<ISaveData, SaveData>();
             serviceCollection.AddScoped<ICalculateCost, CalculateCost>();
+            serviceCollection.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var clientService = serviceProvider.GetService<IClientServices>();
             clientService.StartClient();

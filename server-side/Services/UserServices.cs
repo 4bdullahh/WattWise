@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services.Interface;
 
 namespace server_side.Services
@@ -7,10 +8,14 @@ namespace server_side.Services
     public class UserServices : IUserServices
     {
         private readonly IUserMessageRepo _userRepo;
+        private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage _errorLogMessage;
 
-        public UserServices(IUserMessageRepo userRepo)
+        public UserServices(IUserMessageRepo userRepo, IErrorLogRepo errorLogRepo)
         {
             _userRepo = userRepo;
+            _errorLogRepo = errorLogRepo;
+            _errorLogMessage = new ErrorLogMessage();
         }
 
         public UserResponse UserOperations(string decryptedMessage)
@@ -111,18 +116,25 @@ namespace server_side.Services
                     }
                     default:
                     {
+                        _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Client sent invalid topic : {DateTime.UtcNow}";
+                        Console.WriteLine($"{_errorLogMessage.Message}");
+                        _errorLogRepo.LogError(_errorLogMessage);
+                        
                         return new UserResponse
                         {
                             Successs = false,
                             Message = "Invalid Topic Request from client"
                         };
+                        
                     }
 
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not process this message: {e.Message}");
+                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserServices could not process action : {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }

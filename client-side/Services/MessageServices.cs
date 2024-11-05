@@ -5,6 +5,8 @@ using server_side.Cryptography;
 using Newtonsoft.Json;
 using client_side.Services.Interfaces;
 using DotNetEnv;
+using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services;
 using server_side.Services.Interface;
 
@@ -13,12 +15,19 @@ namespace client_side.Services
 {
     public class MessagesServices : IMessagesServices
     {
+        
         private readonly string _rsa_public_key;
         private readonly IFolderPathServices folderPath;
+        private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage _errorLogMessage;
+        private readonly NetMQMessage _message;
         
-        public MessagesServices(IFolderPathServices folderPath)
+        public MessagesServices(IFolderPathServices folderPath, IErrorLogRepo errorLogRepo)
         {
             this.folderPath= folderPath;
+            _errorLogRepo = errorLogRepo;
+            _errorLogMessage = new ErrorLogMessage();
+            _message = new NetMQMessage();
             var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
@@ -35,20 +44,22 @@ namespace client_side.Services
         {
             try
             {
-                var messageToServer = new NetMQMessage();
-                messageToServer.Append(clientAddress); //0
-                messageToServer.AppendEmptyFrame(); //1
+                
+                _message.Append(clientAddress); //0
+                _message.AppendEmptyFrame(); //1
                 var encryptMessage = new HandleEncryption();
                 var result = encryptMessage.ApplyEncryptionClient(modelData, key, iv, _rsa_public_key);
-                messageToServer.Append(Convert.ToBase64String(result.encryptedKey));
-                messageToServer.Append(Convert.ToBase64String(result.encryptedIv));
-                messageToServer.Append(result.hashJson); //4
-                messageToServer.Append(result.base64EncryptedData); //5
-                return messageToServer;
+                _message.Append(Convert.ToBase64String(result.encryptedKey));
+                _message.Append(Convert.ToBase64String(result.encryptedIv));
+                _message.Append(result.hashJson); //4
+                _message.Append(result.base64EncryptedData); //5
+                return _message;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"We could not send the message to the server, error: {e.Message}");
+                _errorLogMessage.Message = $"Client: ClientID {_errorLogMessage.ClientId} Message did not sent to server, error: : {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
+                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
