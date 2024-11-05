@@ -79,7 +79,6 @@ namespace server_side.Services
                                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} TLS authentication failed! : {DateTime.UtcNow}";
                                             Console.WriteLine($"{_errorLogMessage.Message}");
                                             _errorLogRepo.LogError(_errorLogMessage);
-                                            _errorLogRepo.LogError(errorMessage);
                                             
                                         }
                                     }
@@ -124,6 +123,8 @@ namespace server_side.Services
                                                 var generateKeys = new HandleEncryption();
                                                 var getKeys = generateKeys.GenerateKeys();
                                                 
+                                                
+                                                
                                                 object response;
                         
                                                 if (result.decryptedMessage.Contains("UserID"))
@@ -152,7 +153,6 @@ namespace server_side.Services
                                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error handling message in ReceiveReady Method MessageServices : {ex.Message} : {DateTime.UtcNow}";
                                             Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
                                             _errorLogRepo.LogError(_errorLogMessage);
-                                            _errorLogRepo.LogError(errorMessage);
                                         }
                                     };
                                     if (!poller.IsRunning)
@@ -168,7 +168,6 @@ namespace server_side.Services
                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error accepting TCP client : {ex.Message} : {DateTime.UtcNow}";
                             Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
                             _errorLogRepo.LogError(_errorLogMessage);
-                            _errorLogRepo.LogError(errorMessage);
                         }
                     }
                 }, TaskCreationOptions.LongRunning); 

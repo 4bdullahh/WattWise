@@ -51,7 +51,6 @@ namespace server_side.Repository
                 _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} We could not load users data: {e.Message} : {DateTime.UtcNow}";
                 Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
                 _errorLogRepo.LogError(_errorLogMessage);
-                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }

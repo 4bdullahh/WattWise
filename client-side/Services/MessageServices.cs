@@ -18,16 +18,12 @@ namespace client_side.Services
         
         private readonly string _rsa_public_key;
         private readonly IFolderPathServices folderPath;
-        private readonly IErrorLogRepo _errorLogRepo;
-        private readonly ErrorLogMessage _errorLogMessage;
-        private readonly NetMQMessage _message;
+        private readonly LogServer _logServer;
         
-        public MessagesServices(IFolderPathServices folderPath, IErrorLogRepo errorLogRepo)
+        public MessagesServices(IFolderPathServices folderPath)
         {
             this.folderPath= folderPath;
-            _errorLogRepo = errorLogRepo;
-            _errorLogMessage = new ErrorLogMessage();
-            _message = new NetMQMessage();
+            _logServer = new LogServer();
             var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
@@ -44,7 +40,8 @@ namespace client_side.Services
         {
             try
             {
-                
+                //throw new Exception("Inetional exception");
+                var _message = new NetMQMessage();
                 _message.Append(clientAddress); //0
                 _message.AppendEmptyFrame(); //1
                 var encryptMessage = new HandleEncryption();
@@ -57,10 +54,19 @@ namespace client_side.Services
             }
             catch (Exception e)
             {
-                _errorLogMessage.Message = $"Client: ClientID {_errorLogMessage.ClientId} Message did not sent to server, error: : {e.Message} : {DateTime.UtcNow}";
-                Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
-                _errorLogRepo.LogError(_errorLogMessage);
+                _logServer.Message = $"{clientAddress} Message did not sent to server, error: : {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine($"{ _logServer.Message}");
                 throw;
+                // var _message = new NetMQMessage();
+                // _message.Append(clientAddress); //0
+                // _message.AppendEmptyFrame(); //1
+                // var encryptMessage = new HandleEncryption();
+                // var result = encryptMessage.ApplyEncryptionClient(_logServer.Message, key, iv, _rsa_public_key);
+                // _message.Append(Convert.ToBase64String(result.encryptedKey));
+                // _message.Append(Convert.ToBase64String(result.encryptedIv));
+                // _message.Append(result.hashJson); //4
+                // _message.Append(result.base64EncryptedData); //5
+                // return _message;
             }
         }
     }

@@ -109,7 +109,7 @@ public void StartClient()
                         Encoding.UTF8.GetString(receivedMessage[4].Buffer),
                         _rsaPrivateKey
                     );
-
+                    
                     awaitingResponse = false;
                     int newInterval = currentInterval.Next(minInterval, maxInterval);
                     timer.Interval = newInterval;

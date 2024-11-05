@@ -1,11 +1,6 @@
 ﻿using server_side.Services.Interface;
 using server_side.Repository.Interface;
-using NetMQ;
-using NetMQ.Sockets;
 using Newtonsoft.Json;
-using System.Text;
-using DotNetEnv;
-using server_side.Cryptography;
 using server_side.Repository.Models;
 using server_side.Services.Models;
 
