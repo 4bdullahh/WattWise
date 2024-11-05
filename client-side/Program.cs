@@ -23,7 +23,11 @@ namespace client_side
             serviceCollection.AddScoped<ISaveData, SaveData>();
             serviceCollection.AddScoped<ICalculateCost, CalculateCost>();
             serviceCollection.AddScoped<IErrorLogRepo, ErrorLogRepo>();
+            serviceCollection.AddHostedService<CostUpdateService>();
+            serviceCollection.AddSingleton<CostUpdateService>();
             var serviceProvider = serviceCollection.BuildServiceProvider();
+            var costUpdateService = serviceProvider.GetService<CostUpdateService>();
+            costUpdateService?.StartAsync(new CancellationToken());
             var clientService = serviceProvider.GetService<IClientServices>();
             clientService.StartClient();
             //await clientService.ElectronServerAsync();

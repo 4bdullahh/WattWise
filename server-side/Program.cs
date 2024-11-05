@@ -18,17 +18,18 @@ namespace server_side
             services.AddScoped<ISmartMeterServices, SmartMeterServices>();
             services.AddScoped<ISmartMeterRepo, SmartMeterRepo>();
             services.AddScoped<ICalculateCost, CalculateCost>();
-            services.AddSingleton<CostUpdateService>();
             services.AddHostedService<CostUpdateService>();
             services.AddScoped<ISaveData, SaveData>();
             services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             services.AddScoped<IHashHandle, HashHandle>();
-
+            services.AddSingleton<CostUpdateService>();
             services.AddSingleton<MessageController>();
 
             var serviceProvider = services.BuildServiceProvider();
-
+          
+            var costUpdateService = serviceProvider.GetService<CostUpdateService>();
+            costUpdateService?.StartAsync(new CancellationToken());
 
             var messageController = serviceProvider.GetService<MessageController>();
             messageController.ReceiveMessage();
