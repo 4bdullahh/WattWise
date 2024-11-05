@@ -71,16 +71,17 @@ namespace server_side.Repository
             try
             {
                 var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
-
+                var getSmartMeter = _smartMeterRepo.GetById(user.SmartMeterId);
+                
                 existingUser.UserID = user.UserID;
                 existingUser.firstName = user.firstName;
                 existingUser.lastName = user.lastName;
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
                 existingUser.SmartMeterId = user.SmartMeterId;
-                existingUser.EnergyPerKwH = user.EnergyPerKwH;
-                existingUser.CurrentMonthCost = user.CurrentMonthCost;
-                existingUser.CustomerType = user.CustomerType;
+                existingUser.EnergyPerKwH = getSmartMeter.EnergyPerKwH;
+                existingUser.CurrentMonthCost = getSmartMeter.CurrentMonthCost;
+                existingUser.CustomerType = getSmartMeter.CustomerType;
 
                 string serializedUserData = JsonConvert.SerializeObject(existingUser);
                 var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
