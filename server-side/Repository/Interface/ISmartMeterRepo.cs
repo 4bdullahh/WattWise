@@ -6,5 +6,5 @@ namespace server_side.Repository.Interface;
 public interface ISmartMeterRepo
 {
     SmartDevice GetById(int SmartMeterID);
-    SmartDevice UpdateMeterRepo(SmartDevice smartDevice);
+    SmartDevice UpdateMeterData(SmartDevice smartDevice);
 }

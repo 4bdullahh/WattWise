@@ -61,7 +61,6 @@ public class CalculateCost : ICalculateCost
         double totalStandingCharge = standingCharge * daysInMonth;
 
         double totalCost = currentEnergyCost + totalStandingCharge;
-        return totalCost;
-
+        return Math.Round(totalCost, 2);
     }
 }

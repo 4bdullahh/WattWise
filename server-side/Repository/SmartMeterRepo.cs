@@ -78,7 +78,7 @@ public class SmartMeterRepo : ISmartMeterRepo
             throw;
         }
     }
-    public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
+    public SmartDevice UpdateMeterData(SmartDevice smartDevice)
      {
 
        try
@@ -89,14 +89,13 @@ public class SmartMeterRepo : ISmartMeterRepo
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
               
-              existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
-              existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
-              existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               
+              existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
+              existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH,2);
+              existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               var result = _saveData.ListToJson(existingDevice);
               return result;
           }
-          else
           {
    
               var device = new SmartDevice();
