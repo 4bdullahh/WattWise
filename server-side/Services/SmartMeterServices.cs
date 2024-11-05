@@ -27,7 +27,7 @@ namespace server_side.Services
                 SmartDevice smartDevice = JsonConvert.DeserializeObject<SmartDevice>(decryptedMessage);
                 _errorLogMessage.ClientId = smartDevice.SmartMeterId;
 
-                var meterReadings = _smartMeterRepo.UpdateMeterRepo(smartDevice);
+                var meterReadings = _smartMeterRepo.UpdateMeterData(smartDevice);
 
                 if (meterReadings != null)
                 {
@@ -37,6 +37,7 @@ namespace server_side.Services
                         SmartMeterID = meterReadings.SmartMeterId,
                         EnergyPerKwH = meterReadings.EnergyPerKwH,
                         CurrentMonthCost = meterReadings.CurrentMonthCost,
+                        KwhUsed = meterReadings.KwhUsed,
                         Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
                     };
                     

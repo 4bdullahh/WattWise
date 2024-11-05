@@ -107,7 +107,7 @@ namespace server_side.Services
                                             tempered.UserID = 1000;
                                             var temperedJson = JsonConvert.SerializeObject(tempered);
                                             string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
-
+                                            
                                             if (result.userHash != result.receivedHash)
                                             {
                                                 _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Hash doesn't match for this message closing connection : {DateTime.UtcNow}";
