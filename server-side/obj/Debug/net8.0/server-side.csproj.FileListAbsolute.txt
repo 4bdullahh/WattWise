@@ -137,3 +137,28 @@ C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\Micros
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
 C:\Users\Vincent.Boardman\Documents\WattWise\server-side\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Hosting.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\Muhammad.Mamoon\Documents\ENTERPRISE DESIGN\WattWise\server-side\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll

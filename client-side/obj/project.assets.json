@@ -7448,42 +7448,35 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet": {}
+    "C:\\Users\\Muhammad.Mamoon\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj",
+      "projectUniqueName": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\client-side.csproj",
       "projectName": "client-side",
-      "projectPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\client-side.csproj",
-      "packagesPath": "C:\\Users\\Vincent.Boardman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\client-side\\obj\\",
+      "projectPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\client-side.csproj",
+      "packagesPath": "C:\\Users\\Muhammad.Mamoon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\client-side\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Vincent.Boardman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Muhammad.Mamoon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\server-side.csproj": {
-              "projectPath": "C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\server-side.csproj"
+            "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj": {
+              "projectPath": "C:\\Users\\Muhammad.Mamoon\\Documents\\ENTERPRISE DESIGN\\WattWise\\server-side\\server-side.csproj"
             }
           }
         }
@@ -7536,7 +7529,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -20,14 +20,13 @@ namespace client_side.Services
         private readonly IFolderPathServices folderPath;
         private readonly IErrorLogRepo _errorLogRepo;
         private readonly ErrorLogMessage _errorLogMessage;
-        private readonly NetMQMessage _message;
+        
         
         public MessagesServices(IFolderPathServices folderPath, IErrorLogRepo errorLogRepo)
         {
             this.folderPath= folderPath;
             _errorLogRepo = errorLogRepo;
             _errorLogMessage = new ErrorLogMessage();
-            _message = new NetMQMessage();
             var envGenerator = new GenerateEnvFile(folderPath);
             envGenerator.EnvFileGenerator();
             Env.Load(folderPath.GetWattWiseFolderPath() + "\\server-side\\.env");
@@ -44,7 +43,7 @@ namespace client_side.Services
         {
             try
             {
-                
+                var _message = new NetMQMessage();
                 _message.Append(clientAddress); //0
                 _message.AppendEmptyFrame(); //1
                 var encryptMessage = new HandleEncryption();

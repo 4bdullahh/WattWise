@@ -42,6 +42,7 @@ namespace server_side.Services
                         SmartMeterID = meterReadings.SmartMeterId,
                         EnergyPerKwH = meterReadings.EnergyPerKwH,
                         CurrentMonthCost = meterReadings.CurrentMonthCost,
+                        KwhUsed = meterReadings.KwhUsed,
                         Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
                     };
                     

@@ -93,6 +93,7 @@ public class SmartMeterRepo : ISmartMeterRepo
               existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
               existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH,2);
               existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
+              existingDevice.KwhUsed = Math.Round(calculateReadings.KwhUsed, 2);
               var result = _saveData.ListToJson(existingDevice);
               return result;
           }

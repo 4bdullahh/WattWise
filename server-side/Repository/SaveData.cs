@@ -67,6 +67,7 @@ public class SaveData : ISaveData
                     {
                         deviceToUpdate["CurrentMonthCost"] = smartDevice.CurrentMonthCost;
                         deviceToUpdate["EnergyPerKwH"] = smartDevice.EnergyPerKwH;
+                        deviceToUpdate["KwhUsed"] = smartDevice.KwhUsed;
                     }
                     else
                     {
@@ -76,6 +77,7 @@ public class SaveData : ISaveData
                             { "SmartMeterID", smartDevice.SmartMeterId },
                             { "EnergyPerKwH", smartDevice.EnergyPerKwH },
                             { "CurrentMonthCost", smartDevice.CurrentMonthCost },
+                            { "KwdUsed", smartDevice.KwhUsed },
                             { "CustomerType", smartDevice.CustomerType }
                         };
                         userInfo.Add(smartDataObject);
