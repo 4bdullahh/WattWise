@@ -93,8 +93,8 @@ namespace server_side.Repository
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
                 existingUser.SmartMeterId = user.SmartMeterId;
-                existingUser.EnergyPerKwH = getSmartMeter.EnergyPerKwH;
-                existingUser.CurrentMonthCost = getSmartMeter.CurrentMonthCost;
+                existingUser.EnergyPerKwH = Math.Round(getSmartMeter.EnergyPerKwH,2);
+                existingUser.CurrentMonthCost = Math.Round(getSmartMeter.CurrentMonthCost,2);
                 existingUser.CustomerType = getSmartMeter.CustomerType;
 
                 string serializedUserData = JsonConvert.SerializeObject(existingUser);
