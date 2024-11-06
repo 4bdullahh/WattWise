@@ -23,8 +23,7 @@ public class SaveData : ISaveData
             try
             {
 
-                string filePath = ""; 
-                filePath = data is UserData ? "UserJson" : "MeterJson";
+               string filePath = data is UserData ? "UserJson" : "MeterJson";
                 
                 string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", $"{filePath}.json");
                 

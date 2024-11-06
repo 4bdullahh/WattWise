@@ -7,4 +7,6 @@ public interface ISmartMeterRepo
 {
     SmartDevice GetById(int SmartMeterID);
     SmartDevice UpdateMeterData(SmartDevice smartDevice);
+    List<SmartDevice> LoadSmartMeterData();
+
 }
