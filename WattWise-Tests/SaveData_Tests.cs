@@ -4,12 +4,12 @@ using server_side.Repository;
 using server_side.Services;
 using server_side.Services.Interface;
 
-public class SaveDataTests
+public class SaveData_Tests
 {
     private SaveData _saveData;
     private readonly Mock<IFolderPathServices> _mockFolderPathServices;
 
-    public SaveDataTests()
+    public SaveData_Tests()
     {
         _mockFolderPathServices = new Mock<IFolderPathServices>();
         _saveData = new SaveData();
