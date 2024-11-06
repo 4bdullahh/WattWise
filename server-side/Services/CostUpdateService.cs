@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.Hosting;
-
 using server_side.Repository.Interface;
 
 public class CostUpdateService : IHostedService, IDisposable
 {
     private Timer _timer;
     private readonly ICalculateCost _calculateCostService;
-    private readonly List<SmartDevice> _smartDevices; 
+    private readonly ISmartMeterRepo _smartDevices; 
 
-    public CostUpdateService(ICalculateCost calculateCostService, List<SmartDevice> smartDevices)
+    public CostUpdateService(ICalculateCost calculateCostService, ISmartMeterRepo smartDevices)
     {
         _calculateCostService = calculateCostService;
         _smartDevices = smartDevices;
@@ -16,13 +15,16 @@ public class CostUpdateService : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        Console.WriteLine("CostUpdateService starting...");
         _timer = new Timer(UpdateCosts, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         return Task.CompletedTask;
     }
 
     private void UpdateCosts(object state)
     {
-        foreach (var device in _smartDevices)
+        Console.WriteLine("UpdateCosts running...");
+        var smartDevices = _smartDevices.LoadSmartMeterData();
+        foreach (var device in smartDevices)
         {
             _calculateCostService.getCurrentBill(device);
             // We can write notifications for the update if we want

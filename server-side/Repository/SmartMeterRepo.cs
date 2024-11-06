@@ -25,7 +25,7 @@ public class SmartMeterRepo : ISmartMeterRepo
         LoadSmartMeterData();
     }
     
-    private void LoadSmartMeterData()
+    public List<SmartDevice> LoadSmartMeterData()
     {
         string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
             
@@ -50,6 +50,7 @@ public class SmartMeterRepo : ISmartMeterRepo
             _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
+        return meterList;
     }
 
     public SmartDevice GetById(int SmartMeterID)

@@ -13,31 +13,61 @@ public class CalculateCost : ICalculateCost
          * These standard rates are taken from the below website
          * https://www.smartenergygb.org/smart-living/smart-energy-tips/what-is-the-price-cap-and-will-it-affect-your-energy-bills?gclid=49e98d7f1cc31a9fe942ea67df695dcb&gclsrc=3p.ds&msclkid=49e98d7f1cc31a9fe942ea67df695dcb#whatiscap-epg-rev3:~:text=What%20is%20the%20current%20price%20of%20gas%20and%20electricity%20per%20kWh%3F
          */
-       
-        string customerType = modelData.CustomerType;
-        double averageMinuteUsage = GetAverageMinuteUsage(customerType);
+        try
+        {
+            if (modelData == null)
+            {
+                Console.WriteLine($"Error in getCurrentBill: {modelData} is null");
+                return new SmartDevice { KwhUsed = 0, CurrentMonthCost = 0 };
+            }
+            if (string.IsNullOrEmpty(modelData.CustomerType) || GetAverageDailyUsage(modelData.CustomerType) == 0)
+            {
+                modelData.KwhUsed = 0;
+                modelData.CurrentMonthCost = 0;
+                return modelData;
+            }
 
-        modelData.StandingCharge = StandingCharge;
-        modelData.CostPerKwh = CostPerKwh;
+            string customerType = modelData.CustomerType;
+            double averageMinuteUsage = GetAverageMinuteUsage(customerType);
 
-        var curTime = DateTime.Now;
-        DateTime billingStartDate = new DateTime(curTime.Year, curTime.Month, 1);
-        modelData.KwhUsed = CalculateKwh(curTime, averageMinuteUsage, billingStartDate);
+            modelData.StandingCharge = StandingCharge;
+            modelData.CostPerKwh = CostPerKwh;
 
-        var totalCost = CalculateRates(modelData.KwhUsed, StandingCharge, CostPerKwh, averageMinuteUsage);
-        modelData.CurrentMonthCost = totalCost;
+            var curTime = DateTime.Now;
+            DateTime billingStartDate = new DateTime(curTime.Year, curTime.Month, 1);
+            modelData.KwhUsed = CalculateKwh(curTime, averageMinuteUsage, billingStartDate);
 
-        return modelData;
+            var totalCost = CalculateRates(modelData.KwhUsed, StandingCharge, CostPerKwh, averageMinuteUsage);
+            modelData.CurrentMonthCost = totalCost;
+
+            return modelData;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in getCurrentBill: {ex.Message}");
+            modelData.KwhUsed = 0;
+            modelData.CurrentMonthCost = 0;
+            return modelData;
+        }
     }
     private double GetAverageDailyUsage(string customerType)
     {
-        return customerType switch
+        try
         {
-            "Large Household" => 15.0,
-            "Average Household" => 10.0,
-            "Small Household" => 8.0,
-            _ => 0.0,
-        };
+            return customerType switch
+            {
+                "Large Household" => 15.0,
+                "Average Household" => 10.0,
+                "Small Household" => 8.0,
+                _ => 0.0,
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+      
     }
 
     private double GetAverageMinuteUsage(string customerType)
