@@ -30,7 +30,6 @@ public class SaveData : ISaveData
                 string existingJson = File.ReadAllText(jsonFilePath);
                 JArray userInfo = JArray.Parse(existingJson);
 
-
                 if (data is UserData userData)
                 {
                     var userToUpdate = userInfo.FirstOrDefault(u => (int)u["UserID"] == userData.UserID);
@@ -38,7 +37,7 @@ public class SaveData : ISaveData
                     {
                         userInfo.Remove(userToUpdate);
                     }
-                    
+
                     JObject userDataObject = new JObject
                     {
                         { "Address", userData.Address},
@@ -55,7 +54,7 @@ public class SaveData : ISaveData
                             }
                         }
                     };
-                    
+
                     userInfo.Add(userDataObject);
                 }
                 else if (data is SmartDevice smartDevice)
@@ -86,11 +85,15 @@ public class SaveData : ISaveData
                 {
                     throw new ArgumentException("Unsupported data type");
                 }
-                
+
                 string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
                 File.WriteAllText(jsonFilePath, updatedJson);
 
                 return data;
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException("Unsupported data type");
             }
             catch (Exception e)
             {
