@@ -57,6 +57,7 @@ public class SmartMeterRepo : ISmartMeterRepo
     {
         try
         {
+            //throw new Exception("Intentional error");
             var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterId == SmartMeterID);
 
             if (smartMeterById != null)

@@ -1,4 +1,6 @@
-﻿using server_side.Repository.Interface;
+﻿using System.Net;
+using server_side.Repository.Interface;
+using server_side.Repository.Models;
 
 namespace server_side.Repository;
 
@@ -6,7 +8,14 @@ public class CalculateCost : ICalculateCost
 {
     private const double StandingCharge = 0.60; 
     private const double CostPerKwh = 0.24;
+    private readonly IErrorLogRepo _errorLogRepo;
+    private readonly ErrorLogMessage _errorLogMessage;
 
+    public CalculateCost(IErrorLogRepo errorLogRepo)
+    {
+        _errorLogRepo = errorLogRepo;
+        _errorLogMessage = new ErrorLogMessage();
+    }
     public SmartDevice getCurrentBill(SmartDevice modelData)
     {
         /*
@@ -52,8 +61,10 @@ public class CalculateCost : ICalculateCost
     }
     private double GetAverageDailyUsage(string customerType)
     {
+        
         try
         {
+           throw new Exception("The method or operation is not implemented.");
             return customerType switch
             {
                 "Large Household" => 15.0,
@@ -64,7 +75,9 @@ public class CalculateCost : ICalculateCost
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Customer type invalid {e.Message} : {DateTime.UtcNow}";
+            Console.WriteLine($"{_errorLogMessage.Message}");
+            _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
       
