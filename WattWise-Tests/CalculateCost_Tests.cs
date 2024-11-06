@@ -1,14 +1,17 @@
 ﻿using System;
+using Moq;
 using Xunit;
 using server_side.Repository;
+using server_side.Repository.Interface;
 
 public class CalculateCostTests
 {
     private readonly CalculateCost _calculateCost;
-
+    private readonly Mock<IErrorLogRepo> _errorLog;
     public CalculateCostTests()
     {
-        _calculateCost = new CalculateCost();
+        _errorLog = new Mock<IErrorLogRepo>();
+        _calculateCost = new CalculateCost(_errorLog.Object);
     }
 
     [Theory]

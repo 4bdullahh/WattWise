@@ -64,7 +64,8 @@ public class CalculateCost : ICalculateCost
         
         try
         {
-           throw new Exception("The method or operation is not implemented.");
+            // Uncomment this for testing log error
+           // throw new Exception("The method or operation is not implemented.");
             return customerType switch
             {
                 "Large Household" => 15.0,
