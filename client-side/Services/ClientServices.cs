@@ -128,13 +128,14 @@ public void StartClient()
                       
                         var getSmartMeterId = _smartMeterRepo.GetById(clientId);
                         
-                        var UserModel = new UserData
+                        var modelData = new UserData
                         {
-                            UserID = getSmartMeterId.UserData.UserID,
+                            //UserID = getSmartMeterId.UserData.UserID,
+                            UserID = 1001,
                             Topic = "UpdateUser"
                         };
                         
-                        var modelData = _calculateCostClient.getRandomCost(genTestModel, getSmartMeterId.CustomerType);
+                        //var modelData = _calculateCostClient.getRandomCost(genTestModel, getSmartMeterId.CustomerType);
                         var messageToServer = _messagesServices.SendReading(
                             clientAddress,
                             modelData,

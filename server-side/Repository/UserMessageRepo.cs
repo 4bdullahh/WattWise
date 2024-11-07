@@ -1,4 +1,5 @@
 
+using System.ComponentModel;
 using server_side.Repository.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -78,33 +79,52 @@ namespace server_side.Repository
                 throw;
             }
         }
-
         public UserData UpdateUserData(UserData user)
         {
             try
             {
+                //throw new Exception("Inavlid user");
                 var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
+                
                 var getSmartMeter = _smartMeterRepo.GetById(user.SmartMeterId);
                 
+                if (existingUser == null || getSmartMeter == null)
+                {
+                    throw new NullReferenceException($"The existingUser {existingUser.UserID} or SmartMeter {getSmartMeter.SmartMeterId} has returned null.");
+                }
+
                 existingUser.UserID = user.UserID;
                 existingUser.firstName = user.firstName;
                 existingUser.lastName = user.lastName;
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
-                existingUser.SmartMeterId = user.SmartMeterId;
-                existingUser.EnergyPerKwH = Math.Round(getSmartMeter.EnergyPerKwH,2);
-                existingUser.CurrentMonthCost = Math.Round(getSmartMeter.CurrentMonthCost,2);
+                existingUser.SmartMeterId = getSmartMeter.SmartMeterId;
+                existingUser.EnergyPerKwH = Math.Round(getSmartMeter.EnergyPerKwH, 2);
+                existingUser.CurrentMonthCost = Math.Round(getSmartMeter.CurrentMonthCost, 2);
                 existingUser.CustomerType = getSmartMeter.CustomerType;
 
                 string serializedUserData = JsonConvert.SerializeObject(existingUser);
                 var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
                 existingUser.Hash = hashedUserdData;
+                
                 var result = _saveData.ListToJson(existingUser);
+                if (result == null)
+                {
+                    throw new NullReferenceException($"The result of ListToJson {result} has returned null.");
+                }
+                
                 return result;
+            }
+            catch (NullReferenceException e)
+            {
+                _errorLogMessage.Message = $"Server: From UserID {user.UserID} in UserMessageRepo: {e.Message} : {DateTime.UtcNow}";
+                Console.WriteLine(_errorLogMessage.Message);
+                _errorLogRepo.LogError(_errorLogMessage);
+                throw;
             }
             catch (Exception e)
             {
-                _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} UserMessageRepo could not update user data: {e.Message} : {DateTime.UtcNow}";
+                _errorLogMessage.Message = $"Server: From UserID {user.UserID} in UserMessageRepo: {e.Message} : {DateTime.UtcNow}";
                 Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
                 _errorLogRepo.LogError(_errorLogMessage);
                 throw;
