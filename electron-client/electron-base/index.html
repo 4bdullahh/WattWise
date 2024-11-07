@@ -21,6 +21,8 @@
   <body>
     <h1>Hello from Electron renderer!</h1>
     <p>👋</p>
+    <button id="meterReading">Fetch Readings</button>
+    <h1 id="responseDiv">Nothing Yet</h1>
     <p id="myDiv"></p>
     <script>
       var data = [
@@ -31,11 +33,11 @@
           type: "indicator",
           mode: "gauge+number",
           gauge: {
-            axis: { range: [null, 500] },
+            axis: { range: [null, 100] },
             steps: [
-              { range: [0, 250], color: "lightgreen" },
-              { range: [250, 400], color: "yellow" },
-              { range: [400, 500], color: "red" },
+              { range: [0, 25], color: "lightgreen" },
+              { range: [25, 75], color: "yellow" },
+              { range: [75, 100], color: "red" },
             ],
             threshold: {
               line: { color: "darkred", width: 4 },
@@ -54,18 +56,6 @@
 
       var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
       Plotly.newPlot("myDiv", data, layout);
-
-      function updateGaugeWithRandomValue() {
-        const randomValue = Math.floor(Math.random() * 501);
-        data[0].value = randomValue;
-        Plotly.react("myDiv", data, layout);
-      }
-
-      setInterval(() => {
-        updateGaugeWithRandomValue();
-      }, 2000);
-      // window.versions.onUpdateGauge(() => {
-      // });
     </script>
   </body>
   <script src="./renderer.js"></script>
