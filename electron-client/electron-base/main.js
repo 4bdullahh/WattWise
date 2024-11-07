@@ -26,7 +26,7 @@ app.whenReady().then(() => {
 
         client.on("data", (data) => {
           const message = data.toString();
-          // console.log("Received from .NET:", message);
+          console.log("Received from .NET:", message);
           resolve(message);
         });
       });

@@ -3,6 +3,8 @@
 public interface IClientServices
 {
     public Task StartClient();
+    public Task TempStartClient();
+
 
     /*
     public Task ElectronServerAsync();

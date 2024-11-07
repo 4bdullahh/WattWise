@@ -29,9 +29,12 @@ namespace client_side
             var costUpdateService = serviceProvider.GetService<CostUpdateService>();
             costUpdateService?.StartAsync(new CancellationToken());
             var clientService = serviceProvider.GetService<IClientServices>();
-            clientService.StartClient();
-            //await clientService.ElectronServerAsync();
-
+            
+            // WITH ELECTRON
+            /*clientService.StartClient();*/
+            
+            // WITHOUT ELECTRON
+            clientService.TempStartClient();
         }
 
     }
