@@ -79,7 +79,6 @@ namespace server_side.Services
                                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} TLS authentication failed! : {DateTime.UtcNow}";
                                             Console.WriteLine($"{_errorLogMessage.Message}");
                                             _errorLogRepo.LogError(_errorLogMessage);
-                                            _errorLogRepo.LogError(errorMessage);
                                             
                                         }
                                     }
@@ -108,7 +107,7 @@ namespace server_side.Services
                                             tempered.UserID = 1000;
                                             var temperedJson = JsonConvert.SerializeObject(tempered);
                                             string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
-
+                                            
                                             if (result.userHash != result.receivedHash)
                                             {
                                                 _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Hash doesn't match for this message closing connection : {DateTime.UtcNow}";
@@ -123,6 +122,8 @@ namespace server_side.Services
                                                 messageToClient.AppendEmptyFrame();
                                                 var generateKeys = new HandleEncryption();
                                                 var getKeys = generateKeys.GenerateKeys();
+                                                
+                                                
                                                 
                                                 object response;
                         
@@ -152,7 +153,6 @@ namespace server_side.Services
                                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error handling message in ReceiveReady Method MessageServices : {ex.Message} : {DateTime.UtcNow}";
                                             Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
                                             _errorLogRepo.LogError(_errorLogMessage);
-                                            _errorLogRepo.LogError(errorMessage);
                                         }
                                     };
                                     if (!poller.IsRunning)
@@ -168,7 +168,6 @@ namespace server_side.Services
                             _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} Error accepting TCP client : {ex.Message} : {DateTime.UtcNow}";
                             Console.WriteLine($"{_errorLogMessage.Message} {ex.Message}");
                             _errorLogRepo.LogError(_errorLogMessage);
-                            _errorLogRepo.LogError(errorMessage);
                         }
                     }
                 }, TaskCreationOptions.LongRunning); 

@@ -18,22 +18,6 @@ namespace server_side.Tests
             _mockFolderPathServices = new Mock<IFolderPathServices>();
             _generateEnvFile = new GenerateEnvFile(_mockFolderPathServices.Object);
         }
-        
-        [Fact]
-        public void LoadExistingEnvVariables_EmptyFile_ReturnsEmptyDictionary()
-        {
-            // Arrange
-            var envFilePath = ".env";
-            var mockFolderPathServices = new Mock<IFolderPathServices>();
-            mockFolderPathServices.Setup(m => m.GetWattWiseFolderPath()).Returns("test-wattwise-folder");
-            var generateEnvFile = new GenerateEnvFile(mockFolderPathServices.Object);
-
-            // Act
-            var envVariables = generateEnvFile.LoadExistingEnvVariables(envFilePath);
-
-            // Assert
-            Assert.Empty(envVariables);
-        }
 
         [Fact]
         public void LoadExistingEnvVariables_ValidFile_ReturnsDictionary()

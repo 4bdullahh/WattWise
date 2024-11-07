@@ -39,192 +39,250 @@ namespace client_side.Services
 
         }
 
-
-public void StartClient()
-{
-    var generateKeys = new HandleEncryption();
-    var getKeys = generateKeys.GenerateKeys();
-
-    try
-    {
-        using (var poller = new NetMQPoller())
+        public async Task StartClient()
         {
-            int maxClients = 12;
-            int minInterval = 1000;
-            int maxInterval = 3000;
-            var currentInterval = new Random();
-
-            for (int i = 0; i < maxClients; i++)
+            using (var electron = new NamedPipeServerStream("meter-reading"))
             {
-                int clientId = i;
-
-                bool sslAuthenticated = false;
-                Task sslTask = Task.Run(() =>
+                while (true)
                 {
-                    try
+                    electron.WaitForConnection();
+                    using (StreamReader reader = new StreamReader(electron))
+                    using (StreamWriter writer = new StreamWriter(electron))
                     {
-                        Console.WriteLine($"Client {clientId}: Initializing SSL connection");
-                        using (TcpClient tcpClient = new TcpClient("localhost", 5556))
-                        using (var sslStream = new SslStream(tcpClient.GetStream(), false, (sender, cert, chain, errors) => true))
+                        // Request data for electron
+                        var generateKeys = new HandleEncryption();
+                        var getKeys = generateKeys.GenerateKeys();
+
+                        try
                         {
-                            sslStream.AuthenticateAsClient("localhost", new X509CertificateCollection { _clientCertificate }, SslProtocols.Tls12, false);
-                            if (sslStream.IsAuthenticated)
+                            using (var poller = new NetMQPoller())
                             {
-                                sslAuthenticated = true;
-                                Console.WriteLine($"Client {clientId}: TLS authentication successful!");
+                                int maxClients = 1;
+                                int minInterval = 1000;
+                                int maxInterval = 3000;
+                                var currentInterval = new Random();
+
+                                for (int i = 0; i < maxClients; i++)
+                                {
+                                    int clientId = i;
+
+                                    bool sslAuthenticated = false;
+                                    Task sslTask = Task.Run(() =>
+                                    {
+                                        try
+                                        {
+                                            Console.WriteLine(
+                                                $"Client {clientId}: Initializing SSL connection");
+                                            using (TcpClient tcpClient = new TcpClient("localhost", 5556))
+                                            using (var sslStream = new SslStream(tcpClient.GetStream(), false,
+                                                       (sender, cert, chain, errors) => true))
+                                            {
+                                                sslStream.AuthenticateAsClient("localhost",
+                                                    new X509CertificateCollection { _clientCertificate },
+                                                    SslProtocols.Tls12, false);
+                                                if (sslStream.IsAuthenticated)
+                                                {
+                                                    sslAuthenticated = true;
+                                                    Console.WriteLine(
+                                                        $"Client {clientId}: TLS authentication successful!");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine(
+                                                        $"Client {clientId}: TLS authentication failed!");
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(
+                                                $"Client {clientId}: SSL setup error - {ex.Message}");
+                                        }
+                                    });
+
+                                    sslTask.Wait();
+                                    if (!sslAuthenticated) continue;
+
+                                    var clientSocket = new DealerSocket();
+                                    clientSocket.Options.Identity =
+                                        Encoding.UTF8.GetBytes($"Client-{clientId}");
+                                    clientSocket.Connect("tcp://localhost:5555");
+
+                                    var timer = new NetMQTimer(minInterval);
+                                    bool awaitingResponse = false;
+
+                                    clientSocket.ReceiveReady += async (s, e) =>
+                                    {
+                                        var receivedMessage = e.Socket.ReceiveMultipartMessage();
+                                        Console.WriteLine(
+                                            $"Client {clientId} received response: {receivedMessage}");
+
+                                        var handleEncryption = new HandleEncryption();
+                                        var result = handleEncryption.ApplyDencryptionServer(
+                                            receivedMessage,
+                                            receivedMessage[1].Buffer,
+                                            receivedMessage[2].Buffer,
+                                            Encoding.UTF8.GetString(receivedMessage[3].Buffer),
+                                            Encoding.UTF8.GetString(receivedMessage[4].Buffer),
+                                            _rsaPrivateKey
+                                        );
+
+                                        // Retun the data
+                                        await writer.WriteLineAsync(result.decryptedMessage);
+                                        await writer.FlushAsync();
+
+                                        awaitingResponse = false;
+                                        int newInterval = currentInterval.Next(minInterval, maxInterval);
+                                        timer.Interval = newInterval;
+                                        Console.WriteLine(
+                                            $"Client {clientId}: Next message in {newInterval} ms");
+                                        timer.Enable = true;
+
+
+                                    };
+
+                                    timer.Elapsed += (sender, e) =>
+                                    {
+                                        if (!awaitingResponse)
+                                        {
+                                            awaitingResponse = true;
+                                            string clientAddress = $"Client-{clientId}";
+
+                                            var genTestModel = new SmartDeviceClient
+                                                { SmartMeterId = clientId };
+
+                                            var getSmartMeterId = _smartMeterRepo.GetById(clientId);
+
+                                            var modelData = _calculateCostClient.getRandomCost(genTestModel,
+                                                getSmartMeterId.CustomerType);
+                                            var messageToServer = _messagesServices.SendReading(
+                                                clientAddress,
+                                                modelData,
+                                                getKeys.key,
+                                                getKeys.iv
+                                            );
+
+                                            Console.WriteLine($"Client {clientId}: Sending message...");
+                                            clientSocket.SendMultipartMessage(messageToServer);
+
+                                            timer.Enable = false;
+                                        }
+                                    };
+
+                                    poller.Add(clientSocket);
+                                    poller.Add(timer);
+                                }
+
+                                poller.RunAsync();
+                                Console.ReadLine();
+                                poller.Stop();
                             }
-                            else
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"We could not start the client, error: {e.Message}");
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void PublishNewData(string data)
+        {
+            Task getByIdPipeTask = Task.Factory.StartNew(async () =>
+            {
+                using (var server = new NamedPipeServerStream("meter-reading"))
+                {
+                    server.WaitForConnection();
+                    using (StreamReader reader = new StreamReader(server))
+                    using (StreamWriter writer = new StreamWriter(server))
+                    {
+                        char[] buffer = new char[1024];
+                        int numRead;
+
+                        while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            string receivedMessage = new string(buffer, 0, numRead);
+
+                            Console.WriteLine($"Received: {receivedMessage}");
+
+                            // RETURN THE DATA 
+                            await writer.WriteLineAsync(data);
+                            await writer.FlushAsync();
+                        }
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
+            
+            await Task.WhenAll(getByIdPipeTask);
+        }
+        
+        /*public async Task ElectronServerAsync()
+        {
+            Task getByIdPipeTask = Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    using (var server = new NamedPipeServerStream("meter-reading"))
+                    {
+                        server.WaitForConnection();
+                        using (StreamReader reader = new StreamReader(server))
+                        using (StreamWriter writer = new StreamWriter(server))
+                        {
+                            char[] buffer = new char[1024];
+                            int numRead;
+
+                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
                             {
-                                Console.WriteLine($"Client {clientId}: TLS authentication failed!");
+                                string receivedMessage = new string(buffer, 0, numRead);
+                                if (receivedMessage == "getData")
+                                {
+                                    // CODE TO GET BY ID
+                                }
+
+                                Console.WriteLine($"Received: {receivedMessage}");
+
+                                // RETURN THE DATA 
+                                await writer.WriteLineAsync("GET BY ID DATA");
+                                await writer.FlushAsync();
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Client {clientId}: SSL setup error - {ex.Message}");
-                    }
-                });
-
-                sslTask.Wait(); 
-                if (!sslAuthenticated) continue;
-
-                var clientSocket = new DealerSocket();
-                clientSocket.Options.Identity = Encoding.UTF8.GetBytes($"Client-{clientId}");
-                clientSocket.Connect("tcp://localhost:5555");
-
-                var timer = new NetMQTimer(minInterval);
-                bool awaitingResponse = false;
-
-                clientSocket.ReceiveReady += (s, e) =>
-                {
-                    var receivedMessage = e.Socket.ReceiveMultipartMessage();
-                    Console.WriteLine($"Client {clientId} received response: {receivedMessage}");
-
-                    var handleEncryption = new HandleEncryption();
-                    var result = handleEncryption.ApplyDencryptionServer(
-                        receivedMessage,
-                        receivedMessage[1].Buffer,
-                        receivedMessage[2].Buffer,
-                        Encoding.UTF8.GetString(receivedMessage[3].Buffer),
-                        Encoding.UTF8.GetString(receivedMessage[4].Buffer),
-                        _rsaPrivateKey
-                    );
-
-                    awaitingResponse = false;
-                    int newInterval = currentInterval.Next(minInterval, maxInterval);
-                    timer.Interval = newInterval;
-                    Console.WriteLine($"Client {clientId}: Next message in {newInterval} ms");
-                    timer.Enable = true;
                 };
-
-                timer.Elapsed += (sender, e) =>
+            }, TaskCreationOptions.LongRunning);
+            
+            
+            Task basePipeTask = Task.Factory.StartNew(async () =>
+            {
+                while (true)
                 {
-                    if (!awaitingResponse)
+                    using (var server = new NamedPipeServerStream("base-pipe"))
                     {
-                        awaitingResponse = true;
-                        string clientAddress = $"Client-{clientId}";
+                        server.WaitForConnection();
+                        using (StreamReader reader = new StreamReader(server))
+                        using (StreamWriter writer = new StreamWriter(server))
+                        {
+                            char[] buffer = new char[1024];
+                            int numRead;
 
-                        var genTestModel = new SmartDeviceClient { SmartMeterId = clientId };
-                      
-                        var getSmartMeterId = _smartMeterRepo.GetById(clientId);
-                        
-                        var modelData = _calculateCostClient.getRandomCost(genTestModel, getSmartMeterId.CustomerType);
-                        var messageToServer = _messagesServices.SendReading(
-                            clientAddress,
-                            modelData,
-                            getKeys.key,
-                            getKeys.iv
-                        );
+                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                string receivedMessage = new string(buffer, 0, numRead);
+                                Console.WriteLine($"Received: {receivedMessage}");
 
-                        Console.WriteLine($"Client {clientId}: Sending message...");
-                        clientSocket.SendMultipartMessage(messageToServer);
-
-                        timer.Enable = false; 
+                                await writer.WriteLineAsync("Message received: " + receivedMessage);
+                                await writer.FlushAsync();
+                            }
+                        }
                     }
-                };
 
-                poller.Add(clientSocket);
-                poller.Add(timer);
-            }
+                }
+            }, TaskCreationOptions.LongRunning);
 
-            poller.RunAsync();
-            Console.ReadLine();
-            poller.Stop();
-        }
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine($"We could not start the client, error: {e.Message}");
-        throw;
-    }
-}
-
-        public async Task ElectronServerAsync()
-        {
-
-            // Task getByIdPipeTask = Task.Factory.StartNew(async () =>
-            // {
-            //     while (true)
-            //     {
-            //         using (var server = new NamedPipeServerStream("get-by-id"))
-            //         {
-            //             server.WaitForConnection();
-            //             using (StreamReader reader = new StreamReader(server))
-            //             using (StreamWriter writer = new StreamWriter(server))
-            //             {
-            //                 char[] buffer = new char[1024];
-            //                 int numRead;
-
-            //                 while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
-            //                 {
-            //                     string receivedMessage = new string(buffer, 0, numRead);
-            //                     if (receivedMessage == "getData")
-            //                     {
-            //                         // CODE TO GET BY ID
-            //                     }
-            //                     Console.WriteLine($"Received: {receivedMessage}");
-
-            //                     // RETURN THE DATA 
-            //                     await writer.WriteLineAsync("GET BY ID DATA");
-            //                     await writer.FlushAsync();
-            //                 }
-            //             }
-            //         }
-
-            //     }
-            // }, TaskCreationOptions.LongRunning);
-
-            // Task basePipeTask = Task.Factory.StartNew(async () =>
-            // {
-            //     while (true)
-            //     {
-            //         using (var server = new NamedPipeServerStream("base-pipe"))
-            //         {
-            //             server.WaitForConnection();
-            //             using (StreamReader reader = new StreamReader(server))
-            //             using (StreamWriter writer = new StreamWriter(server))
-            //             {
-            //                 char[] buffer = new char[1024];
-            //                 int numRead;
-
-            //                 while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
-            //                 {
-            //                     string receivedMessage = new string(buffer, 0, numRead);
-            //                     Console.WriteLine($"Received: {receivedMessage}");
-
-            //                     await writer.WriteLineAsync("Message received: " + receivedMessage);
-            //                     await writer.FlushAsync();
-            //                 }
-            //             }
-            //         }
-
-            //     }
-            // }, TaskCreationOptions.LongRunning);
-
-            // await Task.WhenAll(getByIdPipeTask, basePipeTask);
-        }
+            await Task.WhenAll(getByIdPipeTask, basePipeTask);
+        }*/
 
     }
 
 }
-

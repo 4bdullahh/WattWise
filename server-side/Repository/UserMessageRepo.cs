@@ -51,7 +51,6 @@ namespace server_side.Repository
                 _errorLogMessage.Message = $"Server: ClientID {_errorLogMessage.ClientId} We could not load users data: {e.Message} : {DateTime.UtcNow}";
                 Console.WriteLine($"{_errorLogMessage.Message} {e.Message}");
                 _errorLogRepo.LogError(_errorLogMessage);
-                _errorLogRepo.LogError(_errorLogMessage);
                 throw;
             }
         }
@@ -85,16 +84,17 @@ namespace server_side.Repository
             try
             {
                 var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
-
+                var getSmartMeter = _smartMeterRepo.GetById(user.SmartMeterId);
+                
                 existingUser.UserID = user.UserID;
                 existingUser.firstName = user.firstName;
                 existingUser.lastName = user.lastName;
                 existingUser.Address = user.Address;
                 existingUser.UserEmail = user.UserEmail;
-                existingUser.Passcode = user.Passcode;
                 existingUser.SmartMeterId = user.SmartMeterId;
-                existingUser.EnergyPerKwH = user.EnergyPerKwH;
-                existingUser.CurrentMonthCost = user.CurrentMonthCost;
+                existingUser.EnergyPerKwH = Math.Round(getSmartMeter.EnergyPerKwH,2);
+                existingUser.CurrentMonthCost = Math.Round(getSmartMeter.CurrentMonthCost,2);
+                existingUser.CustomerType = getSmartMeter.CustomerType;
 
                 string serializedUserData = JsonConvert.SerializeObject(existingUser);
                 var hashedUserdData = Cryptography.Cryptography.GenerateHash(serializedUserData);
@@ -149,8 +149,5 @@ namespace server_side.Repository
                 throw;
             }
         }
-
- 
-   
     }
 }

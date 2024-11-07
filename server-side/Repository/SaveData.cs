@@ -23,14 +23,12 @@ public class SaveData : ISaveData
             try
             {
 
-                string filePath = ""; 
-                filePath = data is UserData ? "UserJson" : "MeterJson";
+               string filePath = data is UserData ? "UserJson" : "MeterJson";
                 
                 string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", $"{filePath}.json");
                 
                 string existingJson = File.ReadAllText(jsonFilePath);
                 JArray userInfo = JArray.Parse(existingJson);
-
 
                 if (data is UserData userData)
                 {
@@ -39,7 +37,7 @@ public class SaveData : ISaveData
                     {
                         userInfo.Remove(userToUpdate);
                     }
-                    
+
                     JObject userDataObject = new JObject
                     {
                         { "Address", userData.Address},
@@ -56,7 +54,7 @@ public class SaveData : ISaveData
                             }
                         }
                     };
-                    
+
                     userInfo.Add(userDataObject);
                 }
                 else if (data is SmartDevice smartDevice)
@@ -67,6 +65,7 @@ public class SaveData : ISaveData
                     {
                         deviceToUpdate["CurrentMonthCost"] = smartDevice.CurrentMonthCost;
                         deviceToUpdate["EnergyPerKwH"] = smartDevice.EnergyPerKwH;
+                        deviceToUpdate["KwhUsed"] = smartDevice.KwhUsed;
                     }
                     else
                     {
@@ -76,6 +75,7 @@ public class SaveData : ISaveData
                             { "SmartMeterID", smartDevice.SmartMeterId },
                             { "EnergyPerKwH", smartDevice.EnergyPerKwH },
                             { "CurrentMonthCost", smartDevice.CurrentMonthCost },
+                            { "KwdUsed", smartDevice.KwhUsed },
                             { "CustomerType", smartDevice.CustomerType }
                         };
                         userInfo.Add(smartDataObject);
@@ -85,11 +85,15 @@ public class SaveData : ISaveData
                 {
                     throw new ArgumentException("Unsupported data type");
                 }
-                
+
                 string updatedJson = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
                 File.WriteAllText(jsonFilePath, updatedJson);
 
                 return data;
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException("Unsupported data type");
             }
             catch (Exception e)
             {

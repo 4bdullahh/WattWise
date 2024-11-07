@@ -25,7 +25,7 @@ public class SmartMeterRepo : ISmartMeterRepo
         LoadSmartMeterData();
     }
     
-    private void LoadSmartMeterData()
+    public List<SmartDevice> LoadSmartMeterData()
     {
         string jsonFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", "Data", "MeterJson.json");
             
@@ -50,12 +50,14 @@ public class SmartMeterRepo : ISmartMeterRepo
             _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
+        return meterList;
     }
 
     public SmartDevice GetById(int SmartMeterID)
     {
         try
         {
+            //throw new Exception("Intentional error");
             var smartMeterById = meterList.FirstOrDefault(x => x.SmartMeterId == SmartMeterID);
 
             if (smartMeterById != null)
@@ -78,7 +80,7 @@ public class SmartMeterRepo : ISmartMeterRepo
             throw;
         }
     }
-    public SmartDevice UpdateMeterRepo(SmartDevice smartDevice)
+    public SmartDevice UpdateMeterData(SmartDevice smartDevice)
      {
 
        try
@@ -89,14 +91,14 @@ public class SmartMeterRepo : ISmartMeterRepo
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
               
-              existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
-              existingDevice.EnergyPerKwH = calculateReadings.EnergyPerKwH;
-              existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               
+              existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
+              existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH,2);
+              existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
+              existingDevice.KwhUsed = Math.Round(calculateReadings.KwhUsed, 2);
               var result = _saveData.ListToJson(existingDevice);
               return result;
           }
-          else
           {
    
               var device = new SmartDevice();

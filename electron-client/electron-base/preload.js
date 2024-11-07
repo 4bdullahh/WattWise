@@ -6,5 +6,5 @@ contextBridge.exposeInMainWorld("versions", {
   electron: () => process.versions.electron,
   // ping: () => ipcRenderer.invoke("ping"),
   // open: () => ipcRenderer.invoke("open"),
-  // getByID: () => ipcRenderer.invoke("getByID"),
+  meterReading: () => ipcRenderer.invoke("meterReading"),
 });

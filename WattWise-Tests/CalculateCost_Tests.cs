@@ -1,59 +1,130 @@
-﻿/*using Moq;
+﻿using System;
+using Moq;
+using Xunit;
 using server_side.Repository;
+using server_side.Repository.Interface;
 
-namespace WattWise_Tests;
-
-public class CalculateCost_Tests
+public class CalculateCostTests
 {
-    [Theory]
-    [InlineData(
-        0.21,
-        0.60,
-        0.24
-    )]
-    //Below used to fail test
-    // [InlineData(
-    //     1,
-    //     11,
-    //     5
-    // )]
-    public void Should_Calculate_Day_Cost_And_Return_Double_With_Two_Decimal_Points(
-            double kwhPerHour, 
-            double standingCharge, 
-            double costPerKwh
-        )
+    private readonly CalculateCost _calculateCost;
+    private readonly Mock<IErrorLogRepo> _errorLog;
+    public CalculateCostTests()
     {
-        //Arrange
-        var dateTime = DateTime.Now;
-        var currentDayCost = costPerKwh * (kwhPerHour * dateTime.Hour);
-        var daysPassedInMonth = dateTime.Day;
-        var currentMonthCost = currentDayCost * daysPassedInMonth;
-        var calcStandingCharge = standingCharge * daysPassedInMonth;
-        var totalCost = currentMonthCost + calcStandingCharge;
-        var expectedCost = Math.Round(totalCost, 2);
-       
-        //Act
-        CalculateCost calculateCost = new CalculateCost();
-        var actualCost = calculateCost.CalculateRates(dateTime, kwhPerHour, standingCharge, costPerKwh);
-        
-        //Assert
-        Assert.NotNull(actualCost);
-        Assert.True(actualCost >= 0, "Expected cost to be non negative");
-        Assert.Equal(expectedCost, actualCost);
+        _errorLog = new Mock<IErrorLogRepo>();
+        _calculateCost = new CalculateCost(_errorLog.Object);
     }
-    
+
+    [Theory]
+    [InlineData("Large Household", 15.0)]
+    [InlineData("Average Household", 10.0)]
+    [InlineData("Small Household", 8.0)]
+    [InlineData("Unknown", 0.0)]
+    public void GetCurrentBill_ShouldCalculateCorrectKwhBasedOnCustomerType(string customerType, double expectedDailyUsage)
+    {
+        // Arrange
+        var device = new SmartDevice { CustomerType = customerType };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        DateTime now = DateTime.Now;
+        DateTime billingStartDate = new DateTime(now.Year, now.Month, 1);
+        double expectedKwhUsed = (expectedDailyUsage / (24 * 60)) * (now - billingStartDate).TotalMinutes;
+
+        // Assert
+        Assert.Equal(Math.Round(expectedKwhUsed, 2), Math.Round(updatedDevice.KwhUsed, 2));
+    }
 
     [Fact]
-    public void Get_Current_Bill_Should_Return_Model()
+    public void GetCurrentBill_ShouldReturnCorrectMonthlyCost()
     {
-        //Arrange
-        var smartDevice = new SmartDevice();
-        //Act
-        var getCurrentBill = new CalculateCost();
-        var actualResult = getCurrentBill.getCurrentBill(smartDevice);
-        //Assert
-        Assert.NotNull(actualResult);
-        Assert.Equal(smartDevice, actualResult);
+        // Arrange
+        var device = new SmartDevice { CustomerType = "Average Household" };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        double expectedEnergyCost = updatedDevice.KwhUsed * updatedDevice.CostPerKwh;
+        int daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+        double expectedTotalCost = expectedEnergyCost + (updatedDevice.StandingCharge * daysInMonth);
+
+        // Assert
+        Assert.Equal(Math.Round(expectedTotalCost, 2), Math.Round(updatedDevice.CurrentMonthCost, 2));
     }
-    
-}*/
+
+    [Fact]
+    public void GetCurrentBill_ShouldSetRatesCorrectly()
+    {
+        // Arrange
+        var device = new SmartDevice { CustomerType = "Small Household" };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        // Assert 
+        Assert.Equal(0.60, updatedDevice.StandingCharge);
+        Assert.Equal(0.24, updatedDevice.CostPerKwh);
+        Assert.True(updatedDevice.KwhUsed > 0);
+        Assert.True(updatedDevice.CurrentMonthCost > 0);
+    }
+    [Fact]
+    public void GetCurrentBill_ShouldHandleNullSmartDeviceGracefully()
+    {
+        // Arrange
+        SmartDevice device = null;
+
+        // Act
+        var result = _calculateCost.getCurrentBill(device);
+
+        // Assert
+        Assert.NotNull(result); 
+        Assert.Equal(0, result.KwhUsed);
+        Assert.Equal(0, result.CurrentMonthCost);
+    }
+
+
+    [Fact]
+    public void GetCurrentBill_ShouldHandleEmptyCustomerType()
+    {
+        // Arrange
+        var device = new SmartDevice { CustomerType = "" };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        // Assert
+        Assert.Equal(0, updatedDevice.KwhUsed); 
+        Assert.Equal(0, updatedDevice.CurrentMonthCost); 
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(-10)]
+    public void GetCurrentBill_ShouldHandleNegativeKwhUsageGracefully(double invalidKwh)
+    {
+        // Arrange
+        var device = new SmartDevice { CustomerType = "Average Household", KwhUsed = invalidKwh };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        // Assert
+        Assert.True(updatedDevice.KwhUsed >= 0); 
+    }
+
+    [Fact]
+    public void GetCurrentBill_ShouldHandleExtremeHighUsage()
+    {
+        // Arrange
+        var device = new SmartDevice { CustomerType = "Large Household" };
+
+        // Act
+        var updatedDevice = _calculateCost.getCurrentBill(device);
+
+        updatedDevice.KwhUsed = double.MaxValue;
+        updatedDevice.CurrentMonthCost = _calculateCost.CalculateRates(updatedDevice.KwhUsed, updatedDevice.StandingCharge, updatedDevice.CostPerKwh, 15.0);
+
+        // Assert
+        Assert.NotEqual(double.PositiveInfinity, updatedDevice.CurrentMonthCost); // Ensure no overflow occurs
+    }
+}

@@ -1,74 +1,122 @@
 [
   {
     "SmartMeterID": 2,
-    "EnergyPerKwH": 0.3248609717704564,
-    "CurrentMonthCost": 28.96914127221389,
-    "CustomerType": "Average Household"
+    "EnergyPerKwH": 0.33,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Average Household",
+    "UserData": {
+      "UserID": 1002
+    }
   },
   {
     "SmartMeterID": 4,
-    "EnergyPerKwH": 0.32992367458261807,
-    "CurrentMonthCost": 28.969111427919444,
-    "CustomerType": "Average Household"
+    "EnergyPerKwH": 0.33,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Average Household",
+    "UserData": {
+      "UserID": 1004
+    }
   },
   {
     "SmartMeterID": 6,
-    "EnergyPerKwH": 0.21143897669274803,
-    "CurrentMonthCost": 26.775325477851112,
-    "CustomerType": "Small Household"
+    "EnergyPerKwH": 0.21,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Small Household",
+    "UserData": {
+      "UserID": 1006
+    }
   },
   {
     "SmartMeterID": 9,
-    "EnergyPerKwH": 0.21298822424652958,
-    "CurrentMonthCost": 26.77532375633111,
-    "CustomerType": "Small Household"
+    "EnergyPerKwH": 0.22,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Small Household",
+    "UserData": {
+      "UserID": 1009
+    }
   },
   {
     "SmartMeterID": 5,
-    "EnergyPerKwH": 0.31936396040768567,
-    "CurrentMonthCost": 28.969167371599998,
-    "CustomerType": "Average Household"
+    "EnergyPerKwH": 0.32,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Average Household",
+    "UserData": {
+      "UserID": 1005
+    }
   },
   {
     "SmartMeterID": 8,
-    "EnergyPerKwH": 0.21446779865617693,
-    "CurrentMonthCost": 26.77530220234222,
-    "CustomerType": "Small Household"
+    "EnergyPerKwH": 0.21,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Small Household",
+    "UserData": {
+      "UserID": 1008
+    }
   },
   {
     "SmartMeterID": 10,
-    "EnergyPerKwH": 0.32960595145724414,
-    "CurrentMonthCost": 28.969130747941666,
-    "CustomerType": "Average Household"
+    "EnergyPerKwH": 0.32,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Average Household",
+    "UserData": {
+      "UserID": 1010
+    }
   },
   {
     "SmartMeterID": 11,
-    "EnergyPerKwH": 0.2134113804698826,
-    "CurrentMonthCost": 26.775337815068887,
-    "CustomerType": "Small Household"
+    "EnergyPerKwH": 0.22,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Small Household",
+    "UserData": {
+      "UserID": 1011
+    }
   },
   {
     "SmartMeterID": 7,
-    "EnergyPerKwH": 0.2194023978407868,
-    "CurrentMonthCost": 26.77533870446889,
-    "CustomerType": "Small Household"
+    "EnergyPerKwH": 0.21,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Small Household",
+    "UserData": {
+      "UserID": 1007
+    }
   },
   {
     "SmartMeterID": 3,
-    "EnergyPerKwH": 0.49748389625914513,
-    "CurrentMonthCost": 34.45368557992499,
-    "CustomerType": "Large Household"
+    "EnergyPerKwH": 0.49,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Large Household",
+    "UserData": {
+      "UserID": 1003
+    }
   },
   {
     "SmartMeterID": 1,
-    "EnergyPerKwH": 0.4964145811297809,
-    "CurrentMonthCost": 34.45376222089166,
-    "CustomerType": "Large Household"
+    "EnergyPerKwH": 0.49,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Large Household",
+    "UserData": {
+      "UserID": 1001
+    }
   },
   {
     "SmartMeterID": 0,
-    "EnergyPerKwH": 0.49851508843219167,
-    "CurrentMonthCost": 34.45376977162083,
-    "CustomerType": "Large Household"
+    "EnergyPerKwH": 0.5,
+    "CurrentMonthCost": 0.0,
+    "KwhUsed": 0.0,
+    "CustomerType": "Large Household",
+    "UserData": {
+      "UserID": 1000
+    }
   }
 ]
