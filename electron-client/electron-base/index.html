@@ -23,12 +23,12 @@
     <p>👋</p>
     <button id="meterReading">Fetch Readings</button>
     <h1 id="responseDiv">Nothing Yet</h1>
-    <p id="myDiv"></p>
+    <p id="meterGauge"></p>
     <script>
       var data = [
         {
           domain: { x: [0, 1], y: [0, 1] },
-          value: 300,
+          value: 50,
           title: { text: "Live Usage" },
           type: "indicator",
           mode: "gauge+number",
@@ -55,7 +55,7 @@
       ];
 
       var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
-      Plotly.newPlot("myDiv", data, layout);
+      Plotly.newPlot("meterGauge", data, layout);
     </script>
   </body>
   <script src="./renderer.js"></script>
