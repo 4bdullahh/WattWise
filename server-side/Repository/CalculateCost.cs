@@ -48,6 +48,7 @@ public class CalculateCost : ICalculateCost
 
             var totalCost = CalculateRates(modelData.KwhUsed, StandingCharge, CostPerKwh, averageMinuteUsage);
             modelData.CurrentMonthCost = totalCost;
+            modelData.Message = $"Cost calculation for {customerType}: {totalCost}";
 
             return modelData;
         }

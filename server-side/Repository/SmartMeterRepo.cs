@@ -14,11 +14,13 @@ public class SmartMeterRepo : ISmartMeterRepo
     private readonly ICalculateCost _calculateCost;
     private readonly IErrorLogRepo _errorLogRepo;
     private readonly ErrorLogMessage _errorLogMessage;
+    private readonly IPowerGridCalc _powerGridCalc;
     
-    public SmartMeterRepo(ISaveData saveData, ICalculateCost calculateCost, IErrorLogRepo errorLogRepo)
+    public SmartMeterRepo(ISaveData saveData, ICalculateCost calculateCost, IErrorLogRepo errorLogRepo, IPowerGridCalc powerGridCalc, IErrorLogRepo errorLogMessage)
     {
         folderpath = new FolderPathServices();
         _saveData = saveData;
+        _powerGridCalc = powerGridCalc;
         _calculateCost = calculateCost;
         _errorLogRepo = errorLogRepo;
         _errorLogMessage = new ErrorLogMessage();
@@ -91,12 +93,18 @@ public class SmartMeterRepo : ISmartMeterRepo
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
               
+              var powerOutageResponse = _powerGridCalc.CalculateGridOutage(calculateReadings);
+              if (powerOutageResponse != null)
+              {
+                  return powerOutageResponse;
+              }
               
               existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
               existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH,2);
               existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               existingDevice.KwhUsed = Math.Round(calculateReadings.KwhUsed, 2);
               var result = _saveData.ListToJson(existingDevice);
+              result.Message = calculateReadings.Message;
               return result;
           }
           {
