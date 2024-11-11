@@ -12,7 +12,7 @@ namespace WattWise_Tests;
 
 public class ClientMessageService_Tests
 {
-     private readonly MessagesServices _messagesServices;
+        private readonly MessagesServices _messagesServices;
         private readonly Mock<IFolderPathServices> _folderPathMock;
         private readonly Mock<IErrorLogRepo> _errorLogRepoMock;
         private readonly string _rsaPublicKey;
@@ -25,10 +25,11 @@ public class ClientMessageService_Tests
             _errorLogRepoMock = new Mock<IErrorLogRepo>();
             _encryptionHandler = new HandleEncryption();
 
+            _folderPathMock.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestEnvFolder"));
+
             var rsaKeys = Cryptography.GenerateRsaKeys();
             _rsaPublicKey = rsaKeys.publicKey;
             _rsaPrivateKey = rsaKeys.privateKey;
-            _folderPathMock.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestEnvFolder"));
 
             _messagesServices = new MessagesServices(_folderPathMock.Object, _errorLogRepoMock.Object);
             _encryptionHandler = new HandleEncryption();
@@ -42,8 +43,12 @@ public class ClientMessageService_Tests
         var modelData = new { UserID = 1, Name = "Test User" };
         var folderPathMock = new Mock<IFolderPathServices>();
         folderPathMock.Setup(fp => fp.GetWattWiseFolderPath()).Returns("C:\\WattWise");
-
-        var envGenerator = new GenerateEnvFile(folderPathMock.Object);
+        var wattWisePath = "C:\\WattWise\\server-side";
+        if (!Directory.Exists(wattWisePath))
+        {
+            Directory.CreateDirectory(wattWisePath);
+        }
+       var envGenerator = new GenerateEnvFile(folderPathMock.Object);
         envGenerator.EnvFileGenerator();
         Env.Load("C:\\WattWise\\server-side\\.env");
 
@@ -106,7 +111,7 @@ public class ClientMessageService_Tests
         }
         catch (Exception)
         {
-            // Assert that an error was logged when an exception occurred
+            // Assert
             _errorLogRepoMock.Verify(x => x.LogError(It.Is<ErrorLogMessage>(m => m.Message.Contains("Message did not sent to server"))), Times.Once);
         }
     }
@@ -119,13 +124,11 @@ public class ClientMessageService_Tests
         var key = new byte[32]; // Invalid key size
         var iv = new byte[16];  // Invalid iv size
 
-        // Set up mock logging for error verification
         _errorLogRepoMock.Setup(x => x.LogError(It.IsAny<ErrorLogMessage>())).Verifiable();
 
         // Act & Assert
         Assert.ThrowsAny<Exception>(() => _messagesServices.SendReading(clientAddress, modelData, key, iv));
 
-        // Verify that the error log contains the expected decryption error
         _errorLogRepoMock.Verify(x => x.LogError(It.Is<ErrorLogMessage>(m => m.Message.Contains("Message did not sent to server"))), Times.Once);
     }
-    }
+}
