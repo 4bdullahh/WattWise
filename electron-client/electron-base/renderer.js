@@ -4,13 +4,17 @@ const main = async () => {
   meterReadingButton.onclick = async () => {
     window.meterAPI.startMeterReading();
 
-    window.meterAPI.onMeterReadingData((meterData) => {
+    window.meterAPI.onMeterReadingData(async (meterData) => {
       const jsonObject = JSON.parse(JSON.parse(meterData));
 
-      console.log("Meter Reading Data:", jsonObject);
+      // console.log("Meter Reading Data:", jsonObject);
 
       data[0].value = jsonObject.KwhUsed;
-      Plotly.react("meterGauge", data, layout);
+      Plotly.react(`meter-gauge-${jsonObject.SmartMeterID}`, data, layout);
+
+      // setInterval(() => {
+      //   console.log("Waiting 1s");
+      // }, 1000);
     });
 
     // const responseDiv = document.getElementById("responseDiv");
