@@ -92,23 +92,25 @@ public class SmartMeterRepo : ISmartMeterRepo
           if (existingDevice != null)
           {
               var calculateReadings = _calculateCost.getCurrentBill(smartDevice);
-              
+
               var powerOutageResponse = _powerGridCalc.CalculateGridOutage(calculateReadings);
+              
               if (powerOutageResponse != null)
               {
+                  Console.WriteLine($"Returned power outage response as was: {powerOutageResponse}");
                   return powerOutageResponse;
               }
-              
+              Console.WriteLine($"Passed power outage response as was: {powerOutageResponse}");
               existingDevice.SmartMeterId = calculateReadings.SmartMeterId;
-              existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH,2);
+              existingDevice.EnergyPerKwH = Math.Round(calculateReadings.EnergyPerKwH, 2);
               existingDevice.CurrentMonthCost = calculateReadings.CurrentMonthCost;
               existingDevice.KwhUsed = Math.Round(calculateReadings.KwhUsed, 2);
               var result = _saveData.ListToJson(existingDevice);
               result.Message = calculateReadings.Message;
               return result;
           }
+          else
           {
-   
               var device = new SmartDevice();
               AddMeterData(device);
               return device;

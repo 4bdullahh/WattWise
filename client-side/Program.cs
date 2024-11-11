@@ -25,6 +25,8 @@ namespace client_side
             serviceCollection.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             serviceCollection.AddHostedService<CostUpdateService>();
             serviceCollection.AddSingleton<CostUpdateService>();
+            serviceCollection.AddScoped<IPowerGridCalc ,PowerGridCalc>();
+
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var costUpdateService = serviceProvider.GetService<CostUpdateService>();
             costUpdateService?.StartAsync(new CancellationToken());

@@ -10,4 +10,6 @@ public class SmartDevice
     public string CustomerType { get; set; }
     public UserData? UserData { get; set; } 
     public string Message { get; set; }
+    
+    public List<int> clientList { get; set; }
 }

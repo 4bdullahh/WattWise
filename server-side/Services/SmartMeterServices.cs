@@ -29,33 +29,38 @@ namespace server_side.Services
 
                 var meterReadings = _smartMeterRepo.UpdateMeterData(smartDevice);
 
-                switch (meterReadings.Message)
+
+                if (meterReadings.Message.Contains("Power grid outage"))
                 {
-                    case
-                        "Power grid outage":
+                    Console.WriteLine("Power grid outage...");
+                    return new SmartMeterResponse
                     {
-                        //put method here
-                    }
-                        break;
-                       
-                    case "Cost calculation":
-                    {
-                        //throw new Exception("Intentional failure");
-                        return new SmartMeterResponse
-                        {
-                            SmartMeterID = meterReadings.SmartMeterId,
-                            EnergyPerKwH = meterReadings.EnergyPerKwH,
-                            CurrentMonthCost = meterReadings.CurrentMonthCost,
-                            KwhUsed = meterReadings.KwhUsed,
-                            Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
-                        };
-                    }
-                    
+                        SmartMeterID = meterReadings.SmartMeterId,
+                        EnergyPerKwH = meterReadings.EnergyPerKwH,
+                        CurrentMonthCost = meterReadings.CurrentMonthCost,
+                        KwhUsed = meterReadings.KwhUsed,
+                        Message = meterReadings.Message
+                    };
                 }
-                return new SmartMeterResponse
+                else if (meterReadings.Message.Contains("Cost calculation"))
                 {
-                    Message = "SmartMeter not found"
-                };
+                    return new SmartMeterResponse
+                    {
+                        SmartMeterID = meterReadings.SmartMeterId,
+                        EnergyPerKwH = meterReadings.EnergyPerKwH,
+                        CurrentMonthCost = meterReadings.CurrentMonthCost,
+                        KwhUsed = meterReadings.KwhUsed,
+                        Message = $"Current Month Cost {meterReadings.CurrentMonthCost}"
+                    };
+                }
+                else
+                {
+                    return new SmartMeterResponse
+                    {
+                        Message = "SmartMeter not found"
+                    };
+                }
+                
                 
             }
             catch (Exception e)

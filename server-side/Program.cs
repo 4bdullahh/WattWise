@@ -23,6 +23,7 @@ namespace server_side
             services.AddScoped<IFolderPathServices, FolderPathServices>();
             services.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             services.AddScoped<IHashHandle, HashHandle>();
+            services.AddScoped<IPowerGridCalc ,PowerGridCalc>();
             services.AddSingleton<CostUpdateService>();
             services.AddSingleton<MessageController>();
 

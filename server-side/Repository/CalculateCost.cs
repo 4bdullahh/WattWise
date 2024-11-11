@@ -22,6 +22,7 @@ public class CalculateCost : ICalculateCost
          * These standard rates are taken from the below website
          * https://www.smartenergygb.org/smart-living/smart-energy-tips/what-is-the-price-cap-and-will-it-affect-your-energy-bills?gclid=49e98d7f1cc31a9fe942ea67df695dcb&gclsrc=3p.ds&msclkid=49e98d7f1cc31a9fe942ea67df695dcb#whatiscap-epg-rev3:~:text=What%20is%20the%20current%20price%20of%20gas%20and%20electricity%20per%20kWh%3F
          */
+        
         try
         {
             if (modelData == null)
@@ -49,7 +50,6 @@ public class CalculateCost : ICalculateCost
             var totalCost = CalculateRates(modelData.KwhUsed, StandingCharge, CostPerKwh, averageMinuteUsage);
             modelData.CurrentMonthCost = totalCost;
             modelData.Message = $"Cost calculation for {customerType}: {totalCost}";
-
             return modelData;
         }
         catch (Exception ex)
