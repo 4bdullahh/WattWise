@@ -95,7 +95,7 @@ public class SaveData_Tests
         Directory.CreateDirectory(tempPath);
 
         var userJsonPath = Path.Combine(tempPath, "UserJson.json");
-        File.WriteAllText(userJsonPath, "[]");  // Empty user list
+        File.WriteAllText(userJsonPath, "[]");
 
         _mockFolderPathServices.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestDataFolder"));
 
@@ -131,7 +131,7 @@ public class SaveData_Tests
         Directory.CreateDirectory(tempPath);
 
         var meterJsonPath = Path.Combine(tempPath, "MeterJson.json");
-        File.WriteAllText(meterJsonPath, "[]");  // Empty device list
+        File.WriteAllText(meterJsonPath, "[]");
 
         _mockFolderPathServices.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestDataFolder"));
 
