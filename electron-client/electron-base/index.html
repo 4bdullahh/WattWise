@@ -16,11 +16,10 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     /> -->
-    <title>Hello from Electron renderer!</title>
+    <title>WattWise</title>
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
+    <h1>WattWise Smart Meter</h1>
     <button id="meterReading">Fetch Readings</button>
     <div
       id="meterContainer"
@@ -44,7 +43,7 @@
         var data = [
           {
             domain: { x: [0, 1], y: [0, 1] },
-            value: 50,
+            value: 0,
             title: { text: "Live Usage" },
             type: "indicator",
             mode: "gauge+number",
@@ -70,7 +69,27 @@
           },
         ];
 
-        var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        var layout = {
+          width: 600,
+          height: 350,
+          margin: { t: 0, b: 0 },
+          paper_bgcolor: "rgba(255,255,255,1)", 
+          plot_bgcolor: "rgba(255,255,255,1)",  
+          shapes: [
+            {
+              type: "rect",
+              x0: 0,
+              x1: 1,
+              y0: 0,
+              y1: 1,
+              line: {
+                color: "black",  
+                width: 2,        
+              },
+            },
+          ],
+        };
+
         Plotly.newPlot(newGauge.id, data, layout);
       }
     </script>
