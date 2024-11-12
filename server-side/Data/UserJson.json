@@ -1,10 +1,10 @@
 [
   {
-    "Address": "Dummy Address 1",
+    "Address": "Grizzly Hills",
     "UserID": 1001,
-    "firstName": "DummyFirstName1",
-    "lastName": "DummyLastName1",
-    "UserEmail": "dummy1@example.com",
+    "firstName": "Murky",
+    "lastName": "Pet",
+    "UserEmail": "Murky@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 1,
       "EnergyPerKwH": 0.4990471100726612,
@@ -13,11 +13,11 @@
     }
   },
   {
-    "Address": "Dummy Address 2",
+    "Address": "Deepholm Academy Way",
     "UserID": 1002,
-    "firstName": "DummyFirstName2",
-    "lastName": "DummyLastName2",
-    "UserEmail": "dummy2@example.com",
+    "firstName": "Deathwing",
+    "lastName": "Neltharion",
+    "UserEmail": "Deathwing@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 2,
       "EnergyPerKwH": 0.3195227046099073,
@@ -26,11 +26,11 @@
     }
   },
   {
-    "Address": "Dummy Address 3",
+    "Address": "Wyrmrest Temple Village",
     "UserID": 1003,
-    "firstName": "DummyFirstName3",
+    "firstName": "Alexstrasza",
     "lastName": "DummyLastName3",
-    "UserEmail": "dummy3@example.com",
+    "UserEmail": "Alexstrasza@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 3,
       "EnergyPerKwH": 0.5033808651015159,
@@ -39,11 +39,11 @@
     }
   },
   {
-    "Address": "Dummy Address 4",
+    "Address": "Jade Forest",
     "UserID": 1004,
-    "firstName": "DummyFirstName4",
-    "lastName": "DummyLastName4",
-    "UserEmail": "dummy4@example.com",
+    "firstName": "Pow",
+    "lastName": "Monk",
+    "UserEmail": "Pow@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 4,
       "EnergyPerKwH": 0.32066665985629367,
@@ -52,11 +52,11 @@
     }
   },
   {
-    "Address": "Dummy Address 5",
+    "Address": "Dalaran Street",
     "UserID": 1005,
-    "firstName": "DummyFirstName5",
-    "lastName": "DummyLastName5",
-    "UserEmail": "dummy5@example.com",
+    "firstName": "Lealthy",
+    "lastName": "Dwarf",
+    "UserEmail": "Lealthy@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 5,
       "EnergyPerKwH": 0.32129816321563887,
@@ -65,11 +65,11 @@
     }
   },
   {
-    "Address": "Dummy Address 6",
+    "Address": "Ironforge Road",
     "UserID": 1006,
-    "firstName": "DummyFirstName6",
-    "lastName": "DummyLastName6",
-    "UserEmail": "dummy6@example.com",
+    "firstName": "Magni",
+    "lastName": "Bronzebeard",
+    "UserEmail": "Magni@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 6,
       "EnergyPerKwH": 0.21853857315207945,
@@ -78,11 +78,11 @@
     }
   },
   {
-    "Address": "Dummy Address 7",
+    "Address": "Nagrand",
     "UserID": 1007,
-    "firstName": "DummyFirstName7",
-    "lastName": "DummyLastName7",
-    "UserEmail": "dummy7@example.com",
+    "firstName": "Grommash",
+    "lastName": "Hellscream",
+    "UserEmail": "Grommash@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 7,
       "EnergyPerKwH": 0.2174455895287967,
@@ -91,11 +91,11 @@
     }
   },
   {
-    "Address": "Dummy Address 8",
+    "Address": "Quel’Thalas Way",
     "UserID": 1008,
-    "firstName": "DummyFirstName8",
-    "lastName": "DummyLastName8",
-    "UserEmail": "dummy8@example.com",
+    "firstName": "Lor’themar",
+    "lastName": "Theron",
+    "UserEmail": "Lor’themar@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 8,
       "EnergyPerKwH": 0.21698507456115498,
@@ -104,11 +104,11 @@
     }
   },
   {
-    "Address": "Dummy Address 9",
+    "Address": "Eastern Kingdoms Building",
     "UserID": 1009,
-    "firstName": "DummyFirstName9",
-    "lastName": "DummyLastName9",
-    "UserEmail": "dummy9@example.com",
+    "firstName": "Varian",
+    "lastName": "Wrynn",
+    "UserEmail": "Varian@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 9,
       "EnergyPerKwH": 0.2151381501743137,
@@ -117,11 +117,11 @@
     }
   },
   {
-    "Address": "Dummy Address 10",
+    "Address": "Kalimdor Approach",
     "UserID": 1010,
-    "firstName": "DummyFirstName10",
-    "lastName": "DummyLastName10",
-    "UserEmail": "dummy10@example.com",
+    "firstName": "Tyrande",
+    "lastName": "Whisperwind",
+    "UserEmail": "Tyrande@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 10,
       "EnergyPerKwH": 0.3287837456405441,
@@ -130,11 +130,11 @@
     }
   },
   {
-    "Address": "Dummy Address 11",
+    "Address": "Suramar Hill",
     "UserID": 1011,
-    "firstName": "DummyFirstName11",
-    "lastName": "DummyLastName11",
-    "UserEmail": "dummy11@example.com",
+    "firstName": "Illidan",
+    "lastName": "Stormrage",
+    "UserEmail": "Illidan@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 11,
       "EnergyPerKwH": 0.21855575525165205,
@@ -143,13 +143,52 @@
     }
   },
   {
-    "Address": "Dummy Address 0",
+    "Address": "Stormwind City",
     "UserID": 1000,
-    "firstName": "DummyFirstName11",
-    "lastName": "DummyLastName11",
-    "UserEmail": "dummy11@example.com",
+    "firstName": "Anduin",
+    "lastName": "Wrynn",
+    "UserEmail": "Anduin@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 0,
+      "EnergyPerKwH": 0.21855575525165205,
+      "CurrentMonthCost": 25.054254589304445,
+      "CustomerType": "Small Household"
+    }
+  },
+  {
+    "Address": "Windrunner Spire Avenue",
+    "UserID": 1012,
+    "firstName": "Sylvanas",
+    "lastName": "Windrunner",
+    "UserEmail": "Sylvanas@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 12,
+      "EnergyPerKwH": 0.21855575525165205,
+      "CurrentMonthCost": 25.054254589304445,
+      "CustomerType": "Small Household"
+    }
+  },
+  {
+    "Address": "Lordaeron Road",
+    "UserID": 1013,
+    "firstName": "Arthas",
+    "lastName": "Menethil",
+    "UserEmail": "Arthas@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 13,
+      "EnergyPerKwH": 0.21855575525165205,
+      "CurrentMonthCost": 25.054254589304445,
+      "CustomerType": "Small Household"
+    }
+  },
+  {
+    "Address": "Durnholde Keep Street",
+    "UserID": 1014,
+    "firstName": "Thrall",
+    "lastName": "Goel",
+    "UserEmail": "Thrall@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 14,
       "EnergyPerKwH": 0.21855575525165205,
       "CurrentMonthCost": 25.054254589304445,
       "CustomerType": "Small Household"
