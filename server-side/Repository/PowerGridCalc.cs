@@ -58,7 +58,7 @@ public class PowerGridCalc :IPowerGridCalc
     {
         var random = new Random();
         double multiplier = 0.1 + random.NextDouble() * 0.1;
-        double kwhCutOff = 0.1;
+        double kwhCutOff = 3.9;
 
         if (!_powerGridModel.clientList.Contains(smartDevice.SmartMeterId))
         {
@@ -77,6 +77,7 @@ public class PowerGridCalc :IPowerGridCalc
         {
             smartDevice.Message = $"Power grid outage usage at {_powerGridModel.kwhLimit} kwh";
             smartDevice.clientList = _powerGridModel.clientList;
+            Console.WriteLine(smartDevice.Message);
             _powerGridModel.clientList.Clear();
             _powerGridModel.kwhLimit = 0;
             return smartDevice;
