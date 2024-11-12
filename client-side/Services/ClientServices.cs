@@ -10,7 +10,6 @@ using client_side.Services.Interfaces;
 using server_side.Cryptography;
 using System.IO.Pipes;
 using DotNetEnv;
-using Microsoft.Extensions.Logging;
 using server_side.Repository.Interface;
 using server_side.Repository.Models;
 using server_side.Services.Interface;
@@ -41,7 +40,6 @@ namespace client_side.Services
             this._smartMeterRepo = _smartMeterRepo;
             _errorLogRepo = errorLogRepo;
             errorMessage = new ErrorLogMessage();
-
         }
 
         // DELETE BEFORE DEPLOY
@@ -62,7 +60,6 @@ namespace client_side.Services
                     for (int i = 0; i < maxClients; i++)
                     {
                         int clientId = i;
-
                         bool sslAuthenticated = false;
                         Task sslTask = Task.Run(() =>
                         {
@@ -81,13 +78,13 @@ namespace client_side.Services
                                     {
                                         sslAuthenticated = true;
                                         // This is for simulating the authenticate failure
-                                              if (clientId == 1)
+                                              /*if (clientId == 1)
                                               {
                                                   errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
                                                   tcpClient.Close();
                                                   sslStream.Close();
                                                   throw new AuthenticationException($"Simulated TLS authentication failure : {DateTime.UtcNow}");
-                                              }
+                                              }*/
                                         Console.WriteLine(
                                             $"Client {clientId}: TLS authentication successful!");
                                     }
@@ -104,7 +101,7 @@ namespace client_side.Services
                                 _errorLogRepo.LogError(errorMessage);
                                 Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.UtcNow}");
                                 // Uncomment when simulating connection error
-                                return;
+                              //  return;
                             }
                         });
 
@@ -188,6 +185,12 @@ namespace client_side.Services
                 throw;
             }
         }
+        /*  Code Documentation:
+            This Method is responsible for starting the client and includes: 
+                TLS Security
+                Receive/Send Encrypted and Decrypted Messages
+                Connection with Electron
+       */
         public async Task StartClient()
         {
             using (var electron = new NamedPipeServerStream("meter-reading"))
@@ -198,7 +201,6 @@ namespace client_side.Services
                     using (StreamReader reader = new StreamReader(electron))
                     using (StreamWriter writer = new StreamWriter(electron))
                     {
-                        // Request data for electron
                         var generateKeys = new HandleEncryption();
                         var getKeys = generateKeys.GenerateKeys();
 
@@ -214,7 +216,6 @@ namespace client_side.Services
                                 for (int i = 0; i < maxClients; i++)
                                 {
                                     int clientId = i;
-
                                     bool sslAuthenticated = false;
                                     Task sslTask = Task.Run(() =>
                                     {
@@ -244,8 +245,7 @@ namespace client_side.Services
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine(
-                                                        $"Client {clientId}: TLS authentication failed!");
+                                                    Console.WriteLine($"Client {clientId}: TLS authentication failed!");
                                                 }
                                             }
                                         }
@@ -258,7 +258,6 @@ namespace client_side.Services
                                             //return;
                                         }
                                     });
-
                                     sslTask.Wait();
                                     if (!sslAuthenticated) continue;
 
@@ -296,10 +295,7 @@ namespace client_side.Services
                                         Console.WriteLine(
                                             $"Client {clientId}: Next message in {newInterval} ms");
                                         timer.Enable = true;
-
-
                                     };
-
                                     timer.Elapsed += (sender, e) =>
                                     {
                                         if (!awaitingResponse)
@@ -327,11 +323,9 @@ namespace client_side.Services
                                             timer.Enable = false;
                                         }
                                     };
-
                                     poller.Add(clientSocket);
                                     poller.Add(timer);
                                 }
-
                                 poller.RunAsync();
                                 Console.ReadLine();
                                 poller.Stop();
@@ -346,104 +340,5 @@ namespace client_side.Services
                 }
             }
         }
-
-        
-        /****************** UNUSED FUNCTIONS - DELETE LATER ******************/
-        private async void PublishNewData(string data)
-        {
-            Task getByIdPipeTask = Task.Factory.StartNew(async () =>
-            {
-                using (var server = new NamedPipeServerStream("meter-reading"))
-                {
-                    server.WaitForConnection();
-                    using (StreamReader reader = new StreamReader(server))
-                    using (StreamWriter writer = new StreamWriter(server))
-                    {
-                        char[] buffer = new char[1024];
-                        int numRead;
-
-                        while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                        {
-                            string receivedMessage = new string(buffer, 0, numRead);
-
-                            Console.WriteLine($"Received: {receivedMessage}");
-
-                            // RETURN THE DATA 
-                            await writer.WriteLineAsync(data);
-                            await writer.FlushAsync();
-                        }
-                    }
-                }
-            }, TaskCreationOptions.LongRunning);
-            
-            await Task.WhenAll(getByIdPipeTask);
-        }
-        
-        /*public async Task ElectronServerAsync()
-        {
-            Task getByIdPipeTask = Task.Factory.StartNew(async () =>
-            {
-                while (true)
-                {
-                    using (var server = new NamedPipeServerStream("meter-reading"))
-                    {
-                        server.WaitForConnection();
-                        using (StreamReader reader = new StreamReader(server))
-                        using (StreamWriter writer = new StreamWriter(server))
-                        {
-                            char[] buffer = new char[1024];
-                            int numRead;
-
-                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                            {
-                                string receivedMessage = new string(buffer, 0, numRead);
-                                if (receivedMessage == "getData")
-                                {
-                                    // CODE TO GET BY ID
-                                }
-
-                                Console.WriteLine($"Received: {receivedMessage}");
-
-                                // RETURN THE DATA 
-                                await writer.WriteLineAsync("GET BY ID DATA");
-                                await writer.FlushAsync();
-                            }
-                        }
-                    }
-                };
-            }, TaskCreationOptions.LongRunning);
-            
-            
-            Task basePipeTask = Task.Factory.StartNew(async () =>
-            {
-                while (true)
-                {
-                    using (var server = new NamedPipeServerStream("base-pipe"))
-                    {
-                        server.WaitForConnection();
-                        using (StreamReader reader = new StreamReader(server))
-                        using (StreamWriter writer = new StreamWriter(server))
-                        {
-                            char[] buffer = new char[1024];
-                            int numRead;
-
-                            while ((numRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                            {
-                                string receivedMessage = new string(buffer, 0, numRead);
-                                Console.WriteLine($"Received: {receivedMessage}");
-
-                                await writer.WriteLineAsync("Message received: " + receivedMessage);
-                                await writer.FlushAsync();
-                            }
-                        }
-                    }
-
-                }
-            }, TaskCreationOptions.LongRunning);
-
-            await Task.WhenAll(getByIdPipeTask, basePipeTask);
-        }*/
-
     }
-
 }

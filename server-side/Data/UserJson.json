@@ -35,7 +35,7 @@
       "SmartMeterID": 3,
       "EnergyPerKwH": 0.5033808651015159,
       "CurrentMonthCost": 31.226677975554168,
-      "CustomerType": "Large Household"
+      "CustomerType": "Small Business"
     }
   },
   {
@@ -48,7 +48,7 @@
       "SmartMeterID": 4,
       "EnergyPerKwH": 0.32066665985629367,
       "CurrentMonthCost": 26.817788360377776,
-      "CustomerType": "Average Household"
+      "CustomerType": "Average Business"
     }
   },
   {
@@ -61,7 +61,7 @@
       "SmartMeterID": 5,
       "EnergyPerKwH": 0.32129816321563887,
       "CurrentMonthCost": 26.817826931855553,
-      "CustomerType": "Average Household"
+      "CustomerType": "Large Business"
     }
   },
   {
@@ -143,19 +143,6 @@
     }
   },
   {
-    "Address": "Stormwind City",
-    "UserID": 1000,
-    "firstName": "Anduin",
-    "lastName": "Wrynn",
-    "UserEmail": "Anduin@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 0,
-      "EnergyPerKwH": 0.21855575525165205,
-      "CurrentMonthCost": 25.054254589304445,
-      "CustomerType": "Small Household"
-    }
-  },
-  {
     "Address": "Windrunner Spire Avenue",
     "UserID": 1012,
     "firstName": "Sylvanas",
@@ -165,7 +152,7 @@
       "SmartMeterID": 12,
       "EnergyPerKwH": 0.21855575525165205,
       "CurrentMonthCost": 25.054254589304445,
-      "CustomerType": "Small Household"
+      "CustomerType": "Average Household"
     }
   },
   {
@@ -178,7 +165,7 @@
       "SmartMeterID": 13,
       "EnergyPerKwH": 0.21855575525165205,
       "CurrentMonthCost": 25.054254589304445,
-      "CustomerType": "Small Household"
+      "CustomerType": "Small Business"
     }
   },
   {
@@ -189,6 +176,19 @@
     "UserEmail": "Thrall@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 14,
+      "EnergyPerKwH": 0.21855575525165205,
+      "CurrentMonthCost": 25.054254589304445,
+      "CustomerType": "Average Business"
+    }
+  },
+  {
+    "Address": "Stormwind City",
+    "UserID": 1000,
+    "firstName": "Anduin",
+    "lastName": "Wrynn",
+    "UserEmail": "Anduin@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 0,
       "EnergyPerKwH": 0.21855575525165205,
       "CurrentMonthCost": 25.054254589304445,
       "CustomerType": "Small Household"
