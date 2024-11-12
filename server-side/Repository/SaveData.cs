@@ -45,7 +45,6 @@ public class SaveData : ISaveData
                         { "firstName", userData.firstName},
                         { "lastName", userData.lastName},
                         { "UserEmail", userData.UserEmail},
-                        { "Passcode", userData.Passcode},
                         {"Hash" , userData.Hash},
                         { "SmartDevice", new JObject {
                                 { "SmartMeterID", userData.SmartMeterId},

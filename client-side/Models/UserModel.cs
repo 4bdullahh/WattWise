@@ -9,7 +9,6 @@ namespace client_side.Models
         public string? LastName { get; set; }
         public string? Address;
         public string? UserEmail { get; set; }
-        public string? Passcode { get; set; }
         public SmartDevice? SmartDevice { get; set; }
         public string? Hash { get; set; }
         public string? Topic { get; set; }
