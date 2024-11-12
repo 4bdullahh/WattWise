@@ -1,6 +1,7 @@
 ﻿using server_side.Services.Interface;
 using server_side.Repository.Interface;
 using Newtonsoft.Json;
+using server_side.Repository;
 using server_side.Repository.Models;
 using server_side.Services.Models;
 
@@ -29,7 +30,14 @@ namespace server_side.Services
 
                 var meterReadings = _smartMeterRepo.UpdateMeterData(smartDevice);
 
-
+                var userMessageRepo = new UserMessageRepo(
+                    saveData: new SaveData(),              
+                    smartMeterRepo: _smartMeterRepo,
+                    errorLogRepo: _errorLogRepo
+                );
+                
+                userMessageRepo.UpdateUserData(meterReadings.UserData);
+                
                 if (meterReadings.Message.Contains("Power grid outage"))
                 {
                     Console.WriteLine("Power grid outage...");
