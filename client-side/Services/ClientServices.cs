@@ -12,6 +12,7 @@ using System.IO.Pipes;
 using DotNetEnv;
 using Microsoft.Extensions.Logging;
 using server_side.Repository.Interface;
+using server_side.Repository.Models;
 using server_side.Services.Interface;
 
 namespace client_side.Services
@@ -25,7 +26,9 @@ namespace client_side.Services
         private ICalculateCostClient _calculateCostClient;
         private readonly IFolderPathServices folderPath;
         private readonly ISmartMeterRepo _smartMeterRepo;
-        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath, ISmartMeterRepo _smartMeterRepo)
+        private readonly IErrorLogRepo _errorLogRepo;
+        private readonly ErrorLogMessage errorMessage;
+        public ClientServices(IMessagesServices messagesServices, ICalculateCostClient calculateCostClient, IFolderPathServices folderPath, ISmartMeterRepo _smartMeterRepo, IErrorLogRepo errorLogRepo)
         {
             this.folderPath = folderPath;
             var envGenerator = new GenerateEnvFile(folderPath);
@@ -36,6 +39,8 @@ namespace client_side.Services
             _calculateCostClient = calculateCostClient;
             _clientCertificate = new X509Certificate2(folderPath.GetClientFolderPath() + "\\client_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
             this._smartMeterRepo = _smartMeterRepo;
+            _errorLogRepo = errorLogRepo;
+            errorMessage = new ErrorLogMessage();
 
         }
 
@@ -75,6 +80,14 @@ namespace client_side.Services
                                     if (sslStream.IsAuthenticated)
                                     {
                                         sslAuthenticated = true;
+                                        // This is for simulating the authenticate failure
+                                              if (clientId == 1)
+                                              {
+                                                  errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
+                                                  tcpClient.Close();
+                                                  sslStream.Close();
+                                                  throw new AuthenticationException($"Simulated TLS authentication failure : {DateTime.UtcNow}");
+                                              }
                                         Console.WriteLine(
                                             $"Client {clientId}: TLS authentication successful!");
                                     }
@@ -87,8 +100,11 @@ namespace client_side.Services
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine(
-                                    $"Client {clientId}: SSL setup error - {ex.Message}");
+                                // Uncomment when simulating connection error
+                                _errorLogRepo.LogError(errorMessage);
+                                Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.UtcNow}");
+                                // Uncomment when simulating connection error
+                                return;
                             }
                         });
 
@@ -219,7 +235,10 @@ namespace client_side.Services
                                                     /*// This is for simulating the authenticate failure
                                                        if (clientId == 1)
                                                        {
-                                                           throw new AuthenticationException("Simulated TLS authentication failure.");
+                                                           errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
+                                                           tcpClient.Close();
+                                                           sslStream.Close();
+                                                           throw new AuthenticationException("Simulated TLS authentication failure : {DateTime.UtcNow}");
                                                        }*/
                                                     Console.WriteLine($"Client {clientId}: TLS authentication successful!");
                                                 }
@@ -232,8 +251,11 @@ namespace client_side.Services
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message}");
-                                            return;
+                                            // Uncomment when simulating connection error
+                                            // _errorLogRepo.LogError(errorMessage);
+                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.UtcNow}");
+                                            // Uncomment when simulating connection error
+                                            //return;
                                         }
                                     });
 
