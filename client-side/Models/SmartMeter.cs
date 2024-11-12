@@ -9,5 +9,6 @@ public class SmartDeviceClient
     public double StandingCharge { get; set; }
     public double CostPerKwH { get; set; }
     public string CustomerType { get; set; }
+    public UserModel? UserModel { get; set; }
     public UserData? UserData { get; set; }
 }
