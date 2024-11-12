@@ -72,6 +72,9 @@ public class CalculateCost : ICalculateCost
                 "Large Household" => 15.0,
                 "Average Household" => 10.0,
                 "Small Household" => 8.0,
+                "Small Business" => 11.0,
+                "Average Business" => 18.0,
+                "Large Business" => 20.0,
                 _ => 0.0,
             };
         }

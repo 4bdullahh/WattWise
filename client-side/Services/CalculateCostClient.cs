@@ -4,11 +4,6 @@ namespace client_side.Services;
 
 public class CalculateCostClient :ICalculateCostClient
 {
-    public CalculateCostClient()
-    {
-        
-    }
-
     public SmartDeviceClient getRandomCost(SmartDeviceClient modelData, string customerType)
     {
         /*
@@ -33,6 +28,9 @@ public class CalculateCostClient :ICalculateCostClient
         double lowUsePerHour = 0.20;
         double medUsePerHour = 0.30;
         double highUsePerHour = 0.46;
+        double lowBusinessPerHour = 0.60;
+        double medBusinessPerHour = 0.80;
+        double highBusinessPerHour = 0.90;
         double latestUsePerHour;
 
         try
@@ -53,13 +51,24 @@ public class CalculateCostClient :ICalculateCostClient
                 {
                     latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, lowUsePerHour, multiplier);
                 }
+                    break;case "Small Business":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, lowBusinessPerHour, multiplier * 0.1);
+                }
+                    break;case "Average Business":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, medBusinessPerHour, multiplier * 0.15);
+                }
+                    break;case "Large Business":
+                {
+                    latestUsePerHour = AddPriceFluctuation(modelData.EnergyPerKwH, highBusinessPerHour, multiplier * 0.20);
+                }
                     break;
                 default:
                 {
                     latestUsePerHour = 0;
                 }
                     break;
-
             }
 
             modelData.EnergyPerKwH = latestUsePerHour;
