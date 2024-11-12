@@ -22,40 +22,57 @@
     <h1>Hello from Electron renderer!</h1>
     <p>👋</p>
     <button id="meterReading">Fetch Readings</button>
-    <h1 id="responseDiv">Nothing Yet</h1>
-    <p id="myDiv"></p>
+    <div
+      id="meterContainer"
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        width: 131rem;
+        height: 100%;
+        overflow: scroll;
+      "
+    ></div>
     <script>
-      var data = [
-        {
-          domain: { x: [0, 1], y: [0, 1] },
-          value: 300,
-          title: { text: "Live Usage" },
-          type: "indicator",
-          mode: "gauge+number",
-          gauge: {
-            axis: { range: [null, 100] },
-            steps: [
-              { range: [0, 25], color: "lightgreen" },
-              { range: [25, 75], color: "yellow" },
-              { range: [75, 100], color: "red" },
-            ],
-            threshold: {
-              line: { color: "darkred", width: 4 },
-              thickness: 20,
-            },
-            bar: {
-              color: "white",
-              line: { color: "gray", width: 4 },
+      const numDivs = 11;
+      const container = document.getElementById("meterContainer");
+
+      for (let i = 0; i <= numDivs; i++) {
+        const newGauge = document.createElement("div");
+        newGauge.id = `meter-gauge-${i}`;
+        container.appendChild(newGauge);
+
+        var data = [
+          {
+            domain: { x: [0, 1], y: [0, 1] },
+            value: 50,
+            title: { text: "Live Usage" },
+            type: "indicator",
+            mode: "gauge+number",
+            gauge: {
+              axis: { range: [null, 500] },
+              steps: [
+                { range: [0, 125], color: "lightgreen" },
+                { range: [125, 375], color: "yellow" },
+                { range: [375, 500], color: "red" },
+              ],
               threshold: {
-                thickness: 100,
+                line: { color: "darkred", width: 4 },
+                thickness: 20,
+              },
+              bar: {
+                color: "white",
+                line: { color: "gray", width: 4 },
+                threshold: {
+                  thickness: 100,
+                },
               },
             },
           },
-        },
-      ];
+        ];
 
-      var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
-      Plotly.newPlot("myDiv", data, layout);
+        var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        Plotly.newPlot(newGauge.id, data, layout);
+      }
     </script>
   </body>
   <script src="./renderer.js"></script>

@@ -33,10 +33,10 @@ namespace client_side
             var clientService = serviceProvider.GetService<IClientServices>();
             
             // WITH ELECTRON
-            /*clientService.StartClient();*/
+            clientService.StartClient();
             
             // WITHOUT ELECTRON
-            clientService.TempStartClient();
+            //clientService.TempStartClient();
         }
 
     }
