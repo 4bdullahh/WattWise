@@ -4,12 +4,12 @@ using server_side.Repository;
 using server_side.Services;
 using server_side.Services.Interface;
 
-public class SaveDataTests
+public class SaveData_Tests
 {
     private SaveData _saveData;
     private readonly Mock<IFolderPathServices> _mockFolderPathServices;
 
-    public SaveDataTests()
+    public SaveData_Tests()
     {
         _mockFolderPathServices = new Mock<IFolderPathServices>();
         _saveData = new SaveData();
@@ -95,7 +95,7 @@ public class SaveDataTests
         Directory.CreateDirectory(tempPath);
 
         var userJsonPath = Path.Combine(tempPath, "UserJson.json");
-        File.WriteAllText(userJsonPath, "[]");  // Empty user list
+        File.WriteAllText(userJsonPath, "[]");
 
         _mockFolderPathServices.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestDataFolder"));
 
@@ -131,7 +131,7 @@ public class SaveDataTests
         Directory.CreateDirectory(tempPath);
 
         var meterJsonPath = Path.Combine(tempPath, "MeterJson.json");
-        File.WriteAllText(meterJsonPath, "[]");  // Empty device list
+        File.WriteAllText(meterJsonPath, "[]");
 
         _mockFolderPathServices.Setup(x => x.GetWattWiseFolderPath()).Returns(Path.Combine(Path.GetTempPath(), "TestDataFolder"));
 

@@ -216,8 +216,12 @@ namespace client_side.Services
                                                 if (sslStream.IsAuthenticated)
                                                 {
                                                     sslAuthenticated = true;
-                                                    Console.WriteLine(
-                                                        $"Client {clientId}: TLS authentication successful!");
+                                                    /*// This is for simulating the authenticate failure
+                                                       if (clientId == 1)
+                                                       {
+                                                           throw new AuthenticationException("Simulated TLS authentication failure.");
+                                                       }*/
+                                                    Console.WriteLine($"Client {clientId}: TLS authentication successful!");
                                                 }
                                                 else
                                                 {
@@ -228,8 +232,8 @@ namespace client_side.Services
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(
-                                                $"Client {clientId}: SSL setup error - {ex.Message}");
+                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message}");
+                                            return;
                                         }
                                     });
 
