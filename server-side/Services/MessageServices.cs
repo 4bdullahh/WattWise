@@ -101,12 +101,14 @@ namespace server_side.Services
                                             var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
                                                 Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
                                             
-                                            //This is for test when the data is temperaded
+                                            //This is for test when the data is tampered
+                                            
                                             /*
                                             UserData tempered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
-                                            tempered.UserID = 1000;
+                                            tempered.UserID = 1060;
                                             var temperedJson = JsonConvert.SerializeObject(tempered);
-                                            string result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);*/
+                                            result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);
+                                            */
                                             
                                             if (result.userHash != result.receivedHash)
                                             {
@@ -114,6 +116,10 @@ namespace server_side.Services
                                                 Console.WriteLine($"{_errorLogMessage.Message}");
                                                 _errorLogRepo.LogError(_errorLogMessage);
                                                 _errorLogRepo.LogError(errorMessage);
+                                                tcpClient.Close();
+                                                sslStream.Close();
+                                                poller.Remove(server);
+                                                return;
                                             }
                                             else
                                             {

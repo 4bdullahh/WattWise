@@ -16,21 +16,37 @@ public class CostUpdateService : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("CostUpdateService starting...");
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return Task.CompletedTask;
+        }
         _timer = new Timer(UpdateCosts, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         return Task.CompletedTask;
     }
 
-    private void UpdateCosts(object state)
+    public void UpdateCosts(object state)
     {
         Console.WriteLine("UpdateCosts running...");
+    
         var smartDevices = _smartDevices.LoadSmartMeterData();
+        if (smartDevices == null)
+        {
+            Console.WriteLine("No smart devices data available.");
+            return;
+        }
+
         foreach (var device in smartDevices)
         {
-            _calculateCostService.getCurrentBill(device);
-            // We can write notifications for the update if we want
+            try
+            {
+                _calculateCostService.getCurrentBill(device);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing device {device}: {ex.Message}");
+            }
         }
     }
-
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _timer?.Change(Timeout.Infinite, 0);
