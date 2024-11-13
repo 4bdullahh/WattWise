@@ -9,12 +9,31 @@ const main = async () => {
 
       // console.log("Meter Reading Data:", jsonObject);
 
+      if (jsonObject.Message.includes("Power grid outage")) {
+        console.log("OUTAGE: " + jsonObject);
+        const container = document.getElementById(
+          `meter-gauge-${jsonObject.SmartMeterID}`
+        );
+        const overlayImage = document.createElement("img");
+        overlayImage.src = "warning.jpg";
+        overlayImage.id = "OutageImg";
+
+        overlayImage.style.position = "absolute";
+        overlayImage.style.top = "0";
+        overlayImage.style.left = "0";
+        overlayImage.style.width = "100%";
+        overlayImage.style.height = "100%";
+        overlayImage.style.zIndex = "10";
+
+        container.style.position = "relative";
+        container.appendChild(overlayImage);
+        setTimeout(() => {
+          container.removeChild(overlayImage);
+        }, 2500);
+      }
+
       data[0].value = jsonObject.KwhUsed;
       Plotly.react(`meter-gauge-${jsonObject.SmartMeterID}`, data, layout);
-
-      // setInterval(() => {
-      //   console.log("Waiting 1s");
-      // }, 1000);
     });
 
     // const responseDiv = document.getElementById("responseDiv");
