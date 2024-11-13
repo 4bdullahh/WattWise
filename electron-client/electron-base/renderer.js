@@ -9,11 +9,12 @@ const main = async () => {
 
       // console.log("Meter Reading Data:", jsonObject);
 
+      const container = document.getElementById(
+        `meter-gauge-${jsonObject.SmartMeterID}`
+      );
+
       if (jsonObject.Message.includes("Power grid outage")) {
         console.log("OUTAGE: " + jsonObject);
-        const container = document.getElementById(
-          `meter-gauge-${jsonObject.SmartMeterID}`
-        );
         const overlayImage = document.createElement("img");
         overlayImage.src = "warning.jpg";
         overlayImage.id = "OutageImg";
@@ -31,6 +32,11 @@ const main = async () => {
           container.removeChild(overlayImage);
         }, 2500);
       }
+
+      const gaugeMessage = document.createElement("p");
+      gaugeMessage;
+      gaugeMessage.innerHTML = jsonObject.Message;
+      container.appendChild(gaugeMessage);
 
       data[0].value = jsonObject.KwhUsed;
       Plotly.react(`meter-gauge-${jsonObject.SmartMeterID}`, data, layout);
