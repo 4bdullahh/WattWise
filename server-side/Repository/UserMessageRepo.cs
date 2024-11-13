@@ -86,12 +86,6 @@ namespace server_side.Repository
                 var existingUser = usersList.FirstOrDefault(u => u.UserID == user.UserID);
                 var getSmartMeter = _smartMeterRepo.GetById(user.SmartMeterId);
                 
-                existingUser.UserID = user.UserID;
-                existingUser.firstName = user.firstName;
-                existingUser.lastName = user.lastName;
-                existingUser.Address = user.Address;
-                existingUser.UserEmail = user.UserEmail;
-                existingUser.SmartMeterId = user.SmartMeterId;
                 existingUser.EnergyPerKwH = Math.Round(getSmartMeter.EnergyPerKwH,2);
                 existingUser.CurrentMonthCost = Math.Round(getSmartMeter.CurrentMonthCost,2);
                 existingUser.CustomerType = getSmartMeter.CustomerType;
@@ -126,7 +120,6 @@ namespace server_side.Repository
                     lastName = userData.lastName,
                     Address = userData.Address,
                     UserEmail = userData.UserEmail,
-                    Passcode = userData.Passcode,
                     SmartDevice = new SmartDevice
                     {
                         SmartMeterId = smartMeter.SmartMeterId,
