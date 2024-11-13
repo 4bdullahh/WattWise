@@ -16,28 +16,33 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     /> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>WattWise</title>
   </head>
   <body>
-    <h1>WattWise Smart Meter</h1>
-    <button id="meterReading">Fetch Readings</button>
+    <h1 style="font-size: 45px;font-weight: bold; text-align: center; margin-top:20px;">WattWise Smart Meter</h1>
+    <button id="meterReading" class="btn btn-lg btn-primary" style="margin-left:1700px">Fetch Readings</button>
     <div
-      id="meterContainer"
-      style="
-        display: flex;
-        flex-wrap: wrap;
-        width: 131rem;
-        height: 100%;
-        overflow: scroll;
-      "
-    ></div>
+      
+      class="container-fluid mt-2">
+    <div class="row p-4 rounded" style="background-color: gray;" id="meterContainer" ></div>
+  </div>
     <script>
       const numDivs = 11;
       const container = document.getElementById("meterContainer");
 
       for (let i = 0; i <= numDivs; i++) {
         const newGauge = document.createElement("div");
+        const client= document.createElement("h2");
+        client.innerHTML=`Client-${i+1}`;
+        client.style.color="white";
+      
+        newGauge.className="col-4 mt-2 shadow-sm";
+
         newGauge.id = `meter-gauge-${i}`;
+        newGauge.appendChild(client);
+        
         container.appendChild(newGauge);
 
         var data = [
