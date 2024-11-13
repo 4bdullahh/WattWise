@@ -35,11 +35,6 @@ namespace server_side.Services
                     smartMeterRepo: _smartMeterRepo,
                     errorLogRepo: _errorLogRepo
                 );
-
-                var userToUpdate = userMessageRepo.GetById(meterReadings.UserData.UserID);
-                userToUpdate.SmartMeterId = smartDevice.SmartMeterId;
-                userMessageRepo.UpdateUserData(userToUpdate);
-                
                 if (meterReadings.Message.Contains("Power grid outage"))
                 {
                     Console.WriteLine("Power grid outage...");
@@ -54,6 +49,10 @@ namespace server_side.Services
                 }
                 else if (meterReadings.Message.Contains("Cost calculation"))
                 {
+                    var userToUpdate = userMessageRepo.GetById(meterReadings.UserData.UserID);
+                    userToUpdate.SmartMeterId = smartDevice.SmartMeterId;
+                    userMessageRepo.UpdateUserData(userToUpdate);
+                    
                     return new SmartMeterResponse
                     {
                         SmartMeterID = meterReadings.SmartMeterId,
