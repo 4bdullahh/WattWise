@@ -135,8 +135,6 @@ public class SmartMeterRepo : ISmartMeterRepo
                     smartDevice.SmartMeterId = generateId;
                     smartDevice.EnergyPerKwH = 0;
                     smartDevice.CurrentMonthCost = 0;
-                    
-                    
                      _saveData.ListToJson(smartDevice);
         } catch (Exception e)
         {
