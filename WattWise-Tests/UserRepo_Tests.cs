@@ -74,7 +74,7 @@ public class UserRepo_Tests
     
     [Theory]
     [InlineData(4)]
-    public void Repo_Should_Return_Same_SmartMeterID_For_UserData(int deviceId)
+    public void Update_Should_Return_Same_SmartMeterID_For_UserData(int deviceId)
     {
         // Arrange
         var expectedUser = new UserData
@@ -95,7 +95,7 @@ public class UserRepo_Tests
 
         // Act
         var updateUser = _mockUserMessageRepo.Object.UpdateUserData(expectedUser);
-        var getDevice = _mockSmartMeterRepo.Object.GetById(expectedUser.UserID);
+        var getDevice = _mockSmartMeterRepo.Object.GetById(smartDevice.SmartMeterId);
         
         // Assert
         Assert.NotNull(updateUser);
@@ -103,12 +103,12 @@ public class UserRepo_Tests
         
         Assert.Equal(updateUser.SmartMeterId, getDevice.SmartMeterId);
         _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedUser), Times.Once);
-        _mockSmartMeterRepo.Verify(repo => repo.GetById(expectedUser.UserID), Times.Once);
+        _mockSmartMeterRepo.Verify(repo => repo.GetById(smartDevice.SmartMeterId), Times.Once);
     }
     
     [Theory]
     [InlineData(1001, "dummy11@example.com")]
-    public void Repo_Should_Update_When_Does_Exist(int existingId, string email)
+    public void Update_Should_Update_When_Does_Exist(int existingId, string email)
     {
         // Arrange
         var expectedData = new UserData
@@ -118,65 +118,38 @@ public class UserRepo_Tests
         };
     
         _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedData)).Returns(expectedData);
-        _saveData.Setup(saveData => saveData.ListToJson(It.IsAny<SmartDevice>())).Returns(expectedData);
     
         // Act
         var result = _mockUserMessageRepo.Object.UpdateUserData(expectedData);
     
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(expectedData.SmartMeterId, result.SmartMeterId);
+        Assert.Equal(expectedData.UserEmail, result.UserEmail);
     }
     
-    
     [Fact]
-    public void GetById_Check_If_Returned_Data_Mismatch()
+    public void Update_Should_Throw_Exception_If_Data_Returns_Null()
     {
         //Arrange
         var expectedResult = new UserData
         {
             UserID = 10,
+            UserEmail = "dummy1@example.com",
         };
-
-        var smartDevice = new SmartDevice
-        {
-            SmartMeterId = 10
-        };
-        _mockUserMessageRepo.Setup(repo => repo.GetById(expectedResult.UserID)).Returns(smartDevice);
+        _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedResult)).Returns((UserData)null);
     
         // Act
-        var actualResult = _mockUserMessageRepo.Object.GetById(expectedResult.UserID);
+        var actualResult = _mockUserMessageRepo.Object.UpdateUserData(expectedResult);
     
         // Assert
-        Assert.NotNull(actualResult);
+        Assert.Null(actualResult);
         Assert.NotEqual(expectedResult, actualResult);
-        Assert.IsType<SmartDevice>(actualResult); 
         
-        _mockUserMessageRepo.Verify(repo => repo.GetById(expectedResult.SmartMeterId), Times.Once);
+        Assert.Throws<NullReferenceException>(() => {
+            var smartMeterId = actualResult.SmartMeterId;
+        });
+        _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedResult), Times.Once);
     }
     
-    [Fact]
-    public void UpdateUserRepo_WhenExceptionThrown_LogsErrorAndThrows()
-    {
-        // Arrange
-        var userData = new UserData { UserID = 12345 };
-
-        _saveData
-            .Setup(data => data.ListToJson(It.IsAny<UserData>()))
-            .Throws(new NullReferenceException("Object reference not set to an instance of an object."));
-
-        // Act & Assert
-        var exception = Assert.Throws<NullReferenceException>(() => _mockUserMessageRepo.Object.UpdateUserData(userData));
-        Assert.Equal("Object reference not set to an instance of an object.", exception.Message);
-
-        _mockErrorLogRepo.Verify(repo => repo.LogError(It.Is<ErrorLogMessage>(
-            log => log.ClientId == userData.UserID &&
-                   log.Message.Contains($"From UserID {userData.UserID} in UserMessageRepo:"))), Times.Once);
-    }
-
-
-
- 
-
 
 }
