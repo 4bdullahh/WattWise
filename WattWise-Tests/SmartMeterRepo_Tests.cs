@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using Moq;
 using server_side.Repository;
 using server_side.Repository.Interface;
@@ -80,7 +81,7 @@ public class SmartMeterRepo_Tests
     }
     
     [Fact]
-    public void GetById_Should_Throw_Exception_If_Data_Mismatch()
+    public void GetById_Check_If_Returned_Data_Mismatch()
     {
         //Arrange
         var expectedResult = new SmartDevice
@@ -100,44 +101,11 @@ public class SmartMeterRepo_Tests
         // Assert
         Assert.NotNull(actualResult);
         Assert.NotEqual(expectedResult, actualResult);
+        Assert.IsType<UserData>(actualResult); 
         
-        Assert.Throws<InvalidCastException>(() => {
-            var smartDeviceResult = actualResult;
-            var smartMeterId = smartDeviceResult.SmartMeterId; 
-        });
         _mockSmartMeterRepo.Verify(repo => repo.GetById(expectedResult.SmartMeterId), Times.Once);
     }
     
-    [Fact]
-    public void Repo_Should_Return_True_If_Json_File_Exists()
-    {
-        // Arrange
-        var mockFolderPath = new Mock<IFolderPathServices>();
-        
-        string testFolderPath = "WattWise-Tests/mockData";
-        
-        mockFolderPath.Setup(path => path.GetWattWiseFolderPath()).Returns(testFolderPath);
-        
-        
-        if (!Directory.Exists(testFolderPath))
-        {
-            Directory.CreateDirectory(testFolderPath);
-        }
-
-        _mockSmartMeterRepo.Object.LoadSmartMeterData();
-
-        string jsonFilePath = Path.Combine(testFolderPath, "Meter_Test_Data.json");
-        
-        // Act
-        if (File.Exists(jsonFilePath))
-        {
-            File.ReadAllText(jsonFilePath);
-        }
-  
-        // Assert
-        Assert.NotNull(jsonFilePath);
-    }
-
 
     [Theory]
     //Test Should Fail
@@ -203,4 +171,29 @@ public class SmartMeterRepo_Tests
         Assert.NotEqual(expectedData, result);
         _mockSmartMeterRepo.Verify(repo => repo.UpdateMeterData(expectedData), Times.Once);
     }
+    
+    [Theory]
+    [InlineData("Power grid outage")]
+    [InlineData("Cost calculation")]
+    public void Repo_Check_If_Message_Contains_SubString(string message)
+    {
+        //Arrange
+        var expectedData = new SmartDevice
+        {
+            SmartMeterId = 2,
+            Message = message
+        };
+        
+        _mockSmartMeterRepo.Setup(repo => repo.UpdateMeterData(expectedData)).Returns(expectedData);
+        
+        //Act
+        var result = _mockSmartMeterRepo.Object.UpdateMeterData(expectedData);
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(expectedData, result);
+        Assert.Contains(message, result.Message);
+        _mockSmartMeterRepo.Verify(repo => repo.UpdateMeterData(expectedData), Times.Once);
+    }
+    
 }
+

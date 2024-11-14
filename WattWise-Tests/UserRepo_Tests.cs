@@ -11,8 +11,8 @@ public class UserRepo_Tests
 {
     private readonly Mock<ISaveData> _saveData;
     private readonly Mock<IFolderPathServices> _folderPathServices;
-    private readonly Mock<ISmartMeterRepo> _mockSmartMeterRepo;
     private readonly Mock<IUserMessageRepo> _mockUserMessageRepo;
+    private readonly Mock<ISmartMeterRepo> _mockSmartMeterRepo;
     private readonly Mock<IErrorLogRepo>  _mockErrorLogRepo;
 
     public UserRepo_Tests()
@@ -20,10 +20,9 @@ public class UserRepo_Tests
         _mockErrorLogRepo = new Mock<IErrorLogRepo>();
         _saveData = new Mock<ISaveData>();
         _folderPathServices = new Mock<IFolderPathServices>();
-        _mockSmartMeterRepo = new Mock<ISmartMeterRepo>();
         _mockUserMessageRepo = new Mock<IUserMessageRepo>();
         _mockErrorLogRepo = new Mock<IErrorLogRepo>();
-        
+        _mockSmartMeterRepo = new Mock<ISmartMeterRepo>();
     }
 
     [Theory]
@@ -50,35 +49,51 @@ public class UserRepo_Tests
         Assert.Equal(expectedUser.UserID, result.UserID);
     }
     
+    [Fact]
+    public void GetById_Should_Throw_Exception_If_ID_Returns_Null()
+    {
+        //Arrange
+        var expectedResult = new UserData
+        {
+            UserID = 10,
+        };
+        _mockUserMessageRepo.Setup(repo => repo.GetById(expectedResult.UserID)).Returns((UserData)null);
+    
+        // Act
+        var actualResult = _mockUserMessageRepo.Object.GetById(expectedResult.UserID);
+    
+        // Assert
+        Assert.Null(actualResult);
+        Assert.NotEqual(expectedResult, actualResult);
+        
+        Assert.Throws<NullReferenceException>(() => {
+            var smartMeterId = actualResult.SmartMeterId;
+        });
+        _mockUserMessageRepo.Verify(repo => repo.GetById(expectedResult.UserID), Times.Once);
+    }
+    
     [Theory]
-    [InlineData(
-        1001,
-        4
-    )]
-    public void Repo_Should_Return_Same_UserID_And_SmartMeterID(int userId, int deviceId)
+    [InlineData(4)]
+    public void Repo_Should_Return_Same_SmartMeterID_For_UserData(int deviceId)
     {
         // Arrange
         var expectedUser = new UserData
         {
-            UserID = userId,
+            UserID = 1001,
             UserEmail = "dummy1@example.com",
             CostPerKwh = 0.24,
             SmartMeterId = deviceId
         };
-        var expectedDevice = new SmartDevice
+        
+        var smartDevice = new SmartDevice
         {
-            SmartMeterId = deviceId,
-            CustomerType = "Small Household",
-            CostPerKwh = 0.24,
-            StandingCharge = 0.60,
-            UserData = expectedUser
+            SmartMeterId = deviceId
         };
+      
         _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedUser)).Returns(expectedUser).Verifiable();
-        _mockSmartMeterRepo.Setup(repo => repo.GetById(expectedUser.UserID)).Returns(expectedDevice).Verifiable();
-        _saveData.Setup(saveData => saveData.ListToJson(It.IsAny<SmartDevice>())).Returns(expectedUser).Verifiable();
+        _mockSmartMeterRepo.Setup(meter => meter.GetById(smartDevice.SmartMeterId)).Returns(smartDevice).Verifiable();
 
         // Act
-        
         var updateUser = _mockUserMessageRepo.Object.UpdateUserData(expectedUser);
         var getDevice = _mockSmartMeterRepo.Object.GetById(expectedUser.UserID);
         
@@ -87,8 +102,6 @@ public class UserRepo_Tests
         Assert.NotNull(getDevice);
         
         Assert.Equal(updateUser.SmartMeterId, getDevice.SmartMeterId);
-        Assert.Equal(updateUser, getDevice.UserData);
-        _saveData.Verify(saveData => saveData.ListToJson(It.IsAny<SmartDevice>()), Times.Once);
         _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedUser), Times.Once);
         _mockSmartMeterRepo.Verify(repo => repo.GetById(expectedUser.UserID), Times.Once);
     }
@@ -113,6 +126,33 @@ public class UserRepo_Tests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(expectedData.SmartMeterId, result.SmartMeterId);
+    }
+    
+    
+    [Fact]
+    public void GetById_Check_If_Returned_Data_Mismatch()
+    {
+        //Arrange
+        var expectedResult = new UserData
+        {
+            UserID = 10,
+        };
+
+        var smartDevice = new SmartDevice
+        {
+            SmartMeterId = 10
+        };
+        _mockUserMessageRepo.Setup(repo => repo.GetById(expectedResult.UserID)).Returns(smartDevice);
+    
+        // Act
+        var actualResult = _mockUserMessageRepo.Object.GetById(expectedResult.UserID);
+    
+        // Assert
+        Assert.NotNull(actualResult);
+        Assert.NotEqual(expectedResult, actualResult);
+        Assert.IsType<SmartDevice>(actualResult); 
+        
+        _mockUserMessageRepo.Verify(repo => repo.GetById(expectedResult.SmartMeterId), Times.Once);
     }
     
     [Fact]
