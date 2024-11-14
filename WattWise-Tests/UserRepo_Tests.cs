@@ -12,8 +12,7 @@ public class UserRepo_Tests
     private readonly Mock<ISaveData> _saveData;
     private readonly Mock<IFolderPathServices> _folderPathServices;
     private readonly Mock<ISmartMeterRepo> _mockSmartMeterRepo;
-    private readonly Mock<IUserMessageRepo> _mockIUserMessageRepo;
-    private readonly UserMessageRepo _userMessageRepo;
+    private readonly Mock<IUserMessageRepo> _mockUserMessageRepo;
     private readonly Mock<IErrorLogRepo>  _mockErrorLogRepo;
 
     public UserRepo_Tests()
@@ -22,9 +21,8 @@ public class UserRepo_Tests
         _saveData = new Mock<ISaveData>();
         _folderPathServices = new Mock<IFolderPathServices>();
         _mockSmartMeterRepo = new Mock<ISmartMeterRepo>();
-        _mockIUserMessageRepo = new Mock<IUserMessageRepo>();
+        _mockUserMessageRepo = new Mock<IUserMessageRepo>();
         _mockErrorLogRepo = new Mock<IErrorLogRepo>();
-        _userMessageRepo = new UserMessageRepo(_saveData.Object, _mockSmartMeterRepo.Object, _mockErrorLogRepo.Object);
         
     }
 
@@ -42,10 +40,10 @@ public class UserRepo_Tests
             CostPerKwh = 0.24,
         };
     
-        _mockIUserMessageRepo.Setup(repo => repo.GetById(userId)).Returns(expectedUser);
+        _mockUserMessageRepo.Setup(repo => repo.GetById(userId)).Returns(expectedUser);
 
         // Act
-        var result = _mockIUserMessageRepo.Object.GetById(userId);
+        var result = _mockUserMessageRepo.Object.GetById(userId);
 
         // Assert
         Assert.NotNull(result);
@@ -75,13 +73,13 @@ public class UserRepo_Tests
             StandingCharge = 0.60,
             UserData = expectedUser
         };
-        _mockIUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedUser)).Returns(expectedUser).Verifiable();
+        _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedUser)).Returns(expectedUser).Verifiable();
         _mockSmartMeterRepo.Setup(repo => repo.GetById(expectedUser.UserID)).Returns(expectedDevice).Verifiable();
         _saveData.Setup(saveData => saveData.ListToJson(It.IsAny<SmartDevice>())).Returns(expectedUser).Verifiable();
 
         // Act
         
-        var updateUser = _mockIUserMessageRepo.Object.UpdateUserData(expectedUser);
+        var updateUser = _mockUserMessageRepo.Object.UpdateUserData(expectedUser);
         var getDevice = _mockSmartMeterRepo.Object.GetById(expectedUser.UserID);
         
         // Assert
@@ -91,7 +89,7 @@ public class UserRepo_Tests
         Assert.Equal(updateUser.SmartMeterId, getDevice.SmartMeterId);
         Assert.Equal(updateUser, getDevice.UserData);
         _saveData.Verify(saveData => saveData.ListToJson(It.IsAny<SmartDevice>()), Times.Once);
-        _mockIUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedUser), Times.Once);
+        _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedUser), Times.Once);
         _mockSmartMeterRepo.Verify(repo => repo.GetById(expectedUser.UserID), Times.Once);
     }
     
@@ -106,11 +104,11 @@ public class UserRepo_Tests
             UserEmail = email
         };
     
-        _mockIUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedData)).Returns(expectedData);
+        _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedData)).Returns(expectedData);
         _saveData.Setup(saveData => saveData.ListToJson(It.IsAny<SmartDevice>())).Returns(expectedData);
     
         // Act
-        var result = _mockIUserMessageRepo.Object.UpdateUserData(expectedData);
+        var result = _mockUserMessageRepo.Object.UpdateUserData(expectedData);
     
         // Assert
         Assert.NotNull(result);
@@ -128,7 +126,7 @@ public class UserRepo_Tests
             .Throws(new NullReferenceException("Object reference not set to an instance of an object."));
 
         // Act & Assert
-        var exception = Assert.Throws<NullReferenceException>(() => _userMessageRepo.UpdateUserData(userData));
+        var exception = Assert.Throws<NullReferenceException>(() => _mockUserMessageRepo.Object.UpdateUserData(userData));
         Assert.Equal("Object reference not set to an instance of an object.", exception.Message);
 
         _mockErrorLogRepo.Verify(repo => repo.LogError(It.Is<ErrorLogMessage>(
