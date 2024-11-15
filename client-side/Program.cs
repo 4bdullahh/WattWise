@@ -34,9 +34,6 @@ namespace client_side
             
             // WITH ELECTRON
             clientService.StartClient();
-            
-            // WITHOUT ELECTRON
-            //clientService.TempStartClient();
         }
 
     }

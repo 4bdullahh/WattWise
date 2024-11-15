@@ -12,8 +12,8 @@ public class CalculateCostClient :ICalculateCostClient
          */
 
         var generateAvgUse = new Random();
-        double max = 0.1;
-        double min = 0.05;
+        double max = 3;
+        double min = 0.5;
         double multiplier = generateAvgUse.NextDouble() * (max - min) + min;
 
         /* Different types of customer:
@@ -29,18 +29,18 @@ public class CalculateCostClient :ICalculateCostClient
         {
             { "Small NGO", 0.10 },
             { "Small Household", 0.15 },
-            { "Small Business", 0.30 },
-            { "Small Industrial", 0.50 },
+            { "Small Business", 0.40 },
+            { "Small Industrial", 0.48 },
             { "Small Public Service", 0.12 },
-            { "Average NGO", 020},
-            { "Average Household", 0.20},
+            { "Average NGO", 0.16},
+            { "Average Household", 0.19},
             { "Average Business", 0.40 },
-            { "Average Industrial", 0.60 },
+            { "Average Industrial", 0.70 },
             { "Average Public Service", 0.18 },
             { "Large NGO", 0.20 },
-            { "Large Business", 0.50 },
-            { "Large Household", 0.25},
-            { "Large Industrial", 0.70 },
+            { "Large Business", 0.53 },
+            { "Large Household", 0.29},
+            { "Large Industrial", 0.90 },
             { "Large Public Service", 0.24}
         };
 
@@ -50,19 +50,19 @@ public class CalculateCostClient :ICalculateCostClient
             {
                 "Small NGO" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small NGO"], multiplier),
                 "Small Household" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Household"], multiplier),
-                "Small Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Business"], multiplier * 0.1),
-                "Small Industrial" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Industrial"], multiplier * 0.15),
-                "Small Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Industrial"], multiplier),
+                "Small Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Business"], multiplier * 0.8),
+                "Small Industrial" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Industrial"], multiplier * 0.13),
+                "Small Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Small Public Service"], multiplier),
                 "Average NGO" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average NGO"], multiplier),
                 "Average Household" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Household"], multiplier),
-                "Average Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Business"], multiplier * 0.15),
+                "Average Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Business"], multiplier * 0.18),
                 "Average Industrial" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Industrial"], multiplier * 0.20),
-                "Average Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Industrial"], multiplier),
+                "Average Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Average Public Service"], multiplier),
                 "Large NGO" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large NGO"], multiplier),
-                "Large Household" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Household"], multiplier),
-                "Large Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Business"], multiplier * 0.20),
-                "Large Industrial" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Industrial"], multiplier * 0.25),
-                "Large Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Industrial"], multiplier),
+                "Large Household" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Household"], multiplier * 0.5),
+                "Large Business" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Business"], multiplier * 0.25),
+                "Large Industrial" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Industrial"], multiplier * 0.35),
+                "Large Public Service" => AddPriceFluctuation(modelData.EnergyPerKwH, usageRates["Large Public Service"], multiplier),
                 _ => 0
             };
             modelData.EnergyPerKwH = latestUsePerHour;

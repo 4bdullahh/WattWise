@@ -52,12 +52,12 @@ namespace client_side.Services
             {
                 using (var poller = new NetMQPoller())
                 {
-                    int maxClients = 15;
+                    int maxClients = 16;
                     int minInterval = 1000;
                     int maxInterval = 3000;
                     var currentInterval = new Random();
 
-                    for (int i = 0; i < maxClients; i++)
+                    for (int i = 1; i < maxClients; i++)
                     {
                         int clientId = i;
                         bool sslAuthenticated = false;
@@ -78,13 +78,13 @@ namespace client_side.Services
                                     {
                                         sslAuthenticated = true;
                                         // This is for simulating the authenticate failure
-                                              /*if (clientId == 1)
+                                              if (clientId == 1)
                                               {
                                                   errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
                                                   tcpClient.Close();
                                                   sslStream.Close();
                                                   throw new AuthenticationException($"Simulated TLS authentication failure : {DateTime.UtcNow}");
-                                              }*/
+                                              }
                                         Console.WriteLine(
                                             $"Client {clientId}: TLS authentication successful!");
                                     }
@@ -208,12 +208,12 @@ namespace client_side.Services
                         {
                             using (var poller = new NetMQPoller())
                             {
-                                int maxClients = 15;
+                                int maxClients = 16;
                                 int minInterval = 15000;
                                 int maxInterval = 60000;
                                 var currentInterval = new Random();
 
-                                for (int i = 0; i < maxClients; i++)
+                                for (int i = 1; i < maxClients; i++)
                                 {
                                     int clientId = i;
                                     bool sslAuthenticated = false;
@@ -236,7 +236,7 @@ namespace client_side.Services
                                                         // This is for simulating the authenticate failure
                                                        if (clientId == 1)
                                                        {
-                                                           errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
+                                                           errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure on {DateTime.Now}";
                                                            tcpClient.Close();
                                                            sslStream.Close();
                                                            sslAuthenticated = false;
@@ -257,14 +257,12 @@ namespace client_side.Services
                                             Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.Now}");
                                             await writer.WriteLineAsync($"Client {clientId} has TLS communication problem - {ex.Message} : {DateTime.Now}");
                                             await writer.FlushAsync();
-                                            // Uncomment when simulating connection error
-                                            return;
                                         }
                                     });
                                     sslTask.Wait();
                                     if (!sslAuthenticated)
                                     {
-                                        Console.WriteLine($"Client: {clientId} was blocked");
+                                        Console.WriteLine($"Client: {clientId} could secure connect and has been blocked.");
                                         continue;
                                     }
 
