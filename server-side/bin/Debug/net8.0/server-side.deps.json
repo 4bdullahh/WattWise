@@ -11,6 +11,7 @@
           "DotNetEnv": "3.1.1",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.Extensions.Hosting": "8.0.0",
+          "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "NetMQ": "4.0.1.13",
           "Newtonsoft.Json": "13.0.3"
         },
