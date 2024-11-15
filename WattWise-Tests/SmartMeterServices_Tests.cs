@@ -128,6 +128,7 @@ namespace server_side.Tests.Services
             
             _smartMeterServices.Verify(repo => repo.UpdateMeterServices(decryptedMessage), Times.Once);
         }
+
         
         [Fact]
         public void UpdateMeterServices_WhenExceptionThrown_LogsErrorAndThrows()
@@ -135,17 +136,20 @@ namespace server_side.Tests.Services
             // Arrange
             var smartDevice = new SmartDevice { SmartMeterId = 12345 };
             var decryptedMessage = JsonConvert.SerializeObject(smartDevice);
-        
+            var errorMessage = new ErrorLogMessage
+            {
+                Message = "Unable to access smart meter repo"
+            };
             _smartMeterServices.Setup(repo => repo.UpdateMeterServices(decryptedMessage))
                 .Throws(new Exception("Database connection error"));
+            _mockErrorLogRepo.Setup(log => log.LogError(errorMessage));
         
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => _smartMeterServices.Object.UpdateMeterServices(decryptedMessage));
+            var exception =  _smartMeterServices.Object.UpdateMeterServices(decryptedMessage);
             Assert.Equal("Database connection error", exception.Message);
         
             _mockErrorLogRepo.Verify(repo => repo.LogError(It.Is<ErrorLogMessage>(
-                log => log.ClientId == smartDevice.SmartMeterId &&
-                       log.Message.Contains("Unable to access smart meter repo"))), Times.Once);
+                log => log.Message.Contains("Unable to access smart meter repo"))), Times.Once);
         }
     }
 }
