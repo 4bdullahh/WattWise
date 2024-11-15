@@ -9,6 +9,7 @@
       "client-side/1.0.0": {
         "dependencies": {
           "DotNetEnv": "3.1.1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Hosting": "8.0.0",
           "NetMQ": "4.0.1.13",
           "Newtonsoft.Json": "13.0.3",
@@ -1348,7 +1349,10 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "server-side.dll": {}
+          "server-side.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

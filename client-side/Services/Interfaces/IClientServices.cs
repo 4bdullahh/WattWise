@@ -3,5 +3,4 @@
 public interface IClientServices
 {
     public Task StartClient();
-    public Task TempStartClient();
 }

@@ -15,6 +15,10 @@ namespace client_side.Services
 {
     public class MessagesServices : IMessagesServices
     {
+        /*
+         * Class Documentation:
+            This is the message service class which sends the readings to the server
+         */
         
         private readonly string _rsa_public_key;
         private readonly IFolderPathServices folderPath;

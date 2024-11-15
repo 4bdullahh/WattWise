@@ -7,6 +7,10 @@ namespace server_side.Controller
     {
         private readonly IMessageServices _messageServices;
 
+        /*
+         * Class Documentation:
+            This class is the controller who connects to program
+         */
         public MessageController(IMessageServices messageServices)
         {
             _messageServices = messageServices;

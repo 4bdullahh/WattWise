@@ -6,6 +6,13 @@ namespace server_side.Repository;
 
 public class CalculateCost : ICalculateCost
 {
+    /*
+     * This class is responsible to calculate costs and include methods for:
+        GetCurrent bill based on standard and multipliers 
+        Calculate the average use depending on type of customer
+        Calculate and apply rates based on Kwh used
+     */
+    
     private const double StandingCharge = 0.60; 
     private const double CostPerKwh = 0.24;
     private readonly IErrorLogRepo _errorLogRepo;
@@ -62,7 +69,6 @@ public class CalculateCost : ICalculateCost
     }
     private double GetAverageDailyUsage(string customerType)
     {
-        
         try
         {
             // Uncomment this for testing log error
@@ -71,18 +77,18 @@ public class CalculateCost : ICalculateCost
             {
                 "Small NGO" => 5.0,
                 "Small Household" => 8.0,
-                "Small Business" => 11.0,
-                "Small Industrial" => 20.0,
+                "Small Business" => 14.0,
+                "Small Industrial" => 22.0,
                 "Small Public Service" => 6.0,
                 "Average NGO" => 10.0,
-                "Average Household" => 10.0,
-                "Average Business" => 18.0,
-                "Average Industrial" => 25.0,
+                "Average Household" => 12.0,
+                "Average Business" => 19.0,
+                "Average Industrial" => 28.0,
                 "Average Public Service" => 9.0,
                 "Large NGO" => 15.0,
-                "Large Household" => 15.0,
-                "Large Business" => 20.0,
-                "Large Industrial" => 30.0,
+                "Large Household" => 18.0,
+                "Large Business" => 24.0,
+                "Large Industrial" => 35.0,
                 "Large Public Service" => 12.0,
                 _ => 0.0
             };

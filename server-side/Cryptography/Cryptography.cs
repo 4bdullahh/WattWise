@@ -5,6 +5,14 @@ namespace server_side.Cryptography;
 
 public static class Cryptography
 {
+    
+    /*
+     * Class Documentation:
+        This class is responsible for cryptography includes methods for:
+            Generating Hash
+            Public and Private Key Generator
+            AES/RSA Encryption and Decryption Handle
+     */
     public static string GenerateHash(this string value)
     {
         try

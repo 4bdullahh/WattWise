@@ -1,123 +1,123 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script
-      src="https://cdn.plot.ly/plotly-2.35.2.min.js"
-      charset="utf-8"
-    ></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Caveat:wght@400&display=swap" rel="stylesheet">
+<head>
+  <script
+          src="https://cdn.plot.ly/plotly-2.35.2.min.js"
+          charset="utf-8"
+  ></script>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Caveat:wght@400&display=swap" rel="stylesheet">
 
-    <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
 
-    <title>WattWise</title>
-  </head>
-  <body style="font-family: 'Quicksand', 'Caveat', sans-serif;">
-    <h1 style="font-size: 45px;font-weight: bold; text-align: center; margin-top:20px;">WattWise Smart Meter Clients</h1>
-    <br>
-    <hr>
-    <br>
-    <div
-      id="meterContainer"
-      style="
+  <title>WattWise</title>
+</head>
+<body style="font-family: 'Quicksand', 'Caveat', sans-serif;">
+<h1 style="font-size: 45px;font-weight: bold; text-align: center; margin-top:20px;">WattWise Smart Meter Clients</h1>
+<br>
+<hr>
+<br>
+<div
+        id="meterContainer"
+        style="
         display: flex;
         flex-wrap: wrap;
         height: 100%;
       "
-    ></div>
-    
-  </div>
-    <script>
-      const numDivs = 14;
-      const container = document.getElementById("meterContainer");
+></div>
 
-      for (let i = 0; i <= numDivs; i++) {
-        const newGauge = document.createElement("div");
-        if(i == 0) {
-          newGauge.className="col-4 mt-2 shadow-sm flex flex-col";
-          newGauge.style.display = "flex";         
-          newGauge.style.flexDirection = "column";  
-          newGauge.style.alignItems = "center";
-          newGauge.style.width = "1/3";
+</div>
+<script>
+  const numDivs = 15;
+  const container = document.getElementById("meterContainer");
 
-          const client= document.createElement("h2");
-          client.innerHTML=`Client-${i+1} TLS Connection Error - Contact Admin`;
-          client.style.textAlign = "center";
-            
-          container.appendChild(newGauge);
+  for (let i = 1; i <= numDivs; i++) {
+    const newGauge = document.createElement("div");
+    if(i === 1) {
+      newGauge.className="col-4 mt-2 shadow-sm flex flex-col";
+      newGauge.style.display = "flex";
+      newGauge.style.flexDirection = "column";
+      newGauge.style.alignItems = "center";
+      newGauge.style.width = "1/3";
+
+      const client= document.createElement("h2");
+      client.innerHTML=`Client-${i} TLS Connection Error - Contact Admin`;
+      client.style.textAlign = "center";
+
+      container.appendChild(newGauge);
 
 
-          const overlayImage = document.createElement("img");
-          overlayImage.src = "error.png";
-          overlayImage.id = "OutageImg";
+      const overlayImage = document.createElement("img");
+      overlayImage.src = "error.png";
+      overlayImage.id = "OutageImg";
 
-          overlayImage.style.position = "absolute";
-          overlayImage.style.top = "25%";
-          overlayImage.style.width = "50%";
-          overlayImage.style.height = "50%";
-          overlayImage.style.zIndex = "10";
+      overlayImage.style.position = "absolute";
+      overlayImage.style.top = "25%";
+      overlayImage.style.width = "50%";
+      overlayImage.style.height = "50%";
+      overlayImage.style.zIndex = "10";
 
-          newGauge.style.position = "relative";
-          newGauge.appendChild(overlayImage);
-          
-          newGauge.appendChild(client);
-        }
-        else{
-          newGauge.className="col-4 mt-2 shadow-sm flex flex-col";
-          newGauge.style.display = "flex";         
-          newGauge.style.flexDirection = "column";  
-          newGauge.style.alignItems = "center";
-          newGauge.style.width = "1/3";
-          newGauge.id = `meter-gauge-${i}`;
+      newGauge.style.position = "relative";
+      newGauge.appendChild(overlayImage);
 
-          const client= document.createElement("h2");
-          client.innerHTML=`Client-${i+1}`;
+      newGauge.appendChild(client);
+    }
+    else{
+      newGauge.className="col-4 mt-2 shadow-sm flex flex-col";
+      newGauge.style.display = "flex";
+      newGauge.style.flexDirection = "column";
+      newGauge.style.alignItems = "center";
+      newGauge.style.width = "1/3";
+      newGauge.id = `meter-gauge-${i}`;
 
-          const gaugeMessage = document.createElement("h4");
-          gaugeMessage.id = `gauge-message-${i}`;
-            
-          container.appendChild(newGauge);
-          newGauge.appendChild(gaugeMessage);
-          newGauge.appendChild(client);
+      const client= document.createElement("h2");
+      client.innerHTML=`Client-${i}`;
 
-          var data = [
-            {
-              domain: { x: [0, 1], y: [0, 1] },
-              value: 50,
-              title: { text: "Live Usage" },
-              type: "indicator",
-              mode: "gauge+number",
-              gauge: {
-                axis: { range: [null, 500] },
-                steps: [
-                  { range: [0, 125], color: "lightgreen" },
-                  { range: [125, 375], color: "yellow" },
-                  { range: [375, 500], color: "red" },
-                ],
-                threshold: {
-                  line: { color: "darkred", width: 4 },
-                  thickness: 20,
-                },
-                bar: {
-                  color: "white",
-                  line: { color: "gray", width: 4 },
-                  threshold: {
-                    thickness: 100,
-                  },
-                },
+      const gaugeMessage = document.createElement("h4");
+      gaugeMessage.id = `gauge-message-${i}`;
+
+      container.appendChild(newGauge);
+      newGauge.appendChild(gaugeMessage);
+      newGauge.appendChild(client);
+
+      var data = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value:0,
+          title: { text: "Live Usage" },
+          type: "indicator",
+          mode: "gauge+number",
+          gauge: {
+            axis: { range: [null, 800] },
+            steps: [
+              { range: [0, 180], color: "lightgreen" },
+              { range: [180, 450], color: "yellow" },
+              { range: [450, 800], color: "red" },
+            ],
+            threshold: {
+              line: { color: "darkred", width: 4 },
+              thickness: 20,
+            },
+            bar: {
+              color: "white",
+              line: { color: "gray", width: 4 },
+              threshold: {
+                thickness: 100,
               },
             },
-          ];
+          },
+        },
+      ];
 
-          var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
-          Plotly.newPlot(newGauge.id, data, layout);
-        }
-      }
-    </script>
-  </body>
-  <script src="./renderer.js"></script>
+      var layout = { width: 500, height: 300, margin: { t: 0, b: 0 } };
+      Plotly.newPlot(newGauge.id, data, layout);
+    }
+  }
+</script>
+</body>
+<script src="./renderer.js"></script>
 </html>

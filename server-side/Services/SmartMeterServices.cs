@@ -7,6 +7,11 @@ using server_side.Services.Models;
 
 namespace server_side.Services
 {
+    /*
+     * Class Documentation:
+        This is the smart meter service which is connected with 
+        the repository to handle smart meter enquiries
+     */
     public class SmartMeterServices: ISmartMeterServices
     {
         private readonly ISmartMeterRepo _smartMeterRepo;

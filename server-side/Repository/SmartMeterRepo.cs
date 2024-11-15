@@ -8,6 +8,12 @@ namespace server_side.Repository;
 
 public class SmartMeterRepo : ISmartMeterRepo
 {
+    
+    /*
+     * Class Documentation:
+        This class is the repository for the smart meter
+        and have methods to get, list, add and update smart meter
+     */
     private List<SmartDevice> meterList;
     private FolderPathServices folderpath;
     private readonly ISaveData _saveData;

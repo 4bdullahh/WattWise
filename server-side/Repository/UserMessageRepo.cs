@@ -10,8 +10,13 @@ namespace server_side.Repository
 {
     public class UserMessageRepo : IUserMessageRepo
     {
+        
+        /*
+     * Class Documentation:
+        This class is the repository for the user
+        and have methods to get, list, add and update users
+     */
         private List<UserData> usersList;
-        private IHashHandle userHash;
         private FolderPathServices folderpath;
         private readonly ISaveData _saveData;
         private readonly ISmartMeterRepo _smartMeterRepo;

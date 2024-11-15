@@ -364,5 +364,110 @@
   },
   {
     "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 15:46:39"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 20:18:44"
+  },
+  {
+    "Message": "Server: ClientID 15 Unable to access smart meter repo from SmartMeterServices: Object reference not set to an instance of an object. : 15/11/2024 20:19:00"
+  },
+  {
+    "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 15/11/2024 20:19:00"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:25:38"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:27:35"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:29:47"
+  },
+  {
+    "Message": "Server: ClientID 15 Unable to access smart meter repo from SmartMeterServices: Object reference not set to an instance of an object. : 15/11/2024 20:30:03"
+  },
+  {
+    "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 15/11/2024 20:30:03"
+  },
+  {
+    "Message": "Server: ClientID 15 Unable to access smart meter repo from SmartMeterServices: Object reference not set to an instance of an object. : 15/11/2024 20:31:31"
+  },
+  {
+    "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 15/11/2024 20:31:31"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:33:03"
+  },
+  {
+    "Message": "Server: ClientID 16 Unable to access smart meter repo from SmartMeterServices: Object reference not set to an instance of an object. : 15/11/2024 20:41:14"
+  },
+  {
+    "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 15/11/2024 20:41:14"
+  },
+  {
+    "Message": "Server: ClientID 16 Unable to access smart meter repo from SmartMeterServices: Object reference not set to an instance of an object. : 15/11/2024 20:42:47"
+  },
+  {
+    "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 15/11/2024 20:42:47"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 20:49:08"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:50:28"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 20:57:50"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:03:12"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:12:13"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:17:03"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:25:30"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:29:11"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:30:44"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:32:32"
+  },
+  {
+    "Message": "Power grid outage usage at 4.493271649234586 kwh : 15/11/2024 21:32:48"
+  },
+  {
+    "Message": "Power grid outage usage at 4.608545203245407 kwh : 15/11/2024 21:32:48"
+  },
+  {
+    "Message": "Power grid outage usage at 4.245039064832823 kwh : 15/11/2024 21:33:08"
+  },
+  {
+    "Message": "Power grid outage usage at 4.069242716647903 kwh : 15/11/2024 21:33:27"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:43:59"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:53:48"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 21:56:03"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 22:02:24"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 22:29:47"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 22:32:12"
   }
 ]

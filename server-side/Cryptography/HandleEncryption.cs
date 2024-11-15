@@ -8,6 +8,13 @@ namespace server_side.Cryptography;
 
 public class HandleEncryption
 {
+    /*
+     * Class Documentation:
+        This class is responsible for handle encryption and include methods for:
+            Apply Encryption and Decryption of messages from server and client
+            Generate Key and Iv which helps to transmit secure messages between client and server
+     */
+    
     public (string userHash, string decryptedMessage, string receivedHash) 
         ApplyDencryption(NetMQMessage receivedMessage, byte[] encryptedKey, byte[] encryptedIv, string receivedHash, string receivedUser, string _rsaPrivateKey)
     {

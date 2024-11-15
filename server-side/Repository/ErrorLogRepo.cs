@@ -8,6 +8,12 @@ namespace server_side.Repository;
 
 public class ErrorLogRepo : IErrorLogRepo
 {
+    /*
+     * Class Documentation:
+        This class is responsible to handle log errors and store on json file.
+     */
+    
+    
     private readonly IFolderPathServices folderPathServices;
     public ErrorLogRepo(IFolderPathServices folderPathServices)
     {
