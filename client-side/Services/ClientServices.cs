@@ -209,15 +209,15 @@ namespace client_side.Services
                             using (var poller = new NetMQPoller())
                             {
                                 int maxClients = 15;
-                                int minInterval = 1000;
-                                int maxInterval = 3000;
+                                int minInterval = 15000;
+                                int maxInterval = 60000;
                                 var currentInterval = new Random();
 
                                 for (int i = 0; i < maxClients; i++)
                                 {
                                     int clientId = i;
                                     bool sslAuthenticated = false;
-                                    Task sslTask = Task.Run(() =>
+                                    Task sslTask = Task.Run(async () =>
                                     {
                                         try
                                         {
@@ -233,14 +233,14 @@ namespace client_side.Services
                                                 if (sslStream.IsAuthenticated)
                                                 {
                                                     sslAuthenticated = true;
-                                                    /*// This is for simulating the authenticate failure
+                                                        // This is for simulating the authenticate failure
                                                        if (clientId == 1)
                                                        {
                                                            errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
                                                            tcpClient.Close();
                                                            sslStream.Close();
-                                                           throw new AuthenticationException("Simulated TLS authentication failure : {DateTime.UtcNow}");
-                                                       }*/
+                                                           throw new AuthenticationException();
+                                                       }
                                                     Console.WriteLine($"Client {clientId}: TLS authentication successful!");
                                                 }
                                                 else
@@ -252,10 +252,12 @@ namespace client_side.Services
                                         catch (Exception ex)
                                         {
                                             // Uncomment when simulating connection error
-                                            // _errorLogRepo.LogError(errorMessage);
-                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.UtcNow}");
+                                            _errorLogRepo.LogError(errorMessage);
+                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.Now}");
+                                            await writer.WriteLineAsync($"Client {clientId} has TLS communication problem - {ex.Message} : {DateTime.Now}");
+                                            await writer.FlushAsync();
                                             // Uncomment when simulating connection error
-                                            //return;
+                                            return;
                                         }
                                     });
                                     sslTask.Wait();
