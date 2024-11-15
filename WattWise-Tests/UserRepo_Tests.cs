@@ -72,6 +72,8 @@ public class UserRepo_Tests
         _mockUserMessageRepo.Verify(repo => repo.GetById(expectedResult.UserID), Times.Once);
     }
     
+    
+    
     [Theory]
     [InlineData(4)]
     public void Update_Should_Return_Same_SmartMeterID_For_UserData(int deviceId)
@@ -151,5 +153,69 @@ public class UserRepo_Tests
         _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedResult), Times.Once);
     }
     
+    [Fact]
+    public void Update_Should_Return_CurrentCost_Two_Decimal_Places_For_UserData()
+    {
+        //Arrange
+        var expectedResult = new UserData
+        {
+            UserID = 10,
+            UserEmail = "dummy1@example.com",
+            CurrentMonthCost = 20.10
+        };
+        _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedResult)).Returns(expectedResult);
+    
+        // Act
+        var actualResult = _mockUserMessageRepo.Object.UpdateUserData(expectedResult);
+
+        bool hasTwoDecimalPlaces = actualResult.CurrentMonthCost == Math.Round(actualResult.CurrentMonthCost, 2);
+        // Assert
+        Assert.NotNull(actualResult);
+        Assert.Equal(expectedResult.CurrentMonthCost, actualResult.CurrentMonthCost);
+        Assert.True(hasTwoDecimalPlaces);
+        
+        _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedResult), Times.Once);
+    }
+
+    
+    [Theory]
+    [InlineData(4)]
+    public void Update_Should_Return_Same_CurrentCost_For_User_And_SmartMeter(int deviceId)
+    {
+        // Arrange
+        var expectedUser = new UserData
+        {
+            UserID = 1001,
+            CurrentMonthCost = 20.24,
+            SmartMeterId = deviceId
+        };
+        
+        var smartDevice = new SmartDevice
+        {
+            SmartMeterId = deviceId,
+            CurrentMonthCost = 20.24
+        };
+      
+        _mockUserMessageRepo.Setup(repo => repo.UpdateUserData(expectedUser)).Returns(expectedUser).Verifiable();
+        _mockSmartMeterRepo.Setup(meter => meter.GetById(smartDevice.SmartMeterId)).Returns(smartDevice).Verifiable();
+
+        // Act
+        var updateUser = _mockUserMessageRepo.Object.UpdateUserData(expectedUser);
+        var getDevice = _mockSmartMeterRepo.Object.GetById(smartDevice.SmartMeterId);
+        
+        bool userDataCostHasTwoDecimal = updateUser.CurrentMonthCost == Math.Round(updateUser.CurrentMonthCost, 2);
+        bool smartMeterCostHasTwoDecimal = getDevice.CurrentMonthCost == Math.Round(getDevice.CurrentMonthCost, 2);
+        
+        // Assert
+        Assert.NotNull(updateUser);
+        Assert.NotNull(getDevice);
+        
+        Assert.Equal(updateUser.CurrentMonthCost, getDevice.CurrentMonthCost);
+        Assert.True(userDataCostHasTwoDecimal);
+        Assert.True(smartMeterCostHasTwoDecimal);
+        
+        _mockUserMessageRepo.Verify(repo => repo.UpdateUserData(expectedUser), Times.Once);
+        _mockSmartMeterRepo.Verify(repo => repo.GetById(smartDevice.SmartMeterId), Times.Once);
+    }
 
 }

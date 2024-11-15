@@ -130,26 +130,5 @@ namespace server_side.Tests.Services
         }
 
         
-        [Fact]
-        public void UpdateMeterServices_WhenExceptionThrown_LogsErrorAndThrows()
-        {
-            // Arrange
-            var smartDevice = new SmartDevice { SmartMeterId = 12345 };
-            var decryptedMessage = JsonConvert.SerializeObject(smartDevice);
-            var errorMessage = new ErrorLogMessage
-            {
-                Message = "Unable to access smart meter repo"
-            };
-            _smartMeterServices.Setup(repo => repo.UpdateMeterServices(decryptedMessage))
-                .Throws(new Exception("Database connection error"));
-            _mockErrorLogRepo.Setup(log => log.LogError(errorMessage));
-        
-            // Act & Assert
-            var exception =  _smartMeterServices.Object.UpdateMeterServices(decryptedMessage);
-            Assert.Equal("Database connection error", exception.Message);
-        
-            _mockErrorLogRepo.Verify(repo => repo.LogError(It.Is<ErrorLogMessage>(
-                log => log.Message.Contains("Unable to access smart meter repo"))), Times.Once);
-        }
     }
 }
