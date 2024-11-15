@@ -22,6 +22,7 @@ public class CalculateCost : ICalculateCost
          * These standard rates are taken from the below website
          * https://www.smartenergygb.org/smart-living/smart-energy-tips/what-is-the-price-cap-and-will-it-affect-your-energy-bills?gclid=49e98d7f1cc31a9fe942ea67df695dcb&gclsrc=3p.ds&msclkid=49e98d7f1cc31a9fe942ea67df695dcb#whatiscap-epg-rev3:~:text=What%20is%20the%20current%20price%20of%20gas%20and%20electricity%20per%20kWh%3F
          */
+        
         try
         {
             if (modelData == null)
@@ -48,7 +49,7 @@ public class CalculateCost : ICalculateCost
 
             var totalCost = CalculateRates(modelData.KwhUsed, StandingCharge, CostPerKwh, averageMinuteUsage);
             modelData.CurrentMonthCost = totalCost;
-
+            modelData.Message = $"Cost calculation for {customerType}: {totalCost}";
             return modelData;
         }
         catch (Exception ex)
@@ -68,10 +69,22 @@ public class CalculateCost : ICalculateCost
            // throw new Exception("The method or operation is not implemented.");
             return customerType switch
             {
-                "Large Household" => 15.0,
-                "Average Household" => 10.0,
+                "Small NGO" => 5.0,
                 "Small Household" => 8.0,
-                _ => 0.0,
+                "Small Business" => 11.0,
+                "Small Industrial" => 20.0,
+                "Small Public Service" => 6.0,
+                "Average NGO" => 10.0,
+                "Average Household" => 10.0,
+                "Average Business" => 18.0,
+                "Average Industrial" => 25.0,
+                "Average Public Service" => 9.0,
+                "Large NGO" => 15.0,
+                "Large Household" => 15.0,
+                "Large Business" => 20.0,
+                "Large Industrial" => 30.0,
+                "Large Public Service" => 12.0,
+                _ => 0.0
             };
         }
         catch (Exception e)
@@ -81,7 +94,6 @@ public class CalculateCost : ICalculateCost
             _errorLogRepo.LogError(_errorLogMessage);
             throw;
         }
-      
     }
 
     private double GetAverageMinuteUsage(string customerType)

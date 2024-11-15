@@ -17,26 +17,50 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  ipcMain.handle("meterReading", async () => {
-    console.log("TRYING TO ONNCET");
+  ipcMain.on("startMeterReading", (event) => {
+    console.log("TRYING TO CONNECT");
 
-    return new Promise((resolve, reject) => {
-      const client = net.createConnection("\\\\.\\pipe\\meter-reading", () => {
-        client.write("meterReading");
+    const client = net.createConnection("\\\\.\\pipe\\meter-reading", () => {
+      client.write("meterReading");
 
-        client.on("data", (data) => {
-          const message = data.toString();
-          // console.log("Received from .NET:", message);
-          resolve(message);
-        });
+      client.on("data", (data) => {
+        const message = data.toString();
+        console.log("Received from .NET:", message);
+
+        event.sender.send("meterReadingData", message);
       });
 
-      client.on("error", (err) => {
-        console.error("Error connecting to named pipe:", err);
-        reject(err);
+      client.on("error", (error) => {
+        console.error("Error in named pipe connection:", error);
+        event.sender.send("meterReadingError", error.message);
       });
     });
+
+    client.on("end", () => {
+      console.log("Connection closed by .NET server.");
+    });
   });
+
+  // ipcMain.handle("meterReading", async () => {
+  //   console.log("TRYING TO ONNCET");
+
+  //   return new Promise((resolve, reject) => {
+  //     const client = net.createConnection("\\\\.\\pipe\\meter-reading", () => {
+  //       client.write("meterReading");
+
+  //       client.on("data", (data) => {
+  //         const message = data.toString();
+  //         console.log("Received from .NET:", message);
+  //         resolve(message);
+  //       });
+  //     });
+
+  //     client.on("error", (err) => {
+  //       console.error("Error connecting to named pipe:", err);
+  //       reject(err);
+  //     });
+  //   });
+  // });
 
   /* --------------------------------------------- */
   // ipcMain.handle("open", async () => {

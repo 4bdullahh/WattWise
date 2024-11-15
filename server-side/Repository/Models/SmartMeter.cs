@@ -9,5 +9,7 @@ public class SmartDevice
     public double CostPerKwH { get; set; }
     public string CustomerType { get; set; }
     public UserData? UserData { get; set; } 
-
+    public string Message { get; set; }
+    
+    public List<int> clientList { get; set; }
 }

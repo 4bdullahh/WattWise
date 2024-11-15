@@ -25,13 +25,18 @@ namespace client_side
             serviceCollection.AddScoped<IErrorLogRepo, ErrorLogRepo>();
             serviceCollection.AddHostedService<CostUpdateService>();
             serviceCollection.AddSingleton<CostUpdateService>();
+            serviceCollection.AddScoped<IPowerGridCalc ,PowerGridCalc>();
+
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var costUpdateService = serviceProvider.GetService<CostUpdateService>();
             costUpdateService?.StartAsync(new CancellationToken());
             var clientService = serviceProvider.GetService<IClientServices>();
+            
+            // WITH ELECTRON
             clientService.StartClient();
-            //await clientService.ElectronServerAsync();
-
+            
+            // WITHOUT ELECTRON
+            //clientService.TempStartClient();
         }
 
     }
