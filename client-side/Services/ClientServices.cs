@@ -100,7 +100,7 @@ namespace client_side.Services
                                                            tcpClient.Close();
                                                            sslStream.Close();
                                                            sslAuthenticated = false;
-                                                           throw new AuthenticationException();
+                                                           throw new AuthenticationException(errorMessage.Message);
                                                        }
                                                     Console.WriteLine($"Client {clientId}: TLS authentication successful!");
                                                 }
@@ -113,8 +113,8 @@ namespace client_side.Services
                                         catch (Exception ex)
                                         {
                                             _errorLogRepo.LogError(errorMessage);
-                                            Console.WriteLine($"Client {clientId}: has TLS communication problem - {ex.Message} : {DateTime.Now}");
-                                            await writer.WriteLineAsync($"Client {clientId} has TLS communication problem - {ex.Message} : {DateTime.Now}");
+                                            Console.WriteLine(ex.Message);
+                                            await writer.WriteLineAsync(ex.Message);
                                             await writer.FlushAsync();
                                         }
                                     });
