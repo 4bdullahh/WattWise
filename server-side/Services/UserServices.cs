@@ -7,6 +7,11 @@ namespace server_side.Services
 {
     public class UserServices : IUserServices
     {
+        /*
+     * Class Documentation:
+        This is the user service which is connected with
+        the repository to handle user enquiries
+     */
         private readonly IUserMessageRepo _userRepo;
         private readonly IErrorLogRepo _errorLogRepo;
         private readonly ErrorLogMessage _errorLogMessage;

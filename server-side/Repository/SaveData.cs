@@ -8,6 +8,11 @@ namespace server_side.Repository;
 
 public class SaveData : ISaveData
 {
+    
+    /*
+     * Class Documentation:
+        This class is responsible the mock database that store data on Json file.
+     */
     private FolderPathServices folderpath;
     private IErrorLogRepo errorLogRepo;
     private ErrorLogMessage errorLogMessage;

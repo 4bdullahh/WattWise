@@ -4,6 +4,11 @@ namespace client_side.Services;
 
 public class CalculateCostClient :ICalculateCostClient
 {
+    /*
+     * Class Documentation:
+        This class is responsible to generate random costs related to price flactuation
+     */
+    
     public SmartDeviceClient getRandomCost(SmartDeviceClient modelData, string customerType)
     {
         /*

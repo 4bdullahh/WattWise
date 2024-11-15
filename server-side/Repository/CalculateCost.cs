@@ -6,6 +6,13 @@ namespace server_side.Repository;
 
 public class CalculateCost : ICalculateCost
 {
+    /*
+     * This class is responsible to calculate costs and include methods for:
+        GetCurrent bill based on standard and multipliers 
+        Calculate the average use depending on type of customer
+        Calculate and apply rates based on Kwh used
+     */
+    
     private const double StandingCharge = 0.60; 
     private const double CostPerKwh = 0.24;
     private readonly IErrorLogRepo _errorLogRepo;
@@ -62,7 +69,6 @@ public class CalculateCost : ICalculateCost
     }
     private double GetAverageDailyUsage(string customerType)
     {
-        
         try
         {
             // Uncomment this for testing log error

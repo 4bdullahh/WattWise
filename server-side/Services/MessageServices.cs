@@ -14,6 +14,12 @@ using server_side.Repository.Models;
 
 namespace server_side.Services
 {
+    /*
+         * Class Documentation:
+            This is the server side of message service that handle
+            the message from the client, apply decryption and send its back to
+            client
+         */
     public class MessageService : IMessageServices
     {
         private readonly IUserServices _userServices;
@@ -40,7 +46,7 @@ namespace server_side.Services
             _rsa_public_key = Env.GetString("RSA_PUBLIC_KEY");
             _serverCertificate = new X509Certificate2(serverSideFolderPath + "\\server_certificate.pfx", "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
         }
-
+        
         public void ReceiveMessageServices()
         {
     

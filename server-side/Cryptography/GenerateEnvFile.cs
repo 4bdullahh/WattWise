@@ -14,7 +14,11 @@ namespace server_side.Cryptography
         {
             this.folderpath = folderpath;
         }
-
+        /*
+         * Class Documentation
+             This class is responsible for handle Env files and include methods for:
+                Generate/Load Env Files which store private and public key
+         */
         public void EnvFileGenerator()
         {
             string envFilePath = Path.Combine(folderpath.GetWattWiseFolderPath(), "server-side", ".env");

@@ -4,6 +4,11 @@ namespace server_side.Services
 {
     public class FolderPathServices : IFolderPathServices
     {
+        /*
+         * Class Documentation:
+            This class is responsible to get specific folder
+            for loading or save documents, env files, certificate etc.
+         */
         public string GetServerSideFolderPath()
         {
             try

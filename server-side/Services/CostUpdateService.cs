@@ -3,10 +3,16 @@ using server_side.Repository.Interface;
 
 public class CostUpdateService : IHostedService, IDisposable
 {
+    /*
+     * Class Documentation:
+        This is the service that is responsible to request cost updates
+        every minute
+     */
+    
     private Timer _timer;
     private readonly ICalculateCost _calculateCostService;
     private readonly ISmartMeterRepo _smartDevices; 
-
+    
     public CostUpdateService(ICalculateCost calculateCostService, ISmartMeterRepo smartDevices)
     {
         _calculateCostService = calculateCostService;

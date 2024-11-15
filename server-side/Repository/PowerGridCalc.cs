@@ -15,7 +15,11 @@ public class PowerGridCalc :IPowerGridCalc
     private readonly IErrorLogRepo _errorLogRepo;
     private FolderPathServices folderpath;
 
-    
+    /*
+     * Class Documentation:
+        This class is responsible to generate power grid simulation
+        and have methods to calculate and generate power grid outage
+     */
     public PowerGridCalc(IErrorLogRepo errorLogRepo)
     {
         _errorLogMessage = new ErrorLogMessage();
