@@ -355,5 +355,14 @@
   },
   {
     "Message": "Server: ClientID 0 Error handling message in ReceiveReady Method MessageServices : Object reference not set to an instance of an object. : 11/11/2024 09:25:48"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 15:22:41"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 15:41:48"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure : 15/11/2024 15:46:39"
   }
 ]

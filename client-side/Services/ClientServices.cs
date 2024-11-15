@@ -239,6 +239,7 @@ namespace client_side.Services
                                                            errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure : {DateTime.UtcNow}";
                                                            tcpClient.Close();
                                                            sslStream.Close();
+                                                           sslAuthenticated = false;
                                                            throw new AuthenticationException();
                                                        }
                                                     Console.WriteLine($"Client {clientId}: TLS authentication successful!");
@@ -261,7 +262,11 @@ namespace client_side.Services
                                         }
                                     });
                                     sslTask.Wait();
-                                    if (!sslAuthenticated) continue;
+                                    if (!sslAuthenticated)
+                                    {
+                                        Console.WriteLine($"Client: {clientId} was blocked");
+                                        continue;
+                                    }
 
                                     var clientSocket = new DealerSocket();
                                     clientSocket.Options.Identity =
