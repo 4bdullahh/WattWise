@@ -107,14 +107,16 @@ namespace server_side.Services
                                             var result = handleEncryption.ApplyDencryption(recievedMessage, recievedMessage[3].Buffer, recievedMessage[4].Buffer,
                                                 Encoding.UTF8.GetString(recievedMessage[5].Buffer), Encoding.UTF8.GetString(recievedMessage[6].Buffer), _rsaPrivateKey);
                                             
+                                            /*
                                             //This is for test when the data is tampered
                                             
-                                            /*
-                                            UserData tempered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
-                                            tempered.UserID = 1060;
-                                            var temperedJson = JsonConvert.SerializeObject(tempered);
-                                            result.userHash = Cryptography.Cryptography.GenerateHash(temperedJson);
+                                            
+                                            UserData tampered = JsonConvert.DeserializeObject<UserData>(result.decryptedMessage);
+                                            tampered.UserID = 1060;
+                                            var tamperedJson = JsonConvert.SerializeObject(tampered);
+                                            result.userHash = Cryptography.Cryptography.GenerateHash(tamperedJson);
                                             */
+                                            
                                             
                                             if (result.userHash != result.receivedHash)
                                             {
