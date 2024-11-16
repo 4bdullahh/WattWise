@@ -1,6 +1,6 @@
 # WattWaise Smart Meter
 
-## Installation Instructions
+## Installation
 
 ### Download Git
 
