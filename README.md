@@ -38,7 +38,7 @@ and `npm i electron`
 ## Running The App
 
 #### Step 1
-Press start to run the client and server
+In Visual Studio press start to run the client and server
 
 #### Step 2
 In another terminal run
