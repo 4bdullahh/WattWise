@@ -1349,10 +1349,7 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "server-side.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "server-side.dll": {}
         }
       }
     }

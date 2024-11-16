@@ -24,7 +24,7 @@ namespace client_side.Services
                Receive/Send Encrypted and Decrypted Messages
                Connection with Electron
                Poller
-               Dealer Socker
+               Dealer Socket
       */
 
         private readonly IMessagesServices _messagesServices;

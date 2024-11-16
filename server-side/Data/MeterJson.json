@@ -1,9 +1,9 @@
 [
   {
     "SmartMeterID": 2,
-    "EnergyPerKwH": 0.57,
-    "CurrentMonthCost": 71.78,
-    "KwhUsed": 224.09,
+    "EnergyPerKwH": 0.35,
+    "CurrentMonthCost": 74.55,
+    "KwhUsed": 235.61,
     "CustomerType": "Large NGO",
     "UserData": {
       "UserID": 1002
@@ -11,9 +11,9 @@
   },
   {
     "SmartMeterID": 4,
-    "EnergyPerKwH": 0.6,
-    "CurrentMonthCost": 61.02,
-    "KwhUsed": 179.27,
+    "EnergyPerKwH": 0.34,
+    "CurrentMonthCost": 63.24,
+    "KwhUsed": 188.5,
     "CustomerType": "Average Household",
     "UserData": {
       "UserID": 1004
@@ -21,9 +21,9 @@
   },
   {
     "SmartMeterID": 6,
-    "EnergyPerKwH": 1.11,
-    "CurrentMonthCost": 68.2,
-    "KwhUsed": 209.15,
+    "EnergyPerKwH": 0.98,
+    "CurrentMonthCost": 70.77,
+    "KwhUsed": 219.89,
     "CustomerType": "Small Business",
     "UserData": {
       "UserID": 1006
@@ -31,9 +31,9 @@
   },
   {
     "SmartMeterID": 9,
-    "EnergyPerKwH": 0.65,
-    "CurrentMonthCost": 96.88,
-    "KwhUsed": 328.66,
+    "EnergyPerKwH": 0.62,
+    "CurrentMonthCost": 100.94,
+    "KwhUsed": 345.57,
     "CustomerType": "Small Industrial",
     "UserData": {
       "UserID": 1009
@@ -41,9 +41,9 @@
   },
   {
     "SmartMeterID": 5,
-    "EnergyPerKwH": 0.42,
-    "CurrentMonthCost": 82.54,
-    "KwhUsed": 268.91,
+    "EnergyPerKwH": 0.43,
+    "CurrentMonthCost": 85.86,
+    "KwhUsed": 282.74,
     "CustomerType": "Large Household",
     "UserData": {
       "UserID": 1005
@@ -51,9 +51,9 @@
   },
   {
     "SmartMeterID": 8,
-    "EnergyPerKwH": 0.7,
-    "CurrentMonthCost": 104.05,
-    "KwhUsed": 358.54,
+    "EnergyPerKwH": 0.71,
+    "CurrentMonthCost": 108.48,
+    "KwhUsed": 376.98,
     "CustomerType": "Large Business",
     "UserData": {
       "UserID": 1008
@@ -61,9 +61,9 @@
   },
   {
     "SmartMeterID": 10,
-    "EnergyPerKwH": 0.96,
-    "CurrentMonthCost": 118.39,
-    "KwhUsed": 418.3,
+    "EnergyPerKwH": 1.11,
+    "CurrentMonthCost": 123.55,
+    "KwhUsed": 439.81,
     "CustomerType": "Average Industrial",
     "UserData": {
       "UserID": 1010
@@ -72,8 +72,8 @@
   {
     "SmartMeterID": 11,
     "EnergyPerKwH": 1.19,
-    "CurrentMonthCost": 143.49,
-    "KwhUsed": 522.87,
+    "CurrentMonthCost": 149.95,
+    "KwhUsed": 549.78,
     "CustomerType": "Large Industrial",
     "UserData": {
       "UserID": 1011
@@ -81,9 +81,9 @@
   },
   {
     "SmartMeterID": 7,
-    "EnergyPerKwH": 0.59,
-    "CurrentMonthCost": 86.12,
-    "KwhUsed": 283.85,
+    "EnergyPerKwH": 0.61,
+    "CurrentMonthCost": 89.63,
+    "KwhUsed": 298.45,
     "CustomerType": "Average Business",
     "UserData": {
       "UserID": 1007
@@ -91,9 +91,9 @@
   },
   {
     "SmartMeterID": 3,
-    "EnergyPerKwH": 0.58,
-    "CurrentMonthCost": 46.68,
-    "KwhUsed": 119.51,
+    "EnergyPerKwH": 0.31,
+    "CurrentMonthCost": 48.16,
+    "KwhUsed": 125.66,
     "CustomerType": "Small Household",
     "UserData": {
       "UserID": 1003
@@ -111,9 +111,9 @@
   },
   {
     "SmartMeterID": 15,
-    "EnergyPerKwH": 0.15,
-    "CurrentMonthCost": 35.93,
-    "KwhUsed": 74.7,
+    "EnergyPerKwH": 0.38,
+    "CurrentMonthCost": 36.85,
+    "KwhUsed": 78.54,
     "CustomerType": "Small NGO",
     "UserData": {
       "UserID": 1015
@@ -121,9 +121,9 @@
   },
   {
     "SmartMeterID": 12,
-    "EnergyPerKwH": 0.38,
-    "CurrentMonthCost": 39.51,
-    "KwhUsed": 89.64,
+    "EnergyPerKwH": 0.19,
+    "CurrentMonthCost": 40.62,
+    "KwhUsed": 94.25,
     "CustomerType": "Small Public Service",
     "UserData": {
       "UserID": 1012
@@ -131,9 +131,9 @@
   },
   {
     "SmartMeterID": 13,
-    "EnergyPerKwH": 0.31,
-    "CurrentMonthCost": 50.27,
-    "KwhUsed": 134.45,
+    "EnergyPerKwH": 0.6,
+    "CurrentMonthCost": 51.93,
+    "KwhUsed": 141.37,
     "CustomerType": "Average Public Service",
     "UserData": {
       "UserID": 1013
@@ -141,9 +141,9 @@
   },
   {
     "SmartMeterID": 14,
-    "EnergyPerKwH": 0.77,
-    "CurrentMonthCost": 61.02,
-    "KwhUsed": 179.27,
+    "EnergyPerKwH": 0.52,
+    "CurrentMonthCost": 63.24,
+    "KwhUsed": 188.49,
     "CustomerType": "Large Public Service",
     "UserData": {
       "UserID": 1014

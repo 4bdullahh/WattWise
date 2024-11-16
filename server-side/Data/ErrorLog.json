@@ -469,5 +469,491 @@
   },
   {
     "Message": "Client: 1 Simulated TLS authentication failure on 15/11/2024 22:32:12"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 12:50:48"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 13:10:05"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 15:24:18"
+  },
+  {
+    "Message": "Power grid outage usage at 4.119954518190825 kwh : 16/11/2024 15:32:24"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 15:35:11"
+  },
+  {
+    "Message": "Power grid outage usage at 4.064758843119111 kwh : 16/11/2024 15:35:36"
+  },
+  {
+    "Message": "Power grid outage usage at 4.767221992436657 kwh : 16/11/2024 15:35:55"
+  },
+  {
+    "Message": "Server: ClientID 0 SmartMeterRepo could not load user data: The process cannot access the file 'C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\Data\\MeterJson.json' because it is being used by another process. : 16/11/2024 15:36:14"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 15:39:24"
+  },
+  {
+    "Message": "Power grid outage usage at 4.154602160006124 kwh : 16/11/2024 15:39:25"
+  },
+  {
+    "Message": "Power grid outage usage at 4.900472081211849 kwh : 16/11/2024 15:39:26"
+  },
+  {
+    "Message": "Power grid outage usage at 4.506906042910032 kwh : 16/11/2024 15:39:27"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9469628245136175 kwh : 16/11/2024 15:39:28"
+  },
+  {
+    "Message": "Power grid outage usage at 4.34929587897334 kwh : 16/11/2024 15:39:28"
+  },
+  {
+    "Message": "Power grid outage usage at 4.313324312218157 kwh : 16/11/2024 15:39:29"
+  },
+  {
+    "Message": "Power grid outage usage at 4.813017592023121 kwh : 16/11/2024 15:39:30"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9809844551849043 kwh : 16/11/2024 15:39:31"
+  },
+  {
+    "Message": "Power grid outage usage at 4.41566709635224 kwh : 16/11/2024 15:39:32"
+  },
+  {
+    "Message": "Power grid outage usage at 3.894677186710383 kwh : 16/11/2024 15:39:32"
+  },
+  {
+    "Message": "Power grid outage usage at 4.154535949802678 kwh : 16/11/2024 15:39:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.005764538679423 kwh : 16/11/2024 15:39:34"
+  },
+  {
+    "Message": "Power grid outage usage at 4.258981624006586 kwh : 16/11/2024 15:39:35"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8545680624927456 kwh : 16/11/2024 15:39:35"
+  },
+  {
+    "Message": "Power grid outage usage at 4.478410576166971 kwh : 16/11/2024 15:39:36"
+  },
+  {
+    "Message": "Power grid outage usage at 4.109185290423843 kwh : 16/11/2024 15:39:37"
+  },
+  {
+    "Message": "Power grid outage usage at 4.235263792027406 kwh : 16/11/2024 15:39:37"
+  },
+  {
+    "Message": "Power grid outage usage at 4.0209192453907665 kwh : 16/11/2024 15:39:38"
+  },
+  {
+    "Message": "Power grid outage usage at 4.486019563037243 kwh : 16/11/2024 15:39:39"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8850846606900777 kwh : 16/11/2024 15:39:40"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9853756326040473 kwh : 16/11/2024 15:39:41"
+  },
+  {
+    "Message": "Power grid outage usage at 4.4277818193477945 kwh : 16/11/2024 15:39:41"
+  },
+  {
+    "Message": "Power grid outage usage at 4.1754700747346645 kwh : 16/11/2024 15:39:42"
+  },
+  {
+    "Message": "Power grid outage usage at 4.815238509337329 kwh : 16/11/2024 15:39:43"
+  },
+  {
+    "Message": "Power grid outage usage at 4.280244685231282 kwh : 16/11/2024 15:39:43"
+  },
+  {
+    "Message": "Power grid outage usage at 4.029231207670815 kwh : 16/11/2024 15:39:44"
+  },
+  {
+    "Message": "Power grid outage usage at 4.490961560829133 kwh : 16/11/2024 15:39:45"
+  },
+  {
+    "Message": "Power grid outage usage at 5.13876858550938 kwh : 16/11/2024 15:39:46"
+  },
+  {
+    "Message": "Power grid outage usage at 4.443131696695599 kwh : 16/11/2024 15:39:46"
+  },
+  {
+    "Message": "Power grid outage usage at 4.2621558811362075 kwh : 16/11/2024 15:39:47"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9523732364191977 kwh : 16/11/2024 15:39:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.128130683253308 kwh : 16/11/2024 15:39:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.107120264947979 kwh : 16/11/2024 15:39:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.595772051779373 kwh : 16/11/2024 15:39:51"
+  },
+  {
+    "Message": "Power grid outage usage at 4.690924413229738 kwh : 16/11/2024 15:39:51"
+  },
+  {
+    "Message": "Power grid outage usage at 4.2501254148253205 kwh : 16/11/2024 15:39:52"
+  },
+  {
+    "Message": "Power grid outage usage at 3.992225972620076 kwh : 16/11/2024 15:39:53"
+  },
+  {
+    "Message": "Power grid outage usage at 4.369886495323841 kwh : 16/11/2024 15:39:54"
+  },
+  {
+    "Message": "Power grid outage usage at 4.052525942108551 kwh : 16/11/2024 15:39:54"
+  },
+  {
+    "Message": "Power grid outage usage at 3.852475332564639 kwh : 16/11/2024 15:39:55"
+  },
+  {
+    "Message": "Power grid outage usage at 4.656385027122562 kwh : 16/11/2024 15:39:56"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9622466354870736 kwh : 16/11/2024 15:39:57"
+  },
+  {
+    "Message": "Power grid outage usage at 4.481027457150855 kwh : 16/11/2024 15:39:58"
+  },
+  {
+    "Message": "Power grid outage usage at 3.873323109935362 kwh : 16/11/2024 15:39:59"
+  },
+  {
+    "Message": "Power grid outage usage at 4.192068583657922 kwh : 16/11/2024 15:39:59"
+  },
+  {
+    "Message": "Power grid outage usage at 4.678787795423538 kwh : 16/11/2024 15:40:00"
+  },
+  {
+    "Message": "Power grid outage usage at 3.859775920540181 kwh : 16/11/2024 15:40:01"
+  },
+  {
+    "Message": "Power grid outage usage at 4.2934602970180356 kwh : 16/11/2024 15:40:01"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9413662557571003 kwh : 16/11/2024 15:40:02"
+  },
+  {
+    "Message": "Power grid outage usage at 3.800710482253793 kwh : 16/11/2024 15:40:03"
+  },
+  {
+    "Message": "Power grid outage usage at 4.776082009966274 kwh : 16/11/2024 15:40:04"
+  },
+  {
+    "Message": "Power grid outage usage at 4.43743413708362 kwh : 16/11/2024 15:40:04"
+  },
+  {
+    "Message": "Power grid outage usage at 4.178135416581439 kwh : 16/11/2024 15:40:05"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8296127748631505 kwh : 16/11/2024 15:40:06"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9774415408033503 kwh : 16/11/2024 15:40:07"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8527825956686073 kwh : 16/11/2024 15:40:07"
+  },
+  {
+    "Message": "Power grid outage usage at 4.357099466867878 kwh : 16/11/2024 15:40:08"
+  },
+  {
+    "Message": "Power grid outage usage at 4.184670390039391 kwh : 16/11/2024 15:40:09"
+  },
+  {
+    "Message": "Power grid outage usage at 4.4110345336877606 kwh : 16/11/2024 15:40:09"
+  },
+  {
+    "Message": "Power grid outage usage at 3.822231922772612 kwh : 16/11/2024 15:40:10"
+  },
+  {
+    "Message": "Power grid outage usage at 4.65517451027773 kwh : 16/11/2024 15:40:11"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9746161816839978 kwh : 16/11/2024 15:40:12"
+  },
+  {
+    "Message": "Power grid outage usage at 4.09313915786832 kwh : 16/11/2024 15:40:13"
+  },
+  {
+    "Message": "Power grid outage usage at 4.295332811612654 kwh : 16/11/2024 15:40:13"
+  },
+  {
+    "Message": "Power grid outage usage at 4.331309208589685 kwh : 16/11/2024 15:40:14"
+  },
+  {
+    "Message": "Power grid outage usage at 4.08965618539981 kwh : 16/11/2024 15:40:15"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8948229726019505 kwh : 16/11/2024 15:40:16"
+  },
+  {
+    "Message": "Power grid outage usage at 4.306955617684154 kwh : 16/11/2024 15:40:16"
+  },
+  {
+    "Message": "Power grid outage usage at 3.967946796982127 kwh : 16/11/2024 15:40:17"
+  },
+  {
+    "Message": "Power grid outage usage at 4.572070622124415 kwh : 16/11/2024 15:40:18"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8548454865161155 kwh : 16/11/2024 15:40:19"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8492621256605437 kwh : 16/11/2024 15:40:19"
+  },
+  {
+    "Message": "Power grid outage usage at 4.180395099242807 kwh : 16/11/2024 15:40:20"
+  },
+  {
+    "Message": "Power grid outage usage at 4.526646586265667 kwh : 16/11/2024 15:40:21"
+  },
+  {
+    "Message": "Power grid outage usage at 4.369292999698972 kwh : 16/11/2024 15:40:22"
+  },
+  {
+    "Message": "Power grid outage usage at 4.15732175543612 kwh : 16/11/2024 15:40:23"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8588486725381683 kwh : 16/11/2024 15:40:23"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8973972199758347 kwh : 16/11/2024 15:40:24"
+  },
+  {
+    "Message": "Power grid outage usage at 4.353371585876305 kwh : 16/11/2024 15:40:25"
+  },
+  {
+    "Message": "Power grid outage usage at 4.417037209178285 kwh : 16/11/2024 15:40:26"
+  },
+  {
+    "Message": "Power grid outage usage at 4.59405680913244 kwh : 16/11/2024 15:40:26"
+  },
+  {
+    "Message": "Power grid outage usage at 4.035732540282957 kwh : 16/11/2024 15:40:27"
+  },
+  {
+    "Message": "Power grid outage usage at 4.296304757292748 kwh : 16/11/2024 15:40:29"
+  },
+  {
+    "Message": "Power grid outage usage at 4.135643002854714 kwh : 16/11/2024 15:40:29"
+  },
+  {
+    "Message": "Power grid outage usage at 4.004179564843092 kwh : 16/11/2024 15:40:30"
+  },
+  {
+    "Message": "Power grid outage usage at 4.857475973894071 kwh : 16/11/2024 15:40:30"
+  },
+  {
+    "Message": "Power grid outage usage at 4.198015048788919 kwh : 16/11/2024 15:40:31"
+  },
+  {
+    "Message": "Power grid outage usage at 4.5596601364244504 kwh : 16/11/2024 15:40:32"
+  },
+  {
+    "Message": "Power grid outage usage at 4.1511362358635235 kwh : 16/11/2024 15:40:33"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 15:41:57"
+  },
+  {
+    "Message": "Power grid outage usage at 4.114692830004737 kwh : 16/11/2024 15:43:24"
+  },
+  {
+    "Message": "Power grid outage usage at 5.408013496720523 kwh : 16/11/2024 15:44:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.526111058062702 kwh : 16/11/2024 15:47:27"
+  },
+  {
+    "Message": "Power grid outage usage at 4.382221667233602 kwh : 16/11/2024 15:47:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.1888856122831974 kwh : 16/11/2024 15:53:26"
+  },
+  {
+    "Message": "Power grid outage usage at 4.2324531887559615 kwh : 16/11/2024 15:54:08"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 16:03:39"
+  },
+  {
+    "Message": "Power grid outage usage at 4.88864437503042 kwh : 16/11/2024 16:04:17"
+  },
+  {
+    "Message": "Server: ClientID 0 SmartMeterRepo could not load user data: The process cannot access the file 'C:\\Users\\Vincent.Boardman\\Documents\\WattWise\\server-side\\Data\\MeterJson.json' because it is being used by another process. : 16/11/2024 16:04:35"
+  },
+  {
+    "Message": "Power grid outage usage at 5.359984255086389 kwh : 16/11/2024 16:04:39"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 16:05:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.135877333339667 kwh : 16/11/2024 16:05:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.331239144230789 kwh : 16/11/2024 16:05:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.461502046825822 kwh : 16/11/2024 16:06:29"
+  },
+  {
+    "Message": "Power grid outage usage at 4.366932798982041 kwh : 16/11/2024 16:06:35"
+  },
+  {
+    "Message": "Power grid outage usage at 4.1219951562169905 kwh : 16/11/2024 16:08:55"
+  },
+  {
+    "Message": "Power grid outage usage at 4.7357832048687545 kwh : 16/11/2024 16:09:04"
+  },
+  {
+    "Message": "Power grid outage usage at 4.095337397176131 kwh : 16/11/2024 16:41:18"
+  },
+  {
+    "Message": "Power grid outage usage at 4.055061278799708 kwh : 16/11/2024 16:41:18"
+  },
+  {
+    "Message": "Power grid outage usage at 4.063184939670943 kwh : 16/11/2024 16:41:34"
+  },
+  {
+    "Message": "Power grid outage usage at 4.143695310805546 kwh : 16/11/2024 16:41:51"
+  },
+  {
+    "Message": "Power grid outage usage at 4.422084242934392 kwh : 16/11/2024 16:41:59"
+  },
+  {
+    "Message": "Power grid outage usage at 4.366599898358083 kwh : 16/11/2024 16:42:14"
+  },
+  {
+    "Message": "Power grid outage usage at 4.218502998694493 kwh : 16/11/2024 16:42:44"
+  },
+  {
+    "Message": "Power grid outage usage at 5.487262499508971 kwh : 16/11/2024 16:42:57"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9565797966837364 kwh : 16/11/2024 16:43:06"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9889405838657788 kwh : 16/11/2024 16:43:17"
+  },
+  {
+    "Message": "Power grid outage usage at 5.037602829268032 kwh : 16/11/2024 16:43:35"
+  },
+  {
+    "Message": "Power grid outage usage at 4.848116598402141 kwh : 16/11/2024 16:43:46"
+  },
+  {
+    "Message": "Power grid outage usage at 4.156545424255031 kwh : 16/11/2024 16:44:08"
+  },
+  {
+    "Message": "Power grid outage usage at 4.356859141573901 kwh : 16/11/2024 16:44:18"
+  },
+  {
+    "Message": "Power grid outage usage at 3.9640487640817095 kwh : 16/11/2024 16:44:34"
+  },
+  {
+    "Message": "Power grid outage usage at 4.507840428566525 kwh : 16/11/2024 16:44:49"
+  },
+  {
+    "Message": "Power grid outage usage at 3.995776052304076 kwh : 16/11/2024 16:45:10"
+  },
+  {
+    "Message": "Power grid outage usage at 4.16603550405249 kwh : 16/11/2024 16:45:30"
+  },
+  {
+    "Message": "Power grid outage usage at 4.458277162654756 kwh : 16/11/2024 16:45:39"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8202186026542835 kwh : 16/11/2024 16:45:59"
+  },
+  {
+    "Message": "Power grid outage usage at 4.300243366845569 kwh : 16/11/2024 16:46:13"
+  },
+  {
+    "Message": "Power grid outage usage at 4.402494809864462 kwh : 16/11/2024 16:46:28"
+  },
+  {
+    "Message": "Power grid outage usage at 5.5763008429649314 kwh : 16/11/2024 16:46:43"
+  },
+  {
+    "Message": "Power grid outage usage at 4.0190521777106465 kwh : 16/11/2024 16:47:07"
+  },
+  {
+    "Message": "Power grid outage usage at 3.94907501378974 kwh : 16/11/2024 16:47:17"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8982869648900005 kwh : 16/11/2024 16:47:30"
+  },
+  {
+    "Message": "Power grid outage usage at 4.4966618446751845 kwh : 16/11/2024 16:47:45"
+  },
+  {
+    "Message": "Power grid outage usage at 4.301291930117777 kwh : 16/11/2024 16:48:07"
+  },
+  {
+    "Message": "Power grid outage usage at 4.200199287555701 kwh : 16/11/2024 16:48:20"
+  },
+  {
+    "Message": "Power grid outage usage at 4.155831180623753 kwh : 16/11/2024 16:48:47"
+  },
+  {
+    "Message": "Power grid outage usage at 3.852262044577319 kwh : 16/11/2024 16:48:52"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8047553915212555 kwh : 16/11/2024 16:49:02"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 16:55:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.83542407109267 kwh : 16/11/2024 16:55:48"
+  },
+  {
+    "Message": "Power grid outage usage at 5.320023624209904 kwh : 16/11/2024 16:55:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.837309527246601 kwh : 16/11/2024 16:56:14"
+  },
+  {
+    "Message": "Power grid outage usage at 4.320339939368203 kwh : 16/11/2024 16:56:35"
+  },
+  {
+    "Message": "Power grid outage usage at 3.878104964866589 kwh : 16/11/2024 16:56:43"
+  },
+  {
+    "Message": "Power grid outage usage at 3.811266301078251 kwh : 16/11/2024 16:56:54"
+  },
+  {
+    "Message": "Power grid outage usage at 3.8889136649838547 kwh : 16/11/2024 16:57:04"
+  },
+  {
+    "Message": "Power grid outage usage at 4.243878241837752 kwh : 16/11/2024 16:57:15"
+  },
+  {
+    "Message": "Client: 1 Simulated TLS authentication failure on 16/11/2024 16:58:33"
+  },
+  {
+    "Message": "Power grid outage usage at 4.363471817603776 kwh : 16/11/2024 16:58:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.462060929305403 kwh : 16/11/2024 16:58:49"
+  },
+  {
+    "Message": "Power grid outage usage at 4.649773891062319 kwh : 16/11/2024 16:59:23"
+  },
+  {
+    "Message": "Power grid outage usage at 4.5535226665293305 kwh : 16/11/2024 16:59:37"
   }
 ]

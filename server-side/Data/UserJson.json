@@ -39,6 +39,19 @@
     }
   },
   {
+    "Address": "Ironforge Road",
+    "UserID": 1006,
+    "firstName": "Magni",
+    "lastName": "Bronzebeard",
+    "UserEmail": "Magni@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 6,
+      "EnergyPerKwH": 0.98,
+      "CurrentMonthCost": 70.77,
+      "CustomerType": "Small Business"
+    }
+  },
+  {
     "Address": "Deepholm Academy Way",
     "UserID": 1002,
     "firstName": "Deathwing",
@@ -46,48 +59,9 @@
     "UserEmail": "Deathwing@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 2,
-      "EnergyPerKwH": 0.57,
-      "CurrentMonthCost": 71.78,
+      "EnergyPerKwH": 0.35,
+      "CurrentMonthCost": 74.55,
       "CustomerType": "Large NGO"
-    }
-  },
-  {
-    "Address": "Stormwind City",
-    "UserID": 1015,
-    "firstName": "Anduin",
-    "lastName": "Wrynn",
-    "UserEmail": "Anduin@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 15,
-      "EnergyPerKwH": 0.15,
-      "CurrentMonthCost": 35.93,
-      "CustomerType": "Small NGO"
-    }
-  },
-  {
-    "Address": "Wyrmrest Temple Village",
-    "UserID": 1003,
-    "firstName": "Alexstrasza",
-    "lastName": "DummyLastName3",
-    "UserEmail": "Alexstrasza@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 3,
-      "EnergyPerKwH": 0.58,
-      "CurrentMonthCost": 46.68,
-      "CustomerType": "Small Household"
-    }
-  },
-  {
-    "Address": "Jade Forest",
-    "UserID": 1004,
-    "firstName": "Pow",
-    "lastName": "Monk",
-    "UserEmail": "Pow@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 4,
-      "EnergyPerKwH": 0.6,
-      "CurrentMonthCost": 61.02,
-      "CustomerType": "Average Household"
     }
   },
   {
@@ -98,35 +72,9 @@
     "UserEmail": "Lealthy@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 5,
-      "EnergyPerKwH": 0.42,
-      "CurrentMonthCost": 82.54,
+      "EnergyPerKwH": 0.43,
+      "CurrentMonthCost": 85.86,
       "CustomerType": "Large Household"
-    }
-  },
-  {
-    "Address": "Ironforge Road",
-    "UserID": 1006,
-    "firstName": "Magni",
-    "lastName": "Bronzebeard",
-    "UserEmail": "Magni@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 6,
-      "EnergyPerKwH": 1.11,
-      "CurrentMonthCost": 68.2,
-      "CustomerType": "Small Business"
-    }
-  },
-  {
-    "Address": "Nagrand",
-    "UserID": 1007,
-    "firstName": "Grommash",
-    "lastName": "Hellscream",
-    "UserEmail": "Grommash@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 7,
-      "EnergyPerKwH": 0.59,
-      "CurrentMonthCost": 86.12,
-      "CustomerType": "Average Business"
     }
   },
   {
@@ -137,22 +85,9 @@
     "UserEmail": "Lor’themar@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 8,
-      "EnergyPerKwH": 0.7,
-      "CurrentMonthCost": 104.05,
+      "EnergyPerKwH": 0.71,
+      "CurrentMonthCost": 108.48,
       "CustomerType": "Large Business"
-    }
-  },
-  {
-    "Address": "Eastern Kingdoms Building",
-    "UserID": 1009,
-    "firstName": "Varian",
-    "lastName": "Wrynn",
-    "UserEmail": "Varian@examplemail.com",
-    "SmartDevice": {
-      "SmartMeterID": 9,
-      "EnergyPerKwH": 0.65,
-      "CurrentMonthCost": 96.88,
-      "CustomerType": "Small Industrial"
     }
   },
   {
@@ -163,9 +98,48 @@
     "UserEmail": "Tyrande@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 10,
-      "EnergyPerKwH": 0.96,
-      "CurrentMonthCost": 118.39,
+      "EnergyPerKwH": 1.11,
+      "CurrentMonthCost": 123.55,
       "CustomerType": "Average Industrial"
+    }
+  },
+  {
+    "Address": "Durnholde Keep Street",
+    "UserID": 1014,
+    "firstName": "Thrall",
+    "lastName": "Goel",
+    "UserEmail": "Thrall@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 14,
+      "EnergyPerKwH": 0.52,
+      "CurrentMonthCost": 63.24,
+      "CustomerType": "Large Public Service"
+    }
+  },
+  {
+    "Address": "Nagrand",
+    "UserID": 1007,
+    "firstName": "Grommash",
+    "lastName": "Hellscream",
+    "UserEmail": "Grommash@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 7,
+      "EnergyPerKwH": 0.61,
+      "CurrentMonthCost": 89.63,
+      "CustomerType": "Average Business"
+    }
+  },
+  {
+    "Address": "Wyrmrest Temple Village",
+    "UserID": 1003,
+    "firstName": "Alexstrasza",
+    "lastName": "DummyLastName3",
+    "UserEmail": "Alexstrasza@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 3,
+      "EnergyPerKwH": 0.31,
+      "CurrentMonthCost": 48.16,
+      "CustomerType": "Small Household"
     }
   },
   {
@@ -177,21 +151,34 @@
     "SmartDevice": {
       "SmartMeterID": 11,
       "EnergyPerKwH": 1.19,
-      "CurrentMonthCost": 143.49,
+      "CurrentMonthCost": 149.95,
       "CustomerType": "Large Industrial"
     }
   },
   {
-    "Address": "Windrunner Spire Avenue",
-    "UserID": 1012,
-    "firstName": "Sylvanas",
-    "lastName": "Windrunner",
-    "UserEmail": "Sylvanas@examplemail.com",
+    "Address": "Eastern Kingdoms Building",
+    "UserID": 1009,
+    "firstName": "Varian",
+    "lastName": "Wrynn",
+    "UserEmail": "Varian@examplemail.com",
     "SmartDevice": {
-      "SmartMeterID": 12,
+      "SmartMeterID": 9,
+      "EnergyPerKwH": 0.62,
+      "CurrentMonthCost": 100.94,
+      "CustomerType": "Small Industrial"
+    }
+  },
+  {
+    "Address": "Stormwind City",
+    "UserID": 1015,
+    "firstName": "Anduin",
+    "lastName": "Wrynn",
+    "UserEmail": "Anduin@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 15,
       "EnergyPerKwH": 0.38,
-      "CurrentMonthCost": 39.51,
-      "CustomerType": "Small Public Service"
+      "CurrentMonthCost": 36.85,
+      "CustomerType": "Small NGO"
     }
   },
   {
@@ -202,22 +189,35 @@
     "UserEmail": "Arthas@examplemail.com",
     "SmartDevice": {
       "SmartMeterID": 13,
-      "EnergyPerKwH": 0.31,
-      "CurrentMonthCost": 50.27,
+      "EnergyPerKwH": 0.6,
+      "CurrentMonthCost": 51.93,
       "CustomerType": "Average Public Service"
     }
   },
   {
-    "Address": "Durnholde Keep Street",
-    "UserID": 1014,
-    "firstName": "Thrall",
-    "lastName": "Goel",
-    "UserEmail": "Thrall@examplemail.com",
+    "Address": "Jade Forest",
+    "UserID": 1004,
+    "firstName": "Pow",
+    "lastName": "Monk",
+    "UserEmail": "Pow@examplemail.com",
     "SmartDevice": {
-      "SmartMeterID": 14,
-      "EnergyPerKwH": 0.77,
-      "CurrentMonthCost": 61.02,
-      "CustomerType": "Large Public Service"
+      "SmartMeterID": 4,
+      "EnergyPerKwH": 0.34,
+      "CurrentMonthCost": 63.24,
+      "CustomerType": "Average Household"
+    }
+  },
+  {
+    "Address": "Windrunner Spire Avenue",
+    "UserID": 1012,
+    "firstName": "Sylvanas",
+    "lastName": "Windrunner",
+    "UserEmail": "Sylvanas@examplemail.com",
+    "SmartDevice": {
+      "SmartMeterID": 12,
+      "EnergyPerKwH": 0.19,
+      "CurrentMonthCost": 40.62,
+      "CustomerType": "Small Public Service"
     }
   }
 ]
