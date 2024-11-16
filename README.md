@@ -45,7 +45,7 @@ In another terminal run
 `npm run`
 
 
-## VIDEO LINKS
+## PRESENTATION LINK
 
 Panopto - https://shu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=b32bc75c-5612-4b80-8aea-b22a010db58e
 
