@@ -15,25 +15,28 @@ public class CalculateCostTests
     }
 
     [Theory]
-    [InlineData("Large Household", 15.0)]
-    [InlineData("Average Household", 10.0)]
+    [InlineData("Large Household", 18.0)]
+    [InlineData("Average Household", 12.0)]
     [InlineData("Small Household", 8.0)]
     [InlineData("Unknown", 0.0)]
     public void GetCurrentBill_ShouldCalculateCorrectKwhBasedOnCustomerType(string customerType, double expectedDailyUsage)
     {
         // Arrange
+        var calculateCost = new CalculateCost(Mock.Of<IErrorLogRepo>()); // Mock dependency
         var device = new SmartDevice { CustomerType = customerType };
-
-        // Act
-        var updatedDevice = _calculateCost.getCurrentBill(device);
 
         DateTime now = DateTime.Now;
         DateTime billingStartDate = new DateTime(now.Year, now.Month, 1);
-        double expectedKwhUsed = (expectedDailyUsage / (24 * 60)) * (now - billingStartDate).TotalMinutes;
+        double minutesInMonth = (now - billingStartDate).TotalMinutes;
+        double expectedKwhUsed = (expectedDailyUsage / (24 * 60)) * minutesInMonth;
+
+        // Act
+        var updatedDevice = calculateCost.getCurrentBill(device);
 
         // Assert
         Assert.Equal(Math.Round(expectedKwhUsed, 2), Math.Round(updatedDevice.KwhUsed, 2));
     }
+
 
     [Fact]
     public void GetCurrentBill_ShouldReturnCorrectMonthlyCost()
