@@ -18,7 +18,7 @@ git clone https://github.com/4bdullahh/WattWise.git
 
 #### Step 1
 Go to nodeJS and download the LTS version
-`https://nodejs.org/en`
+https://nodejs.org/en
 
 #### Step 2
 Open command line and check node version
