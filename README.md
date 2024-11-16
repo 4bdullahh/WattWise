@@ -35,7 +35,17 @@ Run `npm install`
 and `npm i electron`
 
 
-VIDEO LINKS
+## Running The App
+
+#### Step 1
+Press start to run the client and server
+
+#### Step 2
+In another terminal run
+`npm run`
+
+
+## VIDEO LINKS
 
 Panopto - https://shu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=b32bc75c-5612-4b80-8aea-b22a010db58e
 
