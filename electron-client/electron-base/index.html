@@ -77,10 +77,15 @@
       const client= document.createElement("h2");
       client.innerHTML=`Client-${i}`;
 
+      const kWhLabel = document.createElement("h2");
+      kWhLabel.innerHTML = "kWh";
+      kWhLabel.style.top = "30px";
+
       const gaugeMessage = document.createElement("h4");
       gaugeMessage.id = `gauge-message-${i}`;
 
       container.appendChild(newGauge);
+      newGauge.appendChild(kWhLabel);
       newGauge.appendChild(gaugeMessage);
       newGauge.appendChild(client);
 
