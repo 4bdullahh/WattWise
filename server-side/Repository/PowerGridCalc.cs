@@ -64,7 +64,7 @@ public class PowerGridCalc :IPowerGridCalc
         {
             var random = new Random();
             double multiplier = 0.1 + random.NextDouble() * 0.1;
-            double kwhCutOff = 3.8;
+            double kwhCutOff = 30;
 
             if (!_powerGridModel.clientList.Contains(smartDevice.SmartMeterId))
             {
