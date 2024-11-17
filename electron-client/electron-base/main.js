@@ -41,49 +41,6 @@ app.whenReady().then(() => {
     });
   });
 
-  // ipcMain.handle("meterReading", async () => {
-  //   console.log("TRYING TO ONNCET");
-
-  //   return new Promise((resolve, reject) => {
-  //     const client = net.createConnection("\\\\.\\pipe\\meter-reading", () => {
-  //       client.write("meterReading");
-
-  //       client.on("data", (data) => {
-  //         const message = data.toString();
-  //         console.log("Received from .NET:", message);
-  //         resolve(message);
-  //       });
-  //     });
-
-  //     client.on("error", (err) => {
-  //       console.error("Error connecting to named pipe:", err);
-  //       reject(err);
-  //     });
-  //   });
-  // });
-
-  /* --------------------------------------------- */
-  // ipcMain.handle("open", async () => {
-  //   return new Promise((resolve, reject) => {
-  //     const client = net.createConnection("\\\\.\\pipe\\base-pipe", () => {
-  //       console.log("Connected to .NET named pipe server");
-
-  //       client.write("Hello from Electron!");
-
-  //       client.on("data", (data) => {
-  //         const message = data.toString();
-  //         console.log("Received from .NET:", message);
-  //         resolve(message);
-  //       });
-  //     });
-
-  //     client.on("error", (err) => {
-  //       console.error("Error connecting to named pipe:", err);
-  //       reject(err);
-  //     });
-  //   });
-  // });
-
   createWindow();
 });
 

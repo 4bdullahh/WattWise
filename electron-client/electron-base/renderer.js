@@ -6,9 +6,7 @@ const main = async () => {
   window.meterAPI.onMeterReadingData(async (meterData) => {
     const jsonObject = JSON.parse(JSON.parse(meterData));
 
-    if (jsonObject.SmartMeterID == 1) {
-      console.log("Meter Reading Data:", jsonObject);
-    }
+    const now = new Date();
 
     const container = document.getElementById(
       `meter-gauge-${jsonObject.SmartMeterID}`
