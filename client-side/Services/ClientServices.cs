@@ -97,16 +97,22 @@ namespace client_side.Services
                                                        if (clientId == 1)
                                                        {
                                                            errorMessage.Message = $"Client: {clientId} Simulated TLS authentication failure on {DateTime.Now}";
-                                                           tcpClient.Close();
-                                                           sslStream.Close();
+                                                          
                                                            sslAuthenticated = false;
-                                                           throw new AuthenticationException(errorMessage.Message);
                                                        }
                                                     Console.WriteLine($"Client {clientId}: TLS authentication successful!");
                                                 }
                                                 else
                                                 {
                                                     Console.WriteLine($"Client {clientId}: TLS authentication failed!");
+                                                }
+                                                if (!sslAuthenticated)
+                                                {
+                                                    tcpClient.Close();
+                                                    sslStream.Close();
+                                                    Console.WriteLine($"Client: {clientId} could secure connect and has been blocked.");
+                                                    throw new AuthenticationException(errorMessage.Message);
+                                                    return;
                                                 }
                                             }
                                         }
@@ -119,12 +125,7 @@ namespace client_side.Services
                                         }
                                     });
                                     sslTask.Wait();
-                                    if (!sslAuthenticated)
-                                    {
-                                        Console.WriteLine($"Client: {clientId} could secure connect and has been blocked.");
-                                        continue;
-                                    }
-
+                                    
                                     var clientSocket = new DealerSocket();
                                     clientSocket.Options.Identity =
                                         Encoding.UTF8.GetBytes($"Client-{clientId}");
