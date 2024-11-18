@@ -3,7 +3,7 @@
 
 ### Download Git
 
-git clone https://github.com/4bdullahh/WattWise.git
+`git clone https://github.com/4bdullahh/WattWise.git`
 
 ### Running Client and Server
 
