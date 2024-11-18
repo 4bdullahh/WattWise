@@ -41,7 +41,7 @@ and `npm i electron`
 In Visual Studio press start to run the client and server
 
 #### Step 2
-In another terminal run
+In another terminal in the  `cd electron-client\electron-base` run
 `npm run`
 
 
