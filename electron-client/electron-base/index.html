@@ -17,17 +17,20 @@
   <title>WattWise</title>
 </head>
 <body style="font-family: 'Quicksand', 'Caveat', sans-serif;">
+<div id="error-alert" class="alert alert-danger w-75 text-center" style="margin: auto; margin-top: 2%; display: none;" role="alert">
+  A simple danger alert—check it out!
+</div>
 <h1 style="font-size: 45px;font-weight: bold; text-align: center; margin-top:20px;">WattWise Smart Meter Clients</h1>
 <br>
 <hr>
 <br>
 <div
-        id="meterContainer"
-        style="
-        display: flex;
-        flex-wrap: wrap;
-        height: 100%;
-      "
+    id="meterContainer"
+    style="
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+  "
 ></div>
 
 </div>
@@ -57,8 +60,8 @@
 
       overlayImage.style.position = "absolute";
       overlayImage.style.top = "25%";
-      overlayImage.style.width = "50%";
-      overlayImage.style.height = "50%";
+      overlayImage.style.width = "10rem";
+      overlayImage.style.height = "10rem";
       overlayImage.style.zIndex = "10";
 
       newGauge.style.position = "relative";

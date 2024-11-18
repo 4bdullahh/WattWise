@@ -2,11 +2,17 @@ const main = async () => {
   const meterReadingButton = document.getElementById("meterReading");
 
   window.meterAPI.startMeterReading();
+  window.meterAPI.onMeterReadingError(async (errorMessage) => {
+    alert = document.getElementById("error-alert");
+    alert.style.display = "block";
+    alert.innerHTML = errorMessage;
+  });
 
   window.meterAPI.onMeterReadingData(async (meterData) => {
     const jsonObject = JSON.parse(JSON.parse(meterData));
 
-    const now = new Date();
+    alert = document.getElementById("error-alert");
+    alert.style.display = "none";
 
     const container = document.getElementById(
       `meter-gauge-${jsonObject.SmartMeterID}`
@@ -47,21 +53,6 @@ const main = async () => {
     data[0].value = jsonObject.KwhUsed;
     Plotly.react(`meter-gauge-${jsonObject.SmartMeterID}`, data, layout);
   });
-
-  // const responseDiv = document.getElementById("responseDiv");
-  // responseDiv.innerHTML = response;
-
-  // async function updateGaugeWithRandomValue() {
-  //   const response = await versions.meterReading();
-  //   console.log(response);
-  //   const jsonObject = JSON.parse(JSON.parse(response));
-  //   data[0].value = jsonObject.KwhUsed;
-  //   Plotly.react("meterGauge", data, layout);
-  // }
-
-  // setInterval(() => {
-  //   updateGaugeWithRandomValue();
-  // }, 1000);
 };
 
 main();

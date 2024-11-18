@@ -20,25 +20,73 @@ app.whenReady().then(() => {
   ipcMain.on("startMeterReading", (event) => {
     console.log("TRYING TO CONNECT");
 
-    const client = net.createConnection("\\\\.\\pipe\\meter-reading", () => {
-      client.write("meterReading");
+    const pipeName = "\\\\.\\pipe\\meter-reading";
+    let retryAttempts = 0;
+    const maxRetries = 100;
+    const retryDelay = 2000;
 
-      client.on("data", (data) => {
-        const message = data.toString();
-        console.log("Received from .NET:", message);
+    function connectToPipe() {
+      try {
+        const client = net.createConnection(pipeName, () => {
+          console.log("Connected to the pipe!");
 
-        event.sender.send("meterReadingData", message);
-      });
+          client.write("meterReading");
 
-      client.on("error", (error) => {
-        console.error("Error in named pipe connection:", error);
+          client.on("data", (data) => {
+            const message = data.toString();
+            console.log("Received from .NET:", message);
+
+            event.sender.send("meterReadingData", message);
+          });
+
+          client.on("error", (error) => {
+            console.error("Error in named pipe connection:", error.message);
+            event.sender.send("meterReadingError", error.message);
+
+            retryConnection();
+          });
+
+          client.on("close", () => {
+            console.log("Connection closed.");
+            retryConnection();
+          });
+        });
+
+        client.on("error", (error) => {
+          console.error("Connection error:", error.message);
+          event.sender.send("meterReadingError", error.message);
+          retryConnection();
+        });
+      } catch (error) {
+        console.error("An unexpected error occurred:", error.message);
         event.sender.send("meterReadingError", error.message);
-      });
-    });
 
-    client.on("end", () => {
-      console.log("Connection closed by .NET server.");
-    });
+        retryConnection();
+      }
+    }
+
+    function retryConnection() {
+      if (retryAttempts < maxRetries) {
+        retryAttempts++;
+        console.log(
+          `Retrying connection (${retryAttempts}/${maxRetries}) in ${
+            retryDelay / 1000
+          } seconds...`
+        );
+
+        setTimeout(() => {
+          connectToPipe();
+        }, retryDelay);
+      } else {
+        console.error("Max retries reached. Failed to connect to the pipe.");
+        event.sender.send(
+          "meterReadingError",
+          "Failed to connect to the pipe after multiple attempts."
+        );
+      }
+    }
+
+    connectToPipe();
   });
 
   createWindow();
