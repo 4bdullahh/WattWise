@@ -8,11 +8,3 @@ contextBridge.exposeInMainWorld("meterAPI", {
     ipcRenderer.on("meterReadingError", (event, error) => callback(error)),
 });
 
-// contextBridge.exposeInMainWorld("versions", {
-//   node: () => process.versions.node,
-//   chrome: () => process.versions.chrome,
-//   electron: () => process.versions.electron,
-//   // ping: () => ipcRenderer.invoke("ping"),
-//   // open: () => ipcRenderer.invoke("open"),
-//   meterReading: () => ipcRenderer.invoke("meterReading"),
-// });

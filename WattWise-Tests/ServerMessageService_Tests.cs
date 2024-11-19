@@ -32,7 +32,6 @@ namespace server_side.Tests
             _smartMeterServicesMock = new Mock<ISmartMeterServices>();
             _errorLogRepoMock = new Mock<IErrorLogRepo>();
 
-            // Setup temporary paths
             var tempPath = Path.Combine(Path.GetTempPath(), "TestEnvFolder", "server-side");
             Directory.CreateDirectory(tempPath);
             var fakePath = Path.Combine(tempPath, ".env");
@@ -47,12 +46,10 @@ namespace server_side.Tests
                 "RSA_PRIVATE_KEY=privateKey"
             });
         
-            // Generate a self-signed certificate file
             _fakeCertPath = Path.Combine(tempPath, "server_certificate.pfx");
             CreateSelfSignedCertificate(_fakeCertPath, "a2bf39b00064f4163c868d075b35a2a28b87cf0f471021f7578f866851dc866f");
             _folderPathServicesMock.Setup(x => x.GetServerSideFolderPath()).Returns(tempPath);
 
-            // Initialize the MessageService instance with mocks
             _messageService = new MessageService(
                 _folderPathServicesMock.Object,
                 _userServicesMock.Object,
@@ -71,7 +68,6 @@ namespace server_side.Tests
                     RSASignaturePadding.Pkcs1
                 );
 
-                // Self-sign the certificate
                 var certificate = request.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.Now.AddYears(1));
 
                 byte[] certData = certificate.Export(X509ContentType.Pfx, password);
