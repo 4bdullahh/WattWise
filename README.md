@@ -5,6 +5,12 @@
 
 `git clone https://github.com/4bdullahh/WattWise.git`
 
+### Certificates
+
+1- Copy both Server and Client certificate
+2 - Paste server_certificate.pfx on server-side folder
+3 - Paster client_certificate.pfx on client-side folder
+
 ### Running Client and Server
 
 #### In Visual Studio
@@ -47,7 +53,7 @@ In another terminal in the  `cd electron-client\electron-base` run
 
 ## PRESENTATION LINK
 
-Panopto - https://shu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=b32bc75c-5612-4b80-8aea-b22a010db58e
+Panopto - https://shu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=edfc7512-6f2d-4f72-a9b4-b22d011e3bb9
 
 
 
