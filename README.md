@@ -7,7 +7,7 @@
 
 ### Certificates
 
-1- Copy both Server and Client certificate
+1- Copy both Server and Client certificate provided on submitted documents
 2 - Paste server_certificate.pfx on server-side folder
 3 - Paster client_certificate.pfx on client-side folder
 
