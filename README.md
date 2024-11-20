@@ -55,6 +55,11 @@ In another terminal in the  `cd electron-client\electron-base` run
 
 Panopto - https://shu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=edfc7512-6f2d-4f72-a9b4-b22d011e3bb9
 
+Student IDS
+Johnny Leal Rodrigues - c2063915
+Muhammad Mamoon - c2045890
+Venkata Prem - c2068461
+Vincent Boardiman - c2064387
 
 
 
